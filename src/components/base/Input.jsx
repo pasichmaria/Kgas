@@ -13,7 +13,8 @@ const Input = (props) => {
     valid = false,
     className = "",
     errorText = "",
-    rounded = "lg",
+    rounded = "",
+      size = "",
     ...child
   } = props;
 
@@ -32,7 +33,7 @@ const Input = (props) => {
       none: null,
       sm: "rounded-sm",
       md: "rounded-md",
-      lg: "rounded-lg",
+      lg: "rounded-lg w-10",
     },
   };
 
@@ -46,6 +47,7 @@ const Input = (props) => {
       <input
         id={id}
         type={type}
+        size={size}
         className={clsx([
           styles.base,
           rounded && styles.rounded[rounded],

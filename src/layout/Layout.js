@@ -1,11 +1,11 @@
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 
-export const Layout = ({ children, user, setUser, getUser }) => {
+export const Layout = ({ children, user }) => {
   return (
-    <div class="min-h-screen flex flex-col">
-      <Header user={user} />
-      <Sidebar getUser={getUser} user={user} setUser={setUser} children={children} />
+    <div class="min-h-screen  flex-col">
+        { user ? <Header user={user} /> : null}
+      <Sidebar children={children} />
     </div>
   );
 };

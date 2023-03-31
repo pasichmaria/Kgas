@@ -1,6 +1,5 @@
 import { useMutation } from 'react-query'
-import { login } from '../API/auth'
-
+import { login } from '../API/authAPI'
 
 export const useAuth = ({ onLoginSuccess }) => {
   const loginQuery = useMutation({
