@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button} from "../components";
-import Input from "../components/base/Input";
+import {Input} from "../components/base/Input";
 import {useAuth} from "../hooks";
 
 export const LoginPage = ({getUser}) => {
