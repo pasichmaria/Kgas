@@ -1,20 +1,33 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { clsx } from "clsx";
 import Label from "./Label";
 
-const Input = (props) => {
+export const Input = (props) => {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const validateInput = (value) => {
+    if (!value) {
+      return "This field is required.";
+    }
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(value)) {
+      return "Please enter a valid email address.";
+    }
+
+    return "";
+  };
   const {
     label,
     autocomplete = "",
     type = "",
-    error = false,
     required = false,
     disabled = false,
     valid = false,
     className = "",
-    errorText = "",
     rounded = "",
-      size = "",
+    size = "",
+    validate = (value) => "", // default validation function that always returns an empty string
     ...child
   } = props;
 
@@ -28,7 +41,6 @@ const Input = (props) => {
       valid: "border-green-600 focus:ring-green-600",
       disabled: "cursor-not-allowed bg-gray-100 shadow-inner text-gray-400",
     },
-
     rounded: {
       none: null,
       sm: "rounded-sm",
@@ -38,30 +50,33 @@ const Input = (props) => {
   };
 
   return (
-    <div className={clsx("relative", className)}>
-      {label && (
-        <Label id={id}>
-          {label} {required && "*"}
-        </Label>
-      )}
-      <input
-        id={id}
-        type={type}
-        size={size}
-        className={clsx([
-          styles.base,
-          rounded && styles.rounded[rounded],
-          error ? styles.state.error : styles.state.normal,
-          valid ? styles.state.valid : styles.state.normal,
-          disabled && styles.state.disabled,
-        ])}
-        disabled={disabled}
-        required={required}
-        {...child}
-      />
-      {error && <p className="mt-2 text-sm text-red-600">{errorText}</p>}
-    </div>
+      <div className={clsx("relative", className)}>
+        {label && (
+            <Label id={id}>
+              {label} {required && "*"}
+            </Label>
+        )}
+        <input
+            id={id}
+            type={type}
+            size={size}
+            className={clsx([
+              styles.base,
+              rounded && styles.rounded[rounded],
+              error ? styles.state.error : styles.state.normal,
+              valid ? styles.state.valid : styles.state.normal,
+              disabled && styles.state.disabled,
+            ])}
+            disabled={disabled}
+            required={required}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              setError(validate(e.target.value));
+            }}
+            {...child}
+        />
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      </div>
   );
 };
-
-export default Input;

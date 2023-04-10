@@ -5,5 +5,5 @@ export const PrivateRoute = ({ user, children }) => {
     if (!user) {
         return <Navigate to="/login" replace />;
     }
-    return children;
+    else return children;
 };

@@ -1,5 +1,4 @@
-
-import { HiLogout } from "react-icons/hi";
+import {HiLogout} from "react-icons/hi";
 
 function LogoutButton() {
     const handleLogout = () => {
@@ -9,13 +8,10 @@ function LogoutButton() {
 
     return (
         <button
-            className="flex items-center justify-center space-x-2 transition-colors cursor-pointer hover:text-black"
             onClick={handleLogout}
         >
-            <HiLogout />
-            <span>Вихід</span>
+            <HiLogout/>
         </button>
     );
 }
-
 export default LogoutButton;

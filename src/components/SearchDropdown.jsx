@@ -1,51 +1,57 @@
-import Input from "./base/Input";
-import React from "react";
-import {useState} from "react";
-import {Document} from "./base/Document";
-const documents = [
+import React, {useState} from "react";
+import {Document} from "./base";
+import Label from "./base/Label";
+import {Input} from "./base/Input";
 
-    // link : `/document/${id}`
-
-    { id: 1, name: "Акт 1", link: "/document-1" },
-    { id: 2, name: "Акт 2", link: "/document-2" },
-    { id: 3, name: "Акт 3", link: "/document-3" },
-    { id: 4, name: "Акт 4", link: "/document-4" },
-    { id: 5, name: "Акт 5", link: "/document-5" },
-    { id: 6, name: "Акт 6", link: "/document-6" },
-    { id: 7, name: "Акт 7", link: "/document-7" },
-    { id: 8, name: "Акт 8", link: "/document-8" },
-];
-export const SearchDropdown = () => {
+export const SearchDropdown = ({documents}) => {
+    const [selectedDocument, setSelectedDocument] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdownVisible, setDropdownVisible] = useState(false)
 
-    const Dropdown = ({ documents }) => (
-        <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg">
-            {documents.map((doc) => (
-                <Document key={doc.id} name={doc.name} link={doc.link} />
-            ))}
-        </div>
-    );
-
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
-        setDropdownVisible(true);
+    const handleDocumentChange = (doc) => {
+        setSelectedDocument(doc);
+        setSearchTerm(doc.name);
     };
 
-    const filteredDocuments = documents.filter((document) =>
-        document.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setSearchTerm(value);
+        setSelectedDocument(
+            documents.find((doc) => doc.name.toLowerCase() === value.toLowerCase())
+        );
+    };
 
     return (
-        <div className="relative">
+        <div>
+            <Label className="block font-medium text-gray-500">
+                Виберіть документ
+            </Label>
             <Input
                 type="text"
                 placeholder="Search..."
-                onChange={handleSearch}
+                value={searchTerm}
+                onChange={handleInputChange}
+                list="documents"
             />
-            {dropdownVisible && (
-                <Dropdown documents={filteredDocuments}/>
-            )}
+            <datalist id="documents">
+                {documents.map((doc) => (
+                    <option key={doc.id} value={doc.name}/>
+                ))}
+            </datalist>
+            <div className="mt-4">
+                {selectedDocument && (
+                    <Document
+                        name={selectedDocument.name}
+                        link={selectedDocument.link}
+                        className="mt-2"
+                    />
+                )}
+            </div>
+            <Input
+                rounded="lg"
+                size="lg"
+                type="hidden"
+                name="documentLink"
+                value={selectedDocument?.link || ""}/>
         </div>
     );
-};
+}
