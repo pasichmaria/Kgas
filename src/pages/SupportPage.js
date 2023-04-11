@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, TextArea, SearchDropdown} from "../components";
-import {documents} from "../data";
+import {acts} from "../data";
 
 export const SupportPage = ({user}) => {
     const [selectedDoc, setSelectedDoc] = useState(null);
@@ -49,9 +49,9 @@ export const SupportPage = ({user}) => {
                                 placeholder="Пропозиції по покращенню"
                             />
                             <SearchDropdown
-                                documents={documents}
+                                acts={acts}
                                 label="Виберіть документ"
-                                options={documents}
+                                options={acts}
                                 value={selectedDoc}
                                 onChange={handleDocSelect}
                             />

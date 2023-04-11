@@ -27,14 +27,18 @@ function App() {
                     <Route path="/login" element={<LoginPage user={user} getUser={getUser}/>}/>
                     <Route path="/home" element={<PrivateRoute user={user}><HomePage user={user}/></PrivateRoute>}/>
                     <Route path="/acts" element={<PrivateRoute user={user}><ActsPage user={user}/></PrivateRoute>}/>
-                    <Route path="/deniedActs" element={<PrivateRoute user={user}><DeniedActsPage user={user}/></PrivateRoute>}/>
-                    <Route path="/newAct" element={<NewActPage user={user}/> }/>
-                    <Route path="/reporting" element={<PrivateRoute user={user}><ReportingPage user={user}/></PrivateRoute>}/>
-                    <Route path="/reporting" element={<PrivateRoute user={user}><ReportingPage user={user}/></PrivateRoute>}/>
+                    <Route path="/deniedActs"
+                           element={<PrivateRoute user={user}><DeniedActsPage user={user}/></PrivateRoute>}/>
+                    <Route path="/newAct" element={<NewActPage user={user}/>}/>
+                    <Route path="/reporting"
+                           element={<PrivateRoute user={user}><ReportingPage user={user}/></PrivateRoute>}/>
+                    <Route path="/reporting"
+                           element={<PrivateRoute user={user}><ReportingPage user={user}/></PrivateRoute>}/>
                     <Route path="/awards" element={<PrivateRoute user={user}><AwardsPage user={user}/></PrivateRoute>}/>
-                    <Route path="/internalDocuments" element={<PrivateRoute user={user}><InternalDocumentsPage user={user}/></PrivateRoute>}/>
+                    <Route path="/internalDocuments"
+                           element={<PrivateRoute user={user}><InternalDocumentsPage user={user}/></PrivateRoute>}/>
 
-                    <Route path="/act" element={<ActPage user={user}/>  }/>
+                    <Route path="/act/:actNumber" element={<ActPage user={user}/>}/>
                     <Route path="*" element={<NotFoundPage user={user}/>}/>
                     <Route path="/403" element={<ForbiddenPage user={user}/>}/>
                     <Route path="/support" element={<SupportPage/>}/>
@@ -44,4 +48,5 @@ function App() {
         </>
     )
 }
+
 export default App;

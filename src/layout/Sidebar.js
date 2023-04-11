@@ -5,6 +5,7 @@ import {
 } from "react-icons/hi";
 import {FiActivity, FiAward, FiCalendar} from "react-icons/fi";
 import LogoutButton from "../components/LogoutButton";
+import {Footer} from "./Footer";
 
 const Menus = [{title: "Головна", path: "/home", src: <HiHome/>}, {
     title: "Акти порушень", path: "/acts", src: <HiDocumentDuplicate/>,
