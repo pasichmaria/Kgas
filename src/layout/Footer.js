@@ -1,12 +1,9 @@
 export function Footer() {
-  return (
-    <>
-      <div className="flex bg-gray-800 w-full flex-col items-center justify-center px-1 pb-8 pt-3 lg:px-8 xl:flex-row">
-        <p className="mb-4 text-center text-sm text-white sm:!mb-0 md:text-base">
-          ©{1900 + new Date().getYear()} React & TailwindCss. All Rights
-          Reserved.
-        </p>
-      </div>
-    </>
-  );
+    return (
+        <div className="fixed bottom-0 w-full p-5 flex items-center justify-center  bg-gray-600 border-2 border-black">
+           <span className="text-sm text-gray-50 text-center dark:text-gray-400">
+                ©{new Date().getFullYear()} React &amp; TailwindCSS. All Rights Reserved.
+           </span>
+        </div>
+    );
 }

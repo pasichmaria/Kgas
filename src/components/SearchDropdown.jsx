@@ -3,7 +3,7 @@ import {Document} from "./base";
 import Label from "./base/Label";
 import {Input} from "./base/Input";
 
-export const SearchDropdown = ({documents}) => {
+export const SearchDropdown = ({acts}) => {
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -16,7 +16,7 @@ export const SearchDropdown = ({documents}) => {
         const value = event.target.value;
         setSearchTerm(value);
         setSelectedDocument(
-            documents.find((doc) => doc.name.toLowerCase() === value.toLowerCase())
+            acts.find((act) => act.actNumber.toLowerCase() === value.toLowerCase())
         );
     };
 
@@ -33,17 +33,23 @@ export const SearchDropdown = ({documents}) => {
                 list="documents"
             />
             <datalist id="documents">
-                {documents.map((doc) => (
-                    <option key={doc.id} value={doc.name}/>
+                {acts.map((act) => (
+                    <option key={act.actNumber} value={act.actNumber}/>
                 ))}
             </datalist>
             <div className="mt-4">
                 {selectedDocument && (
                     <Document
-                        name={selectedDocument.name}
-                        link={selectedDocument.link}
-                        className="mt-2"
-                    />
+                        key={acts.actNumber}
+                        actNumber={acts.actNumber}
+                        date={acts.date}
+                        department={acts.department}
+                        violationType={acts.violationType}
+                        status={acts.status}
+                        meterType={acts.meterType}
+                        region={acts.region}
+                        city={acts.city}
+                    ></Document>
                 )}
             </div>
             <Input
