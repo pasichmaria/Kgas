@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 
 import "./index.css";
 import App from "./App";

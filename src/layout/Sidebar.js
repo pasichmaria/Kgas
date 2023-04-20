@@ -1,11 +1,12 @@
 import {Link, useLocation} from "react-router-dom";
-import {useState} from "react";
+import React, {useState} from "react";
 import {
     HiHome, HiDocumentDuplicate, HiPhone, HiOutlineArrowNarrowLeft, HiDocument,
 } from "react-icons/hi";
 import {FiActivity, FiAward, FiCalendar} from "react-icons/fi";
 import LogoutButton from "../components/LogoutButton";
 import {Footer} from "./Footer";
+import {BackButton} from "../components";
 
 const Menus = [{title: "Головна", path: "/home", src: <HiHome/>}, {
     title: "Акти порушень", path: "/acts", src: <HiDocumentDuplicate/>,
@@ -25,7 +26,8 @@ export const Sidebar = ({children, user}) => {
     const [open, setOpen] = useState(false);
     const location = useLocation();
 
-    return (<div className="flex sm:flex-row">
+    return (
+        <div className="flex sm:flex-row">
         <div
             className={`${open ? "w-60" : "w-fit"} sm:block h-screen duration-300 bg-gray-600 p-5 `}
         >
@@ -52,6 +54,7 @@ export const Sidebar = ({children, user}) => {
         <main className="flex-1 bg-indigo-100">
             <div className="flex flex-col h-screen overflow-y-auto">
                 {children}
+                <BackButton label={<HiOutlineArrowNarrowLeft />}/>
             </div>
         </main>
     </div>);

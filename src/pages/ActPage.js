@@ -1,4 +1,4 @@
-import {Document} from "../components";
+import {BackButton, Document} from "../components";
 import React from "react";
 import {acts} from "../data";
 import {useParams} from "react-router-dom";
@@ -19,7 +19,8 @@ export const ActPage = ({user}) => {
                 <div className="overflow-x-auto">
                     <div className="p-1.5 w-full inline-block align-middle mt-16">
                         <div className="overflow-hidden border rounded-lg">
-                                <Document
+
+                          <Document
                                     key={act.actNumber}
                                     actNumber={act.actNumber}
                                     removalAndRegistrationDate={act.removalAndRegistrationDate}
@@ -30,7 +31,8 @@ export const ActPage = ({user}) => {
                                     city={act.city}
                                     region={act.region}
                                     house={act.house}
-                                    ></Document>
+                                    >
+                                </Document>
                         </div>
                     </div>
                 </div>

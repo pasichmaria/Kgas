@@ -9,6 +9,7 @@ export const acts = [
         region: "Київська область",
         city: "Вишневе",
         house: "Европейська 2А",
+        apartment:"1"
     },
     {
         actNumber: "ACT-002",
@@ -20,6 +21,7 @@ export const acts = [
         region: "Київська область",
         city: "Біла Церква",
         house: "Березанська 131, кв. 5",
+        apartment:"3"
     },
     {
         actNumber: "ACT-003",
@@ -31,6 +33,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 1",
+        apartment:"31"
     },
     {
         actNumber: "ACT-004",
@@ -42,6 +45,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 2",
+        apartment:"12"
     },
     {
         actNumber: "ACT-005",
@@ -53,6 +57,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 3",
+        apartment:"32"
     },
     {
         actNumber: "ACT-006",
@@ -64,6 +69,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 4",
+        apartment:"1"
     },
     {
         actNumber: "ACT-007",
@@ -73,6 +79,7 @@ export const acts = [
         meterSize: "G-4",
         department: "Білоцерківське відділення, дільниця № 2",
         house: "Березанська 131, кв. 5",
+        apartment:"12"
     },
     {
         actNumber: "ACT-008",
@@ -84,6 +91,7 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 1",
+        apartment:"24"
     },
     {
         actNumber: "ACT-009",
@@ -95,6 +103,7 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 2",
+        apartment:"54"
     },
     {
         actNumber: "ACT-010",
@@ -106,6 +115,7 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 3",
+        apartment:"7"
     },
     {
         actNumber: "ACT-011",
@@ -117,6 +127,7 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 4",
+        apartment:"87"
     },
     {
         actNumber: "ACT-012",
@@ -128,6 +139,7 @@ export const acts = [
         region: "Київська область",
         city: "Біла Церква",
         house: "Березанська 131, кв. 5",
+        apartment:"63"
     },
     {
         actNumber: "ACT-013",
@@ -139,6 +151,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 1",
+        apartment:"234"
     },
     {
         actNumber: "ACT-014",
@@ -150,6 +163,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 2",
+        apartment:"52"
     },
     {
         actNumber: "ACT-015",
@@ -161,6 +175,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 3",
+        apartment:"52"
     },
     {
         actNumber: "ACT-016",
@@ -172,6 +187,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 4",
+        apartment:"88"
     },
     {
         actNumber: "ACT-017",
@@ -181,6 +197,7 @@ export const acts = [
         meterSize: "G-4",
         department: "Білоцерківське відділення, дільниця № 2",
         house: "Березанська 131, кв. 5",
+        apartment:"84"
     },
     {
         actNumber: "ACT-018",
@@ -192,6 +209,8 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 1",
+        apartment:"82"
+
     },   {
         actNumber: "ACT-019",
         removalAndRegistrationDate: "2022-02-14T10:17",
@@ -202,6 +221,7 @@ export const acts = [
         region: "Київська область",
         city: "Біла Церква",
         house: "Березанська 131, кв. 5",
+        apartment:"90"
     },
     {
         actNumber: "ACT-020",
@@ -213,6 +233,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 1",
+        apartment:"234"
     },
     {
         actNumber: "ACT-021",
@@ -224,6 +245,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 2",
+        apartment:"1"
     },
     {
         actNumber: "ACT-022",
@@ -235,6 +257,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 3",
+        apartment:"11"
     },
     {
         actNumber: "ACT-023",
@@ -246,6 +269,7 @@ export const acts = [
         region: "Київська область",
         city: "Боярка",
         house: "Березова 28, кв. 4",
+        apartment:"44"
     },
     {
         actNumber: "ACT-024",
@@ -255,6 +279,7 @@ export const acts = [
         meterSize: "G-4",
         department: "Білоцерківське відділення, дільниця № 2",
         house: "Березанська 131, кв. 5",
+        apartment:"54"
     },
     {
         actNumber: "ACT-025",
@@ -266,5 +291,6 @@ export const acts = [
         region: "Київська область",
         city: "Ірпінь",
         house: "Волинська 11, кв. 1",
+        apartment:"76"
     },
 ];

@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Document} from "./base";
-import Label from "./base/Label";
-import {Input} from "./base/Input";
+import {Label , Input} from "./base/";
 
 export const SearchDropdown = ({acts}) => {
     const [selectedDocument, setSelectedDocument] = useState(null);
