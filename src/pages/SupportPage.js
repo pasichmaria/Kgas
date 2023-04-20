@@ -1,24 +1,38 @@
 import React, {useState} from "react";
-import {Button, TextArea, SearchDropdown} from "../components";
+import {Button, TextArea, SearchDropdown, BackButton} from "../components";
 import {acts} from "../data";
+import {axios} from "../API";
 
 export const SupportPage = ({user}) => {
+    const [formData, setFormData] = useState({
+        message: "",
+        feedback: "",
+        selectedDoc:  ""
+    });
     const [selectedDoc, setSelectedDoc] = useState(null);
     const [message, setMessage] = useState("");
+    const [feedback, setFeedback] = useState("");
     const handleDocSelect = (doc) => {
         setSelectedDoc(doc);
     };
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
+    const isFormValid = Object.values(formData).every((value) => value);
     const handleSubmit = (e) => {
         e.preventDefault();
-        // send form data to server
-        const formData = {
-            message,
-            selectedDoc,
-        };
-        console.log(formData);
-        // reset form
-        setMessage("");
-        setSelectedDoc(null);
+        {
+            axios.post('https://jsonplaceholder.typicode.com/posts', formData).then((response) => {
+                console.log(response.data);
+                setMessage("");
+                setFeedback("");
+                setSelectedDoc(null);
+            });
+        }
     };
 
     return (
@@ -42,10 +56,10 @@ export const SupportPage = ({user}) => {
                                 placeholder="Введіть ваше повідомлення"
                             />
                             <TextArea
-                                id="messages" м
-                                name="messages"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
+                                id="feedback"
+                                name="feedback"
+                                value={feedback}
+                                onChange={(e) => setFeedback(e.target.value)}
                                 placeholder="Пропозиції по покращенню"
                             />
                             <SearchDropdown
@@ -53,11 +67,16 @@ export const SupportPage = ({user}) => {
                                 label="Виберіть документ"
                                 options={acts}
                                 value={selectedDoc}
-                                onChange={handleDocSelect}
+                                onChange={(e) => setSelectedDoc(e.target.value)}
                             />
-                            <Button buttonType="primary" type="submit">
-                                Надіслати повідомлення
-                            </Button>
+                                <Button
+                                    className={'w-full py-2'}
+                                    variant={'primary'}
+                                    onClick={handleSubmit}
+                                    disabled={!message} // Disable button if the message field is empty
+                                >
+                                    Надіслати повідомлення
+                                </Button>
                         </form>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ export const NotFoundPage = ({user}) => {
                 <p className="text-lg md:text-xl lg:text-2xl text-gray-500 my-12">
                     Вибачте але дана сторінка не знайдена
                 </p>
-                <Button buttonType={"primary"} onClick={() => {
+                <Button variant={"primary"} size={'md'} onClick={() => {
                     (user) ? (window.location.href = "/") : (window.location.href = '/login')
                 }}>На головну
                 </Button>

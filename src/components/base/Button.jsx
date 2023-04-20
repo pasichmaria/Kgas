@@ -1,56 +1,42 @@
 import React from "react";
+import {isDisabled} from "@testing-library/user-event/dist/utils";
+
 
 export const Button = (props) => {
-    const {
-        onClick,
-        label,
-        size,
-        buttonType,
-        className,
-        type,
-        style,
-        disabled,
-        children,
-    } = props;
-
-    const buttonTypes = {
+    const {isDisabled, label, variant, type = 'button', size = '', className, children, ...rest} = props;
+    const variants = {
         error: {
-            textColor: "text-black",
             bgColor: "bg-rose-500",
-            borderColor: "border-rose-300",
+            borderColor: "border-b-4 border-gray-400 hover:border-gray-800",
+            textColor: 'text-white',
         },
         warning: {
-            textColor: "text-black",
             bgColor: "bg-yellow-300",
-            borderColor: "border-green-400",
+            borderColor: "border-b-4 border-yellow-400 hover:border-yellow-800",
+            textColor: 'text-black',
+
         },
         success: {
-            textColor: "text-black",
             bgColor: "bg-green-300",
-            borderColor: "border-green-400",
+            borderColor: "border-b-4 border-green-600 hover:border-green-800",
+            textColor: 'text-black',
         },
         primary: {
-            textColor: "text-white",
             bgColor: "bg-cyan-500",
-            borderColor: "border-blue-500",
+            borderColor: "border-b-4 border-cyan-600 hover:border-cyan-800",
+            textColor: 'text-black',
         },
     };
-
-    const buttonTypeClass = buttonTypes[buttonType];
-
+    const sizeClasses = {
+        sm: "px-1 py-2 w-2/12",
+        md: "px-4 py-2 w-4/12",
+        lg: "px-6 py-3 w-6/12",
+    }
+    const baseClasses = "mb-6 border-b-4 border-gray-400 hover:border-gray-800 rounded text-md text-center rounded-md wi";
+    const {borderColor, bgColor, textColor} = variants[variant]
     return (
-        <button
-            className={`w-full px-4 py-2 mt-2.5 text-sm text-center rounded-md ${
-                className ?? ""
-            } ${buttonTypeClass.textColor} ${buttonTypeClass.bgColor} ${
-                buttonTypeClass.borderColor
-            } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-            size={size}
-            style={{ ...style }}
-            onClick={onClick}
-            type={type}
-            disabled={disabled}
-        >
+        <button type={type} label={label}
+                className={`${baseClasses} ${className} ${sizeClasses[size]}  ${borderColor} ${bgColor} ${textColor}`} disabled={isDisabled} {...rest}>
             {children}
         </button>
     );

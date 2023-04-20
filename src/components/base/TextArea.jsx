@@ -1,12 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import {clsx} from "clsx";
-import Label from "./Label";
+
+import {Label} from "./Label";
 
 export const TextArea = (props) => {
     const {
         id, label, className, rows = 4, cols = 50, error = false, errorText = "",
-        required = false, ...child
+        required = false
     } = props;
     const classes = classNames(
         'appearance-none',
