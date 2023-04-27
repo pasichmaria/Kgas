@@ -4,7 +4,6 @@ import { useQuery } from 'react-query'
 import { getUser } from '../API/userAPI'
 
 export const useUser = () => {
-
   const [user, setUser] = useState()
 
   const userQuery = useQuery(['user'], () => getUser(), {

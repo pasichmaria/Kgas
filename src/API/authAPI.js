@@ -1,9 +1,9 @@
-import axios from "./axios";
+import axios from './axios'
 
 export async function login({ email, password }) {
-  const response = await axios.post("http://localhost:3001/auth/login", {
+  const response = await axios.post('http://localhost:3001/auth/login', {
     email,
-    password,
+    password
   })
-  return response.data;
+  return response.data
 }
