@@ -1,9 +1,9 @@
-import React from "react";
-import {Navigate} from "react-router-dom";
+import React from 'react'
+import { Navigate } from 'react-router-dom'
 
 export const PrivateRoute = ({ user, children }) => {
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
-    else return children;
-};
+  if (user) {
+    return children
+  }
+  return <Navigate to='/login' />
+}
