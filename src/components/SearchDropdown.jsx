@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import { Document } from './base'
-import { Label, Input } from './base/'
+import PropTypes from 'prop-types'
 
+import { Label, Input, Document } from './base/'
 export const SearchDropdown = ({ acts }) => {
   const [selectedDocument, setSelectedDocument] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
-
-  const handleDocumentChange = (doc) => {
-    setSelectedDocument(doc)
-    setSearchTerm(doc.name)
-  }
 
   const handleInputChange = (event) => {
     const value = event.target.value
@@ -56,4 +51,7 @@ export const SearchDropdown = ({ acts }) => {
       />
     </div>
   )
+}
+SearchDropdown.PropTypes = {
+  acts: PropTypes.array
 }

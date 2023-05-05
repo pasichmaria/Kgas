@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { getUser } from '../API/userAPI'
 
@@ -8,12 +8,13 @@ export const useUser = () => {
 
   const userQuery = useQuery(['user'], () => getUser(), {
     onError: (error) => {
-      console.log(error.response.data)
+      localStorage.removeItem('token')
     },
     onSuccess: (data) => {
       setUser(data)
     },
-    enabled: !!localStorage.getItem('token')
+    enabled: !!localStorage.getItem('token'),
+    staleTime: Infinity
   })
-  return { getUser: userQuery.refetch, setUser, user }
+  return { getUser: userQuery.refetch, setUser, user, loading: userQuery.isLoading }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import { Button, Search } from '../components'
 import { acts } from '../data/acts'
@@ -149,4 +150,11 @@ export const ActsPage = ({ user }) => {
       </div>
     </>
   )
+}
+
+ActsPage.propTypes = {
+  user: PropTypes.shape({
+    email : PropTypes.string,
+    password : PropTypes.string
+  }),
 }

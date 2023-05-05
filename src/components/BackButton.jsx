@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './base'
 import { HiArrowLeft } from 'react-icons/hi'
-
-export const BackButton = ({ user, label }) => {
+import PropTypes from 'prop-types'
+export const BackButton = ({ user }) => {
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(-1)
@@ -24,4 +24,7 @@ export const BackButton = ({ user, label }) => {
         </Button>
       </div>)
   )
+}
+BackButton.PropTypes = {
+  user: PropTypes.object
 }

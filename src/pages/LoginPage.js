@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { Button } from '../components'
-import { Input, Label } from '../components'
+import PropTypes from 'prop-types'
+
+import { Input, Label, Button} from '../components'
 import { useAuth } from '../hooks'
-import { useNavigate } from 'react-router-dom'
-
 export const LoginPage = ({ getUser }) => {
-
   const { login } = useAuth({
     onLoginSuccess: (data) => {
       localStorage.setItem('token', data)
@@ -25,7 +23,6 @@ export const LoginPage = ({ getUser }) => {
       [name]: value
     }))
   }
-
   return (
     <div className='flex items-center justify-center h-screen bg-gray-700 sm:px-6'>
       <div className='w-full max-w-sm p-4 bg-gray-900 rounded-md shadow-md sm:p-6'>
@@ -56,7 +53,7 @@ export const LoginPage = ({ getUser }) => {
             <Button
               className={'w-full py-2'}
               variant={'primary'}
-              onClick={()=>handleSubmit()}
+              onClick={handleSubmit}
               type='submit'
             >
               Увійти
@@ -66,4 +63,7 @@ export const LoginPage = ({ getUser }) => {
       </div>
     </div>
   )
+}
+LoginPage.propTypes = {
+  getUser: PropTypes.func.isRequired
 }

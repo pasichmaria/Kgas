@@ -1,24 +1,20 @@
-import { BackButton, Document } from '../components'
 import React from 'react'
-import { acts } from '../data'
 import { useParams } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
+import { Document } from '../components'
+import { acts } from '../data'
 export const ActPage = ({ user }) => {
   const { actNumber } = useParams()
-
-  // Фильтруем массив acts по номеру акта
   const act = acts.find((act) => act.actNumber === actNumber)
-
   if (!act) {
     return <div>Документ не найден</div>
   }
-
-  return (
-    <main className="flex-1 bg-indigo-100">
-      <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle mt-16">
-            <div className="overflow-hidden border rounded-lg">
+  return (<main className='flex-1 bg-indigo-100'>
+      <div className='flex flex-col'>
+        <div className='overflow-x-auto'>
+          <div className='p-1.5 w-full inline-block align-middle mt-16'>
+            <div className='overflow-hidden border rounded-lg'>
               <Document
                 key={act.actNumber}
                 actNumber={act.actNumber}
@@ -35,6 +31,11 @@ export const ActPage = ({ user }) => {
           </div>
         </div>
       </div>
-    </main>
-  )
+    </main>)
+}
+ActPage.propTypes = {
+  user: PropTypes.shape({
+    email : PropTypes.string,
+    password : PropTypes.string
+  }),
 }

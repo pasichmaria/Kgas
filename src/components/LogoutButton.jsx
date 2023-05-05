@@ -1,6 +1,7 @@
 import { HiLogout } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
-import { Button } from './base'
+import PropTypes from 'prop-types'
+
 import React from 'react'
 
 export const LogoutButton = ({setUser}) => {
@@ -24,4 +25,7 @@ export const LogoutButton = ({setUser}) => {
         <HiLogout />
       </button>
     </div>)
+}
+LogoutButton.PropTypes = {
+  setUser: PropTypes.func
 }

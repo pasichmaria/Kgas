@@ -1,8 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
-import {
-  HiHome, HiDocumentDuplicate, HiPhone, HiOutlineArrowNarrowLeft, HiDocument
-} from 'react-icons/hi'
+import { HiHome, HiDocumentDuplicate, HiPhone, HiOutlineArrowNarrowLeft, HiDocument } from 'react-icons/hi'
 import { FiActivity, FiAward, FiCalendar } from 'react-icons/fi'
 
 const Menus = [{ title: 'Головна', path: '/home', src: <HiHome /> }, {
@@ -16,11 +14,9 @@ const Menus = [{ title: 'Головна', path: '/home', src: <HiHome /> }, {
   path: '/internalDocuments',
   src: <HiDocument />
 }, { title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
-export const Sidebar = ({ children, user }) => {
+export const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
-
-
   return (
     <div className='flex sm:flex-row'>
       <div
