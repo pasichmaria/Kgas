@@ -1,177 +1,289 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Select, Label, Input } from '../components'
-import { actionStatus, meterSizes, violationTypes, department } from '../data'
+import { Button, Select, Input, Checkbox } from '../components'
+import { actionStatus, meterSizes, violationTypes, department, structure } from '../data'
 import { axios } from '../API'
 
 export const NewActPage = () => {
+  const [isChecked, setIsChecked] = useState(false)
   const navigate = useNavigate()
-
-  const [credentials, setCredentials] = useState({
-    actNumber: '',
-    removalAndRegistrationDate: '',
-    violationType: '',
-    actionStatus: '',
-    meterSize: '',
-    department: '',
-    region: '',
-    city: '',
-    house: '',
-    apartment: ''
-  })
+  const [credentials, setCredentials] = useState({})
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    setCredentials((prevFormData) => ({
-      ...prevFormData,
+    setCredentials(prevCredentials => ({
+      ...prevCredentials,
       [name]: value
     }))
   }
-
-  const isFormValid = Object.values(credentials).every((value) => value)
-
+  const handleSelectChange = (event) => {
+    const { name, value } = event.target
+    setCredentials(prevCredentials => ({
+      ...prevCredentials,
+      [name]: value
+    }))
+  }
+  const requiredFields = ['actNumber']
+  const isFormValid = requiredFields.every(field => Boolean(credentials[field]))
   const handleFormSubmit = (event) => {
-    event.preventDefault(event)
+    const data = {
+      actNumber: credentials.actNumber,
+      removalAndRegistrationDate: credentials.removalAndRegistrationDate,
+      department: credentials.department,
+      meterSize: credentials.meterSize,
+      violationType: credentials.violationType,
+      actionStatus: credentials.actionStatus,
+      region: credentials.region,
+      city: credentials.city,
+      house: credentials.house,
+      apartment: credentials.apartment,
+      pidrozdil: credentials.pidrozdil ? true : false,
+      contragent:
+        credentials.osoba_type === 'Physical_person' ?
+          {
+            osoba_type: credentials.osoba_type,
+            PIB: credentials.PIB,
+            PIB_predstavnyka: credentials.PIB_predstavnyka,
+            spozyvachtype: credentials.spozyvachtype
+          }
+          :
+          credentials.osoba_type === 'Legal_person' ? {
+              osoba_type: credentials.osoba_type,
+              nazva_yuridichna_osoba: credentials.nazva_yuridichna_osoba,
+              EDRPO: credentials.EDRPO
+            } :
+            {
+              osoba_type: credentials.osoba_type,
+              field1: credentials.field1,
+              field2: credentials.field2,
+              field3: credentials.field3
+            }
+    }
+
+    event.preventDefault()
     if (isFormValid) {
-      axios.post('https://jsonplaceholder.typicode.com/', credentials).then((response) => {
-        console.log(response.data)
-        navigate('/acts')
-      })
+      axios.post('https://jsonplaceholder.typicode.com/posts', data)
+        .then((response) => {
+          console.log(data)
+          navigate('/acts')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
-  const actNumberRegex = /^\d{6}$/
-  const isActNumberValid = actNumberRegex.test(credentials.actNumber)
 
+  const actNumberRegex = /^[1-9]\d*$/
+  const isActNumberValid = actNumberRegex.test(credentials.actNumber)
   return (
-    <>
-      <h2 className={'text-5xl font-light text-center mt-6'}>Реєстрація актів порушення</h2>
-      <form className='grid grid-cols-2 gap-4 p-9' onSubmit={handleFormSubmit}>
-        <div className='col-span-1'>
-          <Label htmlFor='actNumber' className='block font-bold px-4'>
-            Номер акту порушення
-          </Label>
+    <div className='w-10/12  mx-auto'>
+      <h2 className={'text-5xl font-light text-center m-10'}>Реєстрація актів порушення</h2>
+      <form className='grid grid-cols-3 grid-rows-2 gap-12' onSubmit={handleFormSubmit}>
+
+        <div className='p-4'>
+          <h2 className={'text-2xl font-light text-center'}>Акт порушення</h2>
           <Input
-            validate
+            error={!isActNumberValid}
+            required={true}
+            errorText={'Введіть номер акту у вірному форматі'}
+            isNumberActValid={isActNumberValid}
+            placeholder='Номер акту'
+            className='w-full border rounded py-4'
             type='number'
             name='actNumber'
             id='actNumber'
-            className='w-full border rounded py-2 px-3'
             value={credentials.actNumber}
             onChange={handleInputChange}
-            max='100'
-            required
           />
-          {!isActNumberValid && (
-            <span className='text-red-600'>Номер акта повинен складатись із 6 цифр</span>
-          )}
-          <Label htmlFor='removalAndRegistrationDate' className='block font-bold px-4'>
-            Дата та час усунення, реєстрації порушення
-          </Label>
           <Input
+            className='w-full border rounded py-4 mb-4'
             type='datetime-local'
             name='removalAndRegistrationDate'
             id='removalAndRegistrationDate'
-            className='w-full border rounded py-2 px-3'
             value={credentials.removalAndRegistrationDate}
             onChange={handleInputChange}
           />
-
-          <Label htmlFor='department' className='block font-bold px-4'>
-            Відділення/дільниця
-          </Label>
           <Select
             name='department'
             value={credentials.department}
             onChange={handleInputChange}
             options={department}
           />
-
-          <Label htmlFor='violationType' className='block font-bold px-4'>
-            Вид порушення
-          </Label>
           <Select
-            className='w-full border rounded py-2 px-3'
+            name='structureType'
+            value={credentials.structureType}
+            onChange={handleInputChange}
+            options={structure}
+          />
+          <Checkbox
+            label='Центральний підрозділ'
+            name='pidrozdil'
+            value={credentials.pidrozdil}
+            checked={isChecked}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className='p-4'>
+          <h2 className={'mt-4 text-2xl font-light text-center'}>Вид порушення</h2>
+          <Select
             name='violationType'
             value={credentials.violationType}
             onChange={handleInputChange}
             options={violationTypes}
           />
-
-          <Label htmlFor='actionStatus' className='block font-bold px-4'>
-            Статус дій по порушенню
-          </Label>
-          <Select
-            className='w-full border rounded py-2 px-3'
-            name='actionStatus'
-            value={credentials.actionStatus}
-            onChange={handleInputChange}
-            options={actionStatus}
-          />
-          <Label htmlFor='meterSize' className='block font-bold px-4'>
-            Типорозмір лічильника
-          </Label>
           <Select
             name='meterSize'
             value={credentials.meterSize}
             onChange={handleInputChange}
             options={meterSizes}
           />
+          <Select
+            name='actionStatus'
+            value={credentials.actionStatus}
+            onChange={handleInputChange}
+            options={actionStatus}
+          />
         </div>
 
-        <div className='col-span-1'>
+        <div className='p-4'>
           <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
-
           <Input
+            className='w-full border rounded py-4'
             type='text'
             id='region'
             name='region'
             placeholder='Область'
-            className='w-full border rounded py-2 px-3'
             value={credentials.region}
             onChange={handleInputChange}
-            required
+            required={true}
           />
           <Input
+            className='w-full border rounded py-4'
             type='text'
             id='city'
             name='city'
             placeholder='Місто'
-            className='w-full border rounded py-2 px-3'
             value={credentials.city}
             onChange={handleInputChange}
             required={true}
           />
           <Input
+            className='w-full border rounded py-4'
             type='text'
             id='house'
             name='house'
             placeholder='Будинок'
-            className='w-full border rounded py-2 px-3'
             value={credentials.house}
             onChange={handleInputChange}
             required
           />
           <Input
+            className='w-full border rounded py-4'
             type='text'
             id='apartment'
             name='apartment'
             placeholder='Квартира'
-            className='w-full border rounded py-2 px-3'
             value={credentials.apartment}
             onChange={handleInputChange}
-            required
-          />
+            required />
         </div>
-        <Button
-          disabled={!isFormValid}
-          className={'w-full py-2 mt-4'}
-          type={'submit'}
-          variant='primary'
-          onClick={handleFormSubmit}
-        >
-          Зберегти акт
-        </Button>
+
+        <div className='p-4'>
+          <h2 className={'text-2xl font-light text-center mb-4'}>Оберіть вид контрагента</h2>
+          <Select
+            name='osoba_type'
+            value={credentials.osoba_type}
+            options={[{ value: 'Physical_person', label: 'Фізична особа' }, {
+              value: 'Legal_person',
+              label: 'Юридична особа'
+            }, { value: 'No_identified_person', label: 'Не встановлена особа' }]}
+            onChange={handleSelectChange}
+          />
+          {credentials.osoba_type === 'Physical_person' && (<div className='mt-6'>
+            <Select
+              name='spozyvachtype'
+              value={credentials.spozyvachtype}
+              options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='PIB'
+              label='ПІБ'
+              value={credentials.PIB}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='PIB_predstavnyka'
+              label='ПІБ представника'
+              value={credentials.PIB_predstavnyka}
+              onChange={handleInputChange}
+            />
+          </div>)}
+          {credentials.osoba_type === 'Legal_person' && (<div className='mt-6'>
+            <Select
+              name='spozyvachtype'
+              value={credentials.spozyvachtype}
+              options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='number'
+              id='EDRPO'
+              label='ЕДРПО'
+              value={credentials.EDRPO}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='nazva_yuridichna_osoba'
+              label='Назва юридичної особи'
+              value={credentials.nazva_yuridichna_osoba}
+              onChange={handleInputChange}
+            />
+          </div>)}
+          {credentials.osoba_type === 'No_identified_person' && (<>
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='field1'
+              label='field1'
+              value={credentials.field1}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4 '
+              type='text'
+              id='field2'
+              label='field2'
+              value={credentials.field2}
+              onChange={handleInputChange}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='field3'
+              label='field3'
+              value={credentials.field3}
+              onChange={handleInputChange}
+            />
+          </>)}
+          <Button
+            disabled={!isFormValid}
+            className={'w-full py-2 mt-4'}
+            type={'submit'}
+            variant='primary'
+            onClick={handleFormSubmit}
+          >
+            Зберегти акт
+          </Button>
+        </div>
       </form>
-    </>
-  )
+    </div>)
 }

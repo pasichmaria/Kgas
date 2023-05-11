@@ -1,41 +1,65 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import { Document } from '../components'
+import { Document, Tabs } from '../components'
 import { acts } from '../data'
+import { NotFoundPage } from './NotFoundPage'
+
 export const ActPage = ({ user }) => {
+user.role === 'admin' ? console.log('admin') : console.log('user')
+
   const { actNumber } = useParams()
-  const act = acts.find((act) => act.actNumber === actNumber)
+  const [act] = useState(acts.find((act) => act.actNumber === actNumber))
+
   if (!act) {
-    return <div>Документ не найден</div>
+    return <NotFoundPage />
   }
-  return (<main className='flex-1 bg-indigo-100'>
+  const tabs = [
+    {
+      label: 'Акт порушення',
+      content: <Document act={act} />
+    },
+    {
+      label: 'Лабораторія з повірки ПЛГ',
+      content: <h1>Лаб</h1>
+    },
+    {
+      label: 'Комісія з розгляду актів про порушення',
+      content:<h1>Комісія</h1>
+    },
+    {
+      label: 'Нарахування та оплати на рахунок АТ "Експертизи"',
+      content:<h1>Оплати</h1>
+    },
+    {
+      label: 'Погодження рохрахунків по метрології та ВЕБ',
+      content: <h1>Погодження</h1>
+    },
+    {
+      label: 'Юридичне супроводження порушень',
+      content:<h1>Юридичне супроводження</h1>
+    }
+  ]
+
+  const [activeTab, setActiveTab] = useState(tabs[0].label)
+  return (
+    <main className='flex-1 bg-indigo-100'>
       <div className='flex flex-col'>
         <div className='overflow-x-auto'>
-          <div className='p-1.5 w-full inline-block align-middle mt-16'>
+          <div className='w-full inline-block align-middle'>
             <div className='overflow-hidden border rounded-lg'>
-              <Document
-                key={act.actNumber}
-                actNumber={act.actNumber}
-                removalAndRegistrationDate={act.removalAndRegistrationDate}
-                violationType={act.violationType}
-                actionStatus={act.actionStatus}
-                meterSize={act.meterSize}
-                department={act.department}
-                city={act.city}
-                region={act.region}
-                house={act.house}
-              ></Document>
+              <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
           </div>
         </div>
       </div>
-    </main>)
+    </main>
+  )
 }
 ActPage.propTypes = {
   user: PropTypes.shape({
-    email : PropTypes.string,
-    password : PropTypes.string
-  }),
+    email: PropTypes.string,
+    password: PropTypes.string
+  })
 }

@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { clsx } from 'clsx'
 
 import { Label } from './Label'
-
 export const TextArea = (props) => {
   const {
     id,
@@ -29,7 +28,6 @@ export const TextArea = (props) => {
     'focus:bg-white',
     className
   )
-
   return (
     <div className={clsx('relative', className)}>
       {label && (

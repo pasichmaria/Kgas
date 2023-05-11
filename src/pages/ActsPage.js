@@ -130,7 +130,7 @@ export const ActsPage = ({ user }) => {
               {(filteredActs.length > 0 ? filteredActs : currentActs).map((act) => (
                 <tr key={act.actNumber}>
                   <td className="text-sm font-medium p-6">
-                    <a href={`/act/${act.actNumber}`}>{act.actNumber}</a>
+                    <a href={`/acts/${act.actNumber}`}>{act.actNumber}</a>
                   </td>
                   <td className="text-sm font-medium">{act.removalAndRegistrationDate}</td>
                   <td className="text-sm font-medium">{act.violationType}</td>
@@ -140,7 +140,6 @@ export const ActsPage = ({ user }) => {
                   <td className="text-sm font-medium">{act.region}</td>
                   <td className="text-sm font-medium">{act.city}</td>
                   <td className="text-sm font-light">{act.house}</td>
-
                   <td className="text-sm font-light text-center">{act.apartment}</td>
                 </tr>
               ))}

@@ -9,8 +9,20 @@ export const acts = [
     region: 'Київська область',
     city: 'Вишневе',
     house: 'Европейська 2А',
-    apartment: '1'
+    apartment: '1',
+    structure: "Метрологія",
+    central_comisiya: true,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Іваненко Олег Петрович',
+        PIB_predstavnyka: 'Дмитров Богдан Дмитрович',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '123123123',
+      }
+    ]
   },
+
   {
     actNumber: 'ACT-002',
     removalAndRegistrationDate: '2022-02-14T10:17',
@@ -21,7 +33,16 @@ export const acts = [
     region: 'Київська область',
     city: 'Біла Церква',
     house: 'Березанська 131, кв. 5',
-    apartment: '3'
+    apartment: '3',
+    structure: "АДС",
+    central_comisiya: true,
+    contragent: [
+      {
+        osoba_type: 'Юридична особа',
+        nazva_yuridichna_osoba: 'ТОВ «ВЕСЕЛКА»',
+        EDRPO: '2342304234'
+      }
+    ]
   },
   {
     actNumber: 'ACT-003',
@@ -33,7 +54,19 @@ export const acts = [
     region: 'Київська область',
     city: 'Боярка',
     house: 'Березова 28, кв. 1',
-    apartment: '31'
+    apartment: '31',
+    structure: "ВЕБ",
+    central_comisiya: false,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Іваненко Олег Петрович',
+        PIB_predstavnyka: 'Дмитров Богдан Дмитрович',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '1341412143',
+      }
+    ]
+
   },
   {
     actNumber: 'ACT-004',
@@ -45,7 +78,19 @@ export const acts = [
     region: 'Київська область',
     city: 'Боярка',
     house: 'Березова 28, кв. 2',
-    apartment: '12'
+    apartment: '12',
+    structure: "ВЕБ",
+    central_comisiya: true,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Гулєєв Роман Вікторович',
+        PIB_predstavnyka: 'Коваленко Ігор Вікторович',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '12567677Є',
+      }
+    ]
+
   },
   {
     actNumber: 'ACT-005',
@@ -57,7 +102,16 @@ export const acts = [
     region: 'Київська область',
     city: 'Боярка',
     house: 'Березова 28, кв. 3',
-    apartment: '32'
+    apartment: '32',
+    structure: "Метрологія",
+    central_comisiya: false,
+    contragent: [
+      {
+        osoba_type: 'Юридична особа',
+        nazva_yuridichna_osoba: 'ТОВ «БУДМАЙСТЕР»',
+        EDRPO: '3455342321'
+      }
+    ]
   },
   {
     actNumber: 'ACT-006',
@@ -69,7 +123,18 @@ export const acts = [
     region: 'Київська область',
     city: 'Боярка',
     house: 'Березова 28, кв. 4',
-    apartment: '1'
+    apartment: '1',
+    structure: "Облік",
+    central_comisiya: false,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Сидоренко Олена Ігорівна',
+        PIB_predstavnyka: 'Кравчук Ірина Володимирівна',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '127984',
+      }
+    ]
   },
   {
     actNumber: 'ACT-007',
@@ -79,7 +144,16 @@ export const acts = [
     meterSize: 'G-4',
     department: 'Білоцерківське відділення, дільниця № 2',
     house: 'Березанська 131, кв. 5',
-    apartment: '12'
+    apartment: '12',
+    structure: "ВЕБ",
+    central_comisiya: false,
+    contragent: [
+      {
+        osoba_type: 'Юридична особа',
+        nazva_yuridichna_osoba: 'ПП «ВІДРАДА»',
+        EDRPO: '5465667676'
+      }
+    ]
   },
   {
     actNumber: 'ACT-008',
@@ -91,7 +165,20 @@ export const acts = [
     region: 'Київська область',
     city: 'Ірпінь',
     house: 'Волинська 11, кв. 1',
-    apartment: '24'
+    apartment: '24',
+    structure: "Облік",
+    central_comisiya: true,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Шевченко Олександра Андріївна',
+        PIB_predstavnyka: 'Сидоренко Максим Ігорович',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '1256769'
+      }
+    ]
+
+
   },
   {
     actNumber: 'ACT-009',
@@ -103,7 +190,20 @@ export const acts = [
     region: 'Київська область',
     city: 'Ірпінь',
     house: 'Волинська 11, кв. 2',
-    apartment: '54'
+    apartment: '54',
+    structure: "Метрологія",
+    central_comisiya: true,
+    contragent: [
+      {
+        osoba_type: 'Фізична особа',
+        PIB: 'Петренко Юлія Вікторівна',
+        PIB_predstavnyka: 'Коваль Ігор Іванович',
+        spozyvachtype: 'Cпоживач',
+        dani_lichilnyka: '127984'
+      }
+    ]
+
+
   },
   {
     actNumber: 'ACT-010',
@@ -115,7 +215,16 @@ export const acts = [
     region: 'Київська область',
     city: 'Ірпінь',
     house: 'Волинська 11, кв. 3',
-    apartment: '7'
+    apartment: '7',
+    structure: "АДС",
+    central_comisiya: false,
+    contragent: [
+      {
+        osoba_type: 'Юридична особа',
+        nazva_yuridichna_osoba: 'ТОВ «НАШ ДІМ»',
+        EDRPO: '7575567890'
+      }
+    ]
   },
   {
     actNumber: 'ACT-011',
