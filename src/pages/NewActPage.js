@@ -1,289 +1,330 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
-import { Button, Select, Input, Checkbox } from '../components'
+import { Button, Select, Input } from '../components'
 import { actionStatus, meterSizes, violationTypes, department, structure } from '../data'
 import { axios } from '../API'
 
 export const NewActPage = () => {
-  const [isChecked, setIsChecked] = useState(false)
   const navigate = useNavigate()
-  const [credentials, setCredentials] = useState({})
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setCredentials(prevCredentials => ({
-      ...prevCredentials,
-      [name]: value
-    }))
-  }
-  const handleSelectChange = (event) => {
-    const { name, value } = event.target
-    setCredentials(prevCredentials => ({
-      ...prevCredentials,
-      [name]: value
-    }))
-  }
-  const requiredFields = ['actNumber']
-  const isFormValid = requiredFields.every(field => Boolean(credentials[field]))
-  const handleFormSubmit = (event) => {
-    const data = {
-      actNumber: credentials.actNumber,
-      removalAndRegistrationDate: credentials.removalAndRegistrationDate,
-      department: credentials.department,
-      meterSize: credentials.meterSize,
-      violationType: credentials.violationType,
-      actionStatus: credentials.actionStatus,
-      region: credentials.region,
-      city: credentials.city,
-      house: credentials.house,
-      apartment: credentials.apartment,
-      pidrozdil: credentials.pidrozdil ? true : false,
-      contragent:
-        credentials.osoba_type === 'Physical_person' ?
-          {
-            osoba_type: credentials.osoba_type,
-            PIB: credentials.PIB,
-            PIB_predstavnyka: credentials.PIB_predstavnyka,
-            spozyvachtype: credentials.spozyvachtype
-          }
-          :
-          credentials.osoba_type === 'Legal_person' ? {
-              osoba_type: credentials.osoba_type,
-              nazva_yuridichna_osoba: credentials.nazva_yuridichna_osoba,
-              EDRPO: credentials.EDRPO
-            } :
-            {
-              osoba_type: credentials.osoba_type,
-              field1: credentials.field1,
-              field2: credentials.field2,
-              field3: credentials.field3
-            }
-    }
-
-    event.preventDefault()
-    if (isFormValid) {
+  const formik = useFormik({
+    initialValues: {
+      actNumber: '',
+      removalAndRegistrationDate: '',
+      department: '',
+      meterSize: '',
+      violationType: '',
+      actionStatus: '',
+      region: '',
+      structureType: '',
+      city: '',
+      house: '',
+      apartment: '',
+      tsentral_pidrozdil: false,
+      osoba_type: '',
+      PIB: '',
+      PIB_predstavnyka: '',
+      spozyvachtype: '',
+      nazva_yuridichna_osoba: '',
+      EDRPO: '',
+      field1: '',
+      field2: '',
+      field3: ''
+    }, onSubmit: values => {
+      const data = {
+        actNumber: values.actNumber,
+        removalAndRegistrationDate: values.removalAndRegistrationDate,
+        department: values.department,
+        meterSize: values.meterSize,
+        violationType: values.violationType,
+        actionStatus: values.actionStatus,
+        region: values.region,
+        structureType: values.structureType,
+        city: values.city,
+        house: values.house,
+        apartment: values.apartment,
+        tsentral_pidrozdil: values.tsentral_pidrozdil,
+        contragent: values.osoba_type === 'Physical_person' ? {
+          osoba_type: values.osoba_type,
+          PIB: values.PIB,
+          PIB_predstavnyka: values.PIB_predstavnyka,
+          spozyvachtype: values.spozyvachtype
+        } : values.osoba_type === 'Legal_person' ? {
+          osoba_type: values.osoba_type, nazva_yuridichna_osoba: values.nazva_yuridichna_osoba, EDRPO: values.EDRPO
+        } : {
+          osoba_type: values.osoba_type, field1: values.field1, field2: values.field2, field3: values.field3
+        }
+      }
       axios.post('https://jsonplaceholder.typicode.com/posts', data)
-        .then((response) => {
-          console.log(data)
+        .then((responce) => {
           navigate('/acts')
+          console.log(data, responce)
         })
         .catch((error) => {
           console.log(error)
         })
-    }
-  }
+    }, validationSchema: Yup.object({
+        actNumber: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
+        tsentral_pidrozdil: Yup.boolean().required('Оберіть варіант'),
+        removalAndRegistrationDate: Yup.string().required('Введіть дату'),
+        department: Yup.string().required('Виберіть відділ'),
+        meterSize: Yup.string().required('Виберіть типорозмір лічильника'),
+        violationType: Yup.string().required('Виберіть тип порушення'),
+        actionStatus: Yup.string().required('Виберіть статус дій'),
+        region: Yup.string().required('Введіть область'),
+        structureType: Yup.string().required('Виберіть структурний підрозділ'),
+        city: Yup.string().required('Введіть місто'),
+        contragent: Yup.object().shape({
+          osoba_type: Yup.string().required('Виберіть тип контрагента'),
+        })
+      }
+    )
+  })
 
-  const actNumberRegex = /^[1-9]\d*$/
-  const isActNumberValid = actNumberRegex.test(credentials.actNumber)
-  return (
-    <div className='w-10/12  mx-auto'>
-      <h2 className={'text-5xl font-light text-center m-10'}>Реєстрація актів порушення</h2>
-      <form className='grid grid-cols-3 grid-rows-2 gap-12' onSubmit={handleFormSubmit}>
+  const { tsentral_pidrozdil } = formik.values.tsentral_pidrozdil
 
-        <div className='p-4'>
-          <h2 className={'text-2xl font-light text-center'}>Акт порушення</h2>
+  return (<div className='w-10/12  mx-auto'>
+    <h2 className={'text-5xl font-light text-center m-10'}>Реєстрація актів порушення</h2>
+    <form className='grid grid-cols-3 grid-rows-2 gap-12' onSubmit={formik.handleSubmit}>
+      <div className='p-4'>
+        <h2 className={'text-2xl font-light text-center'}>Акт порушення</h2>
+        <Input
+          placeholder='Номер акту'
+          name='actNumber'
+          id='actNumber'
+          type='number'
+          className='w-full border rounded py-4'
+          value={formik.values.actNumber}
+          onChange={formik.handleChange}
+          error={formik.errors.actNumber}
+          errorText={formik.errors.actNumber}
+        />
+        <Input
+          name='removalAndRegistrationDate'
+          id='removalAndRegistrationDate'
+          type='datetime-local'
+          className='w-full border rounded py-4 mb-4'
+          value={formik.values.removalAndRegistrationDate}
+          onChange={formik.handleChange}
+          error={formik.errors.removalAndRegistrationDate}
+          errorText={formik.errors.removalAndRegistrationDate}
+        />
+        {formik.touched.removalAndRegistrationDate && formik.errors.removalAndRegistrationDate}
+        <Select
+          name='department'
+          value={formik.values.department}
+          onChange={formik.handleChange}
+          options={department}
+          error={formik.errors.department}
+          errorText={formik.errors.department}
+        />
+        <Select
+          name='structureType'
+          value={formik.values.structureType}
+          onChange={formik.handleChange}
+          options={structure}
+          error={formik.errors.structureType}
+          errorText={formik.errors.structureType}
+        />
+        <div className='mt-4 flex items-center'>
+          <input
+            type='checkbox'
+            id='tsentral_pidrozdil'
+            name='tsentral_pidrozdil'
+            checked={tsentral_pidrozdil}
+            onChange={formik.handleChange}
+            className='h-4  w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
+          />
+          <label htmlFor='tsentral_pidrozdil' className='ml-2 block text-sm text-gray-900'>
+            Центральний підрозділ
+          </label>
+        </div>
+      </div>
+      <div className='p-4'>
+        <h2 className={'mt-4 text-2xl font-light text-center'}>Вид порушення</h2>
+        <Select
+          name='violationType'
+          value={formik.values.violationType}
+          onChange={formik.handleChange}
+          options={violationTypes}
+          error={formik.errors.violationType}
+          errorText={formik.errors.violationType}
+        />
+        <Select
+          name='meterSize'
+          value={formik.values.meterSize}
+          onChange={formik.handleChange}
+          options={meterSizes}
+          error={formik.errors.meterSize}
+          errorText={formik.errors.meterSize}
+        />
+        <Select
+          name='actionStatus'
+          value={formik.values.actionStatus}
+          onChange={formik.handleChange}
+          options={actionStatus}
+          error={formik.errors.actionStatus}
+          errorText={formik.errors.actionStatus}
+        />
+      </div>
+
+      <div className='p-4'>
+        <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
+        <Input
+          className='w-full border rounded py-4'
+          type='text'
+          id='region'
+          name='region'
+          placeholder='Область'
+          value={formik.values.region}
+          onChange={formik.handleChange}
+          error={formik.errors.region}
+          errorText={formik.errors.region}
+        />
+        <Input
+          className='w-full border rounded py-4'
+          type='text'
+          id='city'
+          name='city'
+          placeholder='Місто'
+          value={formik.values.city}
+          onChange={formik.handleChange}
+          error={formik.errors.city}
+          errorText={formik.errors.city}
+        />
+        <Input
+          className='w-full border rounded py-4'
+          type='text'
+          id='house'
+          name='house'
+          placeholder='Будинок'
+          value={formik.values.house}
+          onChange={formik.handleChange}
+          error={formik.errors.house}
+          errorText={formik.errors.house}
+        />
+        <Input
+          className='w-full border rounded py-4'
+          type='text'
+          id='apartment'
+          name='apartment'
+          placeholder='Квартира'
+          value={formik.values.apartment}
+          onChange={formik.handleChange}
+          error={formik.errors.apartment}
+          errorText={formik.errors.apartment} />
+      </div>
+
+      <div className='p-4'>
+        <h2 className={'text-2xl font-light text-center mb-4'}>Оберіть вид контрагента</h2>
+        <Select
+          name='osoba_type'
+          value={formik.values.osoba_type}
+          options={[{ value: 'Physical_person', label: 'Фізична особа' }, {
+            value: 'Legal_person', label: 'Юридична особа'
+          }, { value: 'No_identified_person', label: 'Не встановлена особа' }]}
+          onChange={formik.handleChange}
+          error={formik.errors.osoba_type}
+          errorText={formik.errors.osoba_type}
+        />
+        {formik.values.osoba_type === 'Physical_person' && (<div className='mt-6'>
+          <Select
+            name='spozyvachtype'
+            value={formik.values.spozyvachtype}
+            options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
+            onChange={formik.handleChange}
+            error={formik.errors.spozyvachtype}
+            errorText={formik.errors.spozyvachtype}
+          />
           <Input
-            error={!isActNumberValid}
-            required={true}
-            errorText={'Введіть номер акту у вірному форматі'}
-            isNumberActValid={isActNumberValid}
-            placeholder='Номер акту'
+            className='w-full border rounded py-4'
+            type='text'
+            id='PIB'
+            label='ПІБ'
+            value={formik.values.PIB}
+            onChange={formik.handleChange}
+            error={formik.errors.PIB}
+            errorText={formik.errors.PIB}
+          />
+          <Input
+            className='w-full border rounded py-4'
+            type='text'
+            id='PIB_predstavnyka'
+            label='ПІБ представника'
+            value={formik.values.PIB_predstavnyka}
+            onChange={formik.handleChange}
+            error={formik.errors.PIB_predstavnyka}
+            errorText={formik.errors.PIB_predstavnyka}
+          />
+        </div>)}
+        {formik.values.osoba_type === 'Legal_person' && (<div className='mt-6'>
+          <Select
+            name='spozyvachtype'
+            value={formik.values.spozyvachtype}
+            options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
+            onChange={formik.handleChange}
+            error={formik.errors.spozyvachtype}
+            errorText={formik.errors.spoyvachtype}
+          />
+          <Input
             className='w-full border rounded py-4'
             type='number'
-            name='actNumber'
-            id='actNumber'
-            value={credentials.actNumber}
-            onChange={handleInputChange}
-          />
-          <Input
-            className='w-full border rounded py-4 mb-4'
-            type='datetime-local'
-            name='removalAndRegistrationDate'
-            id='removalAndRegistrationDate'
-            value={credentials.removalAndRegistrationDate}
-            onChange={handleInputChange}
-          />
-          <Select
-            name='department'
-            value={credentials.department}
-            onChange={handleInputChange}
-            options={department}
-          />
-          <Select
-            name='structureType'
-            value={credentials.structureType}
-            onChange={handleInputChange}
-            options={structure}
-          />
-          <Checkbox
-            label='Центральний підрозділ'
-            name='pidrozdil'
-            value={credentials.pidrozdil}
-            checked={isChecked}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className='p-4'>
-          <h2 className={'mt-4 text-2xl font-light text-center'}>Вид порушення</h2>
-          <Select
-            name='violationType'
-            value={credentials.violationType}
-            onChange={handleInputChange}
-            options={violationTypes}
-          />
-          <Select
-            name='meterSize'
-            value={credentials.meterSize}
-            onChange={handleInputChange}
-            options={meterSizes}
-          />
-          <Select
-            name='actionStatus'
-            value={credentials.actionStatus}
-            onChange={handleInputChange}
-            options={actionStatus}
-          />
-        </div>
-
-        <div className='p-4'>
-          <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='region'
-            name='region'
-            placeholder='Область'
-            value={credentials.region}
-            onChange={handleInputChange}
-            required={true}
+            id='EDRPO'
+            label='ЕДРПО'
+            value={formik.values.EDRPO}
+            onChange={formik.handleChange}
+            error={formik.errors.EDRPO}
+            errorText={formik.errors.EDRPO}
           />
           <Input
             className='w-full border rounded py-4'
             type='text'
-            id='city'
-            name='city'
-            placeholder='Місто'
-            value={credentials.city}
-            onChange={handleInputChange}
-            required={true}
+            id='nazva_yuridichna_osoba'
+            label='Назва юридичної особи'
+            value={formik.values.nazva_yuridichna_osoba}
+            onChange={formik.handleChange}
+            error={formik.errors.nazva_yuridichna_osoba}
+            errorText={formik.errors.nazva_yuridichna_osoba}
+          />
+        </div>)}
+        {formik.values.osoba_type === 'No_identified_person' && (<>
+          <Input
+            className='w-full border rounded py-4'
+            type='text'
+            id='field1'
+            label='field1'
+            value={formik.values.field1}
+            onChange={formik.handleChange}
+          />
+          <Input
+            className='w-full border rounded py-4 '
+            type='text'
+            id='field2'
+            label='field2'
+            value={formik.values.field2}
+            onChange={formik.handleChange}
           />
           <Input
             className='w-full border rounded py-4'
             type='text'
-            id='house'
-            name='house'
-            placeholder='Будинок'
-            value={credentials.house}
-            onChange={handleInputChange}
-            required
+            id='field3'
+            label='field3'
+            value={formik.values.field3}
+            onChange={formik.handleChange}
           />
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='apartment'
-            name='apartment'
-            placeholder='Квартира'
-            value={credentials.apartment}
-            onChange={handleInputChange}
-            required />
-        </div>
-
-        <div className='p-4'>
-          <h2 className={'text-2xl font-light text-center mb-4'}>Оберіть вид контрагента</h2>
-          <Select
-            name='osoba_type'
-            value={credentials.osoba_type}
-            options={[{ value: 'Physical_person', label: 'Фізична особа' }, {
-              value: 'Legal_person',
-              label: 'Юридична особа'
-            }, { value: 'No_identified_person', label: 'Не встановлена особа' }]}
-            onChange={handleSelectChange}
-          />
-          {credentials.osoba_type === 'Physical_person' && (<div className='mt-6'>
-            <Select
-              name='spozyvachtype'
-              value={credentials.spozyvachtype}
-              options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4'
-              type='text'
-              id='PIB'
-              label='ПІБ'
-              value={credentials.PIB}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4'
-              type='text'
-              id='PIB_predstavnyka'
-              label='ПІБ представника'
-              value={credentials.PIB_predstavnyka}
-              onChange={handleInputChange}
-            />
-          </div>)}
-          {credentials.osoba_type === 'Legal_person' && (<div className='mt-6'>
-            <Select
-              name='spozyvachtype'
-              value={credentials.spozyvachtype}
-              options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4'
-              type='number'
-              id='EDRPO'
-              label='ЕДРПО'
-              value={credentials.EDRPO}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4'
-              type='text'
-              id='nazva_yuridichna_osoba'
-              label='Назва юридичної особи'
-              value={credentials.nazva_yuridichna_osoba}
-              onChange={handleInputChange}
-            />
-          </div>)}
-          {credentials.osoba_type === 'No_identified_person' && (<>
-            <Input
-              className='w-full border rounded py-4'
-              type='text'
-              id='field1'
-              label='field1'
-              value={credentials.field1}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4 '
-              type='text'
-              id='field2'
-              label='field2'
-              value={credentials.field2}
-              onChange={handleInputChange}
-            />
-            <Input
-              className='w-full border rounded py-4'
-              type='text'
-              id='field3'
-              label='field3'
-              value={credentials.field3}
-              onChange={handleInputChange}
-            />
-          </>)}
-          <Button
-            disabled={!isFormValid}
-            className={'w-full py-2 mt-4'}
-            type={'submit'}
-            variant='primary'
-            onClick={handleFormSubmit}
-          >
-            Зберегти акт
-          </Button>
-        </div>
-      </form>
-    </div>)
+        </>)}
+        <Button
+          className={'w-full py-2 mt-4'}
+          type={'submit'}
+          variant='primary'
+          onClick={formik.handleSubmit}
+          isDisabled={formik.isSubmitting}
+        >
+          {formik.isSubmitting ? 'Збереження данних...' : 'Зберегти акт'}
+        </Button>
+      </div>
+    </form>
+  </div>)
 }

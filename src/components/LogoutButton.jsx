@@ -26,6 +26,3 @@ export const LogoutButton = ({setUser}) => {
       </button>
     </div>)
 }
-LogoutButton.PropTypes = {
-  setUser: PropTypes.func
-}

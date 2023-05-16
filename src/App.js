@@ -21,7 +21,7 @@ import { Loading } from './components'
 
 function App() {
   const { getUser, user, setUser, loading } = useUser()
-  return loading ? <Loading /> : (
+  return (
     <>
       <Layout user={user} getUser={getUser} setUser={setUser}>
         <Routes>
