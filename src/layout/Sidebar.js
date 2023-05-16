@@ -3,17 +3,13 @@ import React, { useState } from 'react'
 import { HiHome, HiDocumentDuplicate, HiPhone, HiOutlineArrowNarrowLeft, HiDocument } from 'react-icons/hi'
 import { FiActivity, FiAward, FiCalendar } from 'react-icons/fi'
 
-const Menus = [{ title: 'Головна', path: '/home', src: <HiHome /> }, {
-  title: 'Акти порушень', path: '/acts', src: <HiDocumentDuplicate />
-}, { title: 'Преміювання', path: '/awards', src: <FiAward /> }, {
-  title: 'Протерміновані акти',
-  path: '/deniedActs',
-  src: <FiCalendar />
-}, { title: 'Звітність', path: '/reporting', src: <FiActivity /> }, {
-  title: 'Внутрішні документи',
-  path: '/internalDocuments',
-  src: <HiDocument />
-}, { title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
+const Menus = [{ id: 1, title: 'Головна', path: '/home', src: <HiHome /> },
+  { id: 2, title: 'Акти порушень', path: '/acts', src: <HiDocumentDuplicate /> },
+  { id: 3, title: 'Преміювання', path: '/awards', src: <FiAward /> },
+  { id: 4, title: 'Протерміновані акти', path: '/deniedActs', src: <FiCalendar /> },
+  { id: 5, title: 'Звітність', path: '/reporting', src: <FiActivity /> },
+  { id: 6, title: 'Внутрішні документи', path: '/internalDocuments', src: <HiDocument /> },
+  { id: 7, title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
 export const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
@@ -28,7 +24,7 @@ export const Sidebar = ({ children }) => {
         />
         <ul className='pt-6'>
           {Menus.map((menu, index) => (
-            <Link to={menu.path} key={index}>
+            <Link key={index} to={menu.path}>
               <li
                 className={`flex items-center gap-x-6 text-white rounded-lg cursor-pointer p-4 hover:text-white 
                       ${menu.gap ? 'mt-9' : 'mt-2'} ${
