@@ -40,6 +40,9 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.2.7"
+    "envify": "^4.1.0",
+    "tailwindcss": "^3.2.7",
+    "terser": "^5.17.6",
+    "uglifyify": "^5.0.2"
   }
 }

@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-export
-const Tabs = ({ tabs, activeTab, setActiveTab }) => {
+import React from 'react'
+import PropTypes from 'prop-types'
+
+export const Tabs = ({ tabs, activeTab, setActiveTab }) => {
   return (
     <div className='border-b border-gray-200'>
       <nav className='flex' aria-label='Tabs'>
@@ -34,22 +34,22 @@ const Tabs = ({ tabs, activeTab, setActiveTab }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      content: PropTypes.node.isRequired,
+      content: PropTypes.node.isRequired
     })
   ).isRequired,
   activeTab: PropTypes.number.isRequired,
-  setActiveTab: PropTypes.func.isRequired,
-};
+  setActiveTab: PropTypes.func.isRequired
+}
 Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
-};
+      label: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired
+}

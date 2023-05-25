@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { Button, Select, Input } from '../components'
-import { actionStatus, meterSizes, violationTypes, department, structure } from '../data'
+import { Button, Input, Select } from '../components'
+import { actionStatus, department, meterSizes, structure, violationTypes } from '../data'
 import { axios } from '../API'
 
 export const NewActPage = () => {
@@ -77,7 +77,7 @@ export const NewActPage = () => {
         structureType: Yup.string().required('Виберіть структурний підрозділ'),
         city: Yup.string().required('Введіть місто'),
         contragent: Yup.object().shape({
-          osoba_type: Yup.string().required('Виберіть тип контрагента'),
+          osoba_type: Yup.string().required('Виберіть тип контрагента')
         })
       }
     )

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { clsx } from 'clsx'
 
 import { Label } from './Label'
+
 export const TextArea = (props) => {
   const {
     id,
@@ -36,7 +37,7 @@ export const TextArea = (props) => {
         </Label>
       )}
       <textarea id={id} rows={rows} cols={cols} className={classes} {...props} />
-      {error && <p className="mt-2 text-sm text-red-600">{errorText}</p>}
+      {error && <p className='mt-2 text-sm text-red-600'>{errorText}</p>}
     </div>
   )
 }

@@ -7,11 +7,8 @@ import { acts } from '../data'
 import { NotFoundPage } from './NotFoundPage'
 
 export const ActPage = ({ user }) => {
-user.role === 'admin' ? console.log('admin') : console.log('user')
-
   const { actNumber } = useParams()
-  const [act] = useState(acts.find((act) => act.actNumber === actNumber))
-
+  const act = acts.find((act) => act.actNumber === actNumber)
   if (!act) {
     return <NotFoundPage />
   }
@@ -26,11 +23,11 @@ user.role === 'admin' ? console.log('admin') : console.log('user')
     },
     {
       label: 'Комісія з розгляду актів про порушення',
-      content:<h1>Комісія</h1>
+      content: <h1>Комісія</h1>
     },
     {
       label: 'Нарахування та оплати на рахунок АТ "Експертизи"',
-      content:<h1>Оплати</h1>
+      content: <h1>Оплати</h1>
     },
     {
       label: 'Погодження рохрахунків по метрології та ВЕБ',
@@ -38,7 +35,7 @@ user.role === 'admin' ? console.log('admin') : console.log('user')
     },
     {
       label: 'Юридичне супроводження порушень',
-      content:<h1>Юридичне супроводження</h1>
+      content: <h1>Юридичне супроводження</h1>
     }
   ]
 

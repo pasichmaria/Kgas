@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
-import { HiHome, HiDocumentDuplicate, HiPhone, HiOutlineArrowNarrowLeft, HiDocument } from 'react-icons/hi'
+import { HiDocument, HiDocumentDuplicate, HiHome, HiOutlineArrowNarrowLeft, HiPhone } from 'react-icons/hi'
 import { FiActivity, FiAward, FiCalendar } from 'react-icons/fi'
 
 const Menus = [{ id: 1, title: 'Головна', path: '/home', src: <HiHome /> },

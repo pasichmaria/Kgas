@@ -1,15 +1,14 @@
 import { HiLogout } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import React from 'react'
 
-export const LogoutButton = ({setUser}) => {
+export const LogoutButton = ({ setUser }) => {
   const navigate = useNavigate()
   const handleLogout = () => {
     localStorage.removeItem('token'),
-    setUser(),
-    navigate('/login')
+      setUser(),
+      navigate('/login')
   }
 
   return (

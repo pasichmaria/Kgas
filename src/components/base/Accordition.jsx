@@ -10,7 +10,7 @@ export const Accordition = (props) => {
   }
 
   return (
-    <div className="hs-accordion-group">
+    <div className='hs-accordion-group'>
       <div
         className={`hs-accordion rounded-md shadow-md ${isOpen ? 'active' : ''}`}
         onClick={handleAccordionClick}
@@ -28,9 +28,9 @@ export const Accordition = (props) => {
             className={`block w-4 h-4 text-gray-600 dark:text-gray-400 ${
               isOpen ? 'transform rotate-180' : ''
             }`}
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            viewBox='0 0 16 16'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
           >
             <path
               d={`M2 ${isOpen ? '11' : '5'}L8.16086 ${isOpen ? '5.31305' : '10.6869'}C8.35239 ${
@@ -38,9 +38,9 @@ export const Accordition = (props) => {
               } 8.64761 ${isOpen ? '5.13625' : '10.8637'} 8.83914 ${
                 isOpen ? '5.31305' : '10.6869'
               }L15 ${isOpen ? '11' : '5'}`}
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
           </svg>
         </button>

@@ -1,4 +1,4 @@
-export const structure =  [
+export const structure = [
   { id: 1, value: '', label: 'Виберіть структурний підрозділ' },
   { id: 2, value: 'ads', label: 'АДС' },
   { id: 3, value: 'veb', label: 'ВЕБ' },
