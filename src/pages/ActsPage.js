@@ -35,35 +35,34 @@ export const ActsPage = ({ user }) => {
   }
 
   return (
-    <>
-      <div className="m-16 max-w-full p-6 inline-block align-middle">
-        <div className="flex-row flex mb-4 ">
-          <div className="flex-1 mr-9">
+      <div className='m-16 max-w-full p-6 inline-block align-middle'>
+        <div className='flex-row flex mb-4 '>
+          <div className='flex-1 mr-9'>
             <Search onSearch={handleSearch} />
           </div>
-          <div className="m-2 ">
-            <label className="text-sm font-medium mb-1" htmlFor="actsPerPage">
+          <div className='m-2 '>
+            <label className='text-sm font-medium mb-1' htmlFor='actsPerPage'>
               Показувати на сторінці:
             </label>
             <select
-              id="actsPerPage"
-              name="actsPerPage"
+              id='actsPerPage'
+              name='actsPerPage'
               value={actsPerPage}
               onChange={handleActsPerPageChange}
-              className="mx-2 border rounded-md  px-4 focus:border-blue-500 focus:ring-blue-500"
+              className='mx-2 border rounded-md  px-4 focus:border-blue-500 focus:ring-blue-500'
             >
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="36">36</option>
+              <option value='12'>12</option>
+              <option value='24'>24</option>
+              <option value='36'>36</option>
             </select>
           </div>
           <Button size={'sm'} variant={'primary'} onClick={() => navigate('/newAct')}>
             Новий акт
           </Button>
         </div>
-        <div className="flex-row justify-center flex mb-8">
+        <div className='flex-row justify-center flex mb-8'>
           <button
-            className="mx-1 px-2 py-1 border rounded-md"
+            className='mx-1 px-2 py-1 border rounded-md'
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -83,77 +82,76 @@ export const ActsPage = ({ user }) => {
             ))}
           </div>
           <button
-            className="mx-1 px-2 py-1 border rounded-md"
+            className='mx-1 px-2 py-1 border rounded-md'
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === Math.ceil(acts.length / actsPerPage)}
           >
             {'>'}
           </button>
         </div>
-        <div className="border rounded-lg bg-gray-100">
-          <table className="min-w-full overflow-x-scroll divide-y divide-gray-200">
-            <thead className="py-2 bg-gray-50">
-              <tr className="border-b border-gray-200">
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Номер акту
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Дата, час усунення та реєстрації порушення
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Відділення/дільниця
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Вид порушення
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Статус дій по порушенню
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Типорозмір лічильника
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Область
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Місто
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Адреса, буд.
-                </th>
-                <th className="px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase">
-                  Квартира
-                </th>
-              </tr>
+        <div className='border rounded-lg bg-gray-100'>
+          <table className='min-w-full overflow-x-scroll divide-y divide-gray-200'>
+            <thead className='py-2 bg-gray-50'>
+            <tr className='border-b border-gray-200'>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Номер акту
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Дата, час усунення та реєстрації порушення
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Відділення/дільниця
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Вид порушення
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Статус дій по порушенню
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Типорозмір лічильника
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Область
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Місто
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Адреса, буд.
+              </th>
+              <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+                Квартира
+              </th>
+            </tr>
             </thead>
-            <tbody className="divide-y divide-gray-400 overflow-y-scroll w-full ">
-              {(filteredActs.length > 0 ? filteredActs : currentActs).map((act) => (
-                <tr key={act.actNumber}>
-                  <td className="text-sm font-medium p-6">
-                    <a href={`/acts/${act.actNumber}`}>{act.actNumber}</a>
-                  </td>
-                  <td className="text-sm font-medium">{act.removalAndRegistrationDate}</td>
-                  <td className="text-sm font-medium">{act.violationType}</td>
-                  <td className="text-sm font-medium">{act.actionStatus}</td>
-                  <td className="text-sm font-medium">{act.department}</td>
-                  <td className="text-sm font-medium text-center">{act.meterSize}</td>
-                  <td className="text-sm font-medium">{act.region}</td>
-                  <td className="text-sm font-medium">{act.city}</td>
-                  <td className="text-sm font-light">{act.house}</td>
-                  <td className="text-sm font-light text-center">{act.apartment}</td>
-                </tr>
-              ))}
+            <tbody className='divide-y divide-gray-400 overflow-y-scroll w-full '>
+            {(filteredActs.length > 0 ? filteredActs : currentActs).map((act) => (
+              <tr key={act.actNumber}>
+                <td className='text-sm font-medium p-6'>
+                  <a href={`/act/${act.actNumber}`}>{act.actNumber}</a>
+                </td>
+                <td className='text-sm font-medium'>{act.removalAndRegistrationDate}</td>
+                <td className='text-sm font-medium'>{act.violationType}</td>
+                <td className='text-sm font-medium'>{act.actionStatus}</td>
+                <td className='text-sm font-medium'>{act.department}</td>
+                <td className='text-sm font-medium text-center'>{act.meterSize}</td>
+                <td className='text-sm font-medium'>{act.region}</td>
+                <td className='text-sm font-medium'>{act.city}</td>
+                <td className='text-sm font-light'>{act.house}</td>
+                <td className='text-sm font-light text-center'>{act.apartment}</td>
+              </tr>
+            ))}
             </tbody>
           </table>
         </div>
       </div>
-    </>
   )
 }
 
 ActsPage.propTypes = {
   user: PropTypes.shape({
-    email : PropTypes.string,
-    password : PropTypes.string
-  }),
+    email: PropTypes.string,
+    password: PropTypes.string
+  })
 }

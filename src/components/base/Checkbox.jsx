@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import PropTypes from 'prop-types'
-export const Checkbox = ({ label, selected , className , onChange }) => {
+
+export const Checkbox = ({ label, selected, className, onChange }) => {
 
   return (
     <div className={clsx('flex items-center', className)}>
@@ -21,6 +22,6 @@ export const Checkbox = ({ label, selected , className , onChange }) => {
 }
 Checkbox.propTypes = {
   label: PropTypes.string.isRequired,
-  selected : PropTypes.bool.isRequired,
-  onChange : PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired
 }

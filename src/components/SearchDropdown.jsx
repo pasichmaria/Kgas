@@ -1,57 +1,47 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { Document, Input, Label } from './base/'
 
-import { Label, Input, Document } from './base/'
-export const SearchDropdown = ({ acts }) => {
+export const SearchDropdown = ({ acts, formik }) => {
   const [selectedDocument, setSelectedDocument] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleInputChange = (event) => {
     const value = event.target.value
     setSearchTerm(value)
-    setSelectedDocument(acts.find((act) => act.actNumber.toLowerCase() === value.toLowerCase()))
+    setSelectedDocument(
+      acts.find((act) => act.actNumber.toLowerCase() === value.toLowerCase())
+    )
+    formik.setFieldValue('selectedDoc', value) // Update the formik field value
   }
 
   return (
     <div>
-      <Label className="block font-medium text-gray-500">Виберіть документ</Label>
+      <Label className='block font-medium text-gray-500'>Виберіть документ</Label>
       <Input
-        type="text"
-        placeholder="Search..."
+        id='selectedDoc'
+        name='selectedDoc'
+        type='text'
+        placeholder='Пошук...'
         value={searchTerm}
         onChange={handleInputChange}
-        list="documents"
-      />
-      <datalist id="documents">
+        list='Акти'
+        onBlur={formik.handleBlur} />
+
+      <datalist id='Акти'>
         {acts.map((act) => (
           <option key={act.actNumber} value={act.actNumber} />
         ))}
       </datalist>
-      <div className="mt-4">
-        {selectedDocument && (
-          <Document
-            key={acts.actNumber}
-            actNumber={acts.actNumber}
-            date={acts.date}
-            department={acts.department}
-            violationType={acts.violationType}
-            status={acts.status}
-            meterType={acts.meterType}
-            region={acts.region}
-            city={acts.city}
-          ></Document>
-        )}
+      <div className='mt-4'>
+        {selectedDocument && <Document act={selectedDocument} />}
       </div>
       <Input
-        rounded="lg"
-        size="lg"
-        type="hidden"
-        name="documentLink"
+        rounded='lg'
+        size='lg'
+        type='hidden'
+        name='documentLink'
         value={selectedDocument?.link || ''}
       />
     </div>
   )
-}
-SearchDropdown.PropTypes = {
-  acts: PropTypes.array
 }

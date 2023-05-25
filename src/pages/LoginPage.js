@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Input, Label, Button} from '../components'
+import { Button, Input, Label } from '../components'
 import { useAuth } from '../hooks'
 export const LoginPage = ({ getUser }) => {
   const { login } = useAuth({
@@ -10,7 +10,6 @@ export const LoginPage = ({ getUser }) => {
       getUser(data)
     }
   })
-
   const [data, setData] = useState({ email: '', password: '' })
   const handleSubmit = (e) => {
     e.preventDefault()
