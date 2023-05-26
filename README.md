@@ -15,8 +15,7 @@ Runs the app in the development mode.
 
 ## Local : 
 (http://localhost:3000)  
-to view it in your browser.
-
+to view it in your brow
 
 ### `npm test`
 
