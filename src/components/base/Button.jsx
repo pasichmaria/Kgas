@@ -25,7 +25,7 @@ export const Button = (props) => {
       textColor: 'text-black'
     },
     success: {
-      bgColor: 'bg-green-300',
+      bgColor: 'bg-green-400',
       borderColor: 'border-b-4 border-green-600 hover:border-green-800',
       textColor: 'text-black'
     },

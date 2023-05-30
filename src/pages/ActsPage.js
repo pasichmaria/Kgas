@@ -56,7 +56,7 @@ export const ActsPage = ({ user }) => {
               <option value='36'>36</option>
             </select>
           </div>
-          <Button size={'sm'} variant={'primary'} onClick={() => navigate('/newAct')}>
+          <Button size={'sm'} variant={'success'} onClick={() => navigate('/newAct')}>
             Новий акт
           </Button>
         </div>
