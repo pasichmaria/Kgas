@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { Button, SearchDropdown, TextArea } from '../components'
+import { Button, Loading, SearchDropdown, TextArea } from '../components'
 import { acts } from '../data'
 import { axios } from '../API'
 export const SupportPage = ({ user }) => {
+  const sendFeedback = ( data) => {
+    axios.post('https://jsonplaceholder.typicode.com/posts', data)
+      .then((responce) => {
+        navigate('/home')
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  const [isSubmitting , setIsSubmitting ] = useState(false)
   const navigate = useNavigate()
   const formik = useFormik({
       initialValues: {
@@ -15,20 +26,17 @@ export const SupportPage = ({ user }) => {
         feedback: ' ',
         selectedDoc: null
       },
-      onSubmit: values => {
+      onSubmit: async (values) => {
+        setIsSubmitting(true)
+        await new Promise ((resolve) => setTimeout ( resolve, 1000))
+
         const data = {
           message: values.message,
           feedback: values.feedback,
           selectedDoc: values.selectedDoc
         }
-        axios.post('https://jsonplaceholder.typicode.com/posts', data)
-          .then((responce) => {
-            navigate('/home')
-            console.log(data)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+          await sendFeedback(data)
+        setIsSubmitting(false)
       },
       validationSchema: Yup.object({
         message: Yup.string().required('Введіть ваше повідомлення')
@@ -70,11 +78,11 @@ export const SupportPage = ({ user }) => {
             <Button
               className={'w-full py-2 mt-4'}
               type={'submit'}
-              variant='primary'
+              variant='success'
               onClick={formik.handleSubmit}
               isDisabled={formik.isSubmitting}
             >
-              {formik.isSubmitting ? 'Надсилання данних...' : 'Надіслати повідомлення'}
+              {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'}/> : 'Надіслати повідомлення'}
             </Button>
           </form>
         </div>
