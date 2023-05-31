@@ -67,7 +67,6 @@ export const LoginPage = ({ getUser }) => {
             className={'w-full py-2 mt-4'}
             type={'submit'}
             variant='success'
-            onClick={formik.handleSubmit}
           >
             {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'}/> : 'Вхід до аккаунту'}
           </Button>

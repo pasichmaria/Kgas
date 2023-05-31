@@ -79,8 +79,6 @@ export const SupportPage = ({ user }) => {
               className={'w-full py-2 mt-4'}
               type={'submit'}
               variant='success'
-              onClick={formik.handleSubmit}
-              isDisabled={formik.isSubmitting}
             >
               {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'}/> : 'Надіслати повідомлення'}
             </Button>
