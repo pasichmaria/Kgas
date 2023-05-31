@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { Button, Input, Select } from '../components'
+import { Button, Input, Loading, Select } from '../components'
 import { actionStatus, department, meterSizes, structure, violationTypes } from '../data'
 import { axios } from '../API'
 
 export const NewActPage = () => {
+  const saveDocument = (data) => {
+    axios.post('https://jsonplaceholder.typicode.com/posts', data)
+      .then((responce) => {
+        navigate('/acts')
+        console.log(data, responce)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
@@ -26,13 +37,13 @@ export const NewActPage = () => {
       osoba_type: '',
       PIB: '',
       PIB_predstavnyka: '',
-      spozyvachtype: '',
+      spozyvach_Type: '',
       nazva_yuridichna_osoba: '',
       EDRPO: '',
-      field1: '',
-      field2: '',
-      field3: ''
-    }, onSubmit: values => {
+      field: ''
+    }, onSubmit: async (values) => {
+      setIsSubmitting(true)
+      await new Promise((resolve) => setTimeout(resolve, 600))
       const data = {
         actNumber: values.actNumber,
         removalAndRegistrationDate: values.removalAndRegistrationDate,
@@ -46,26 +57,27 @@ export const NewActPage = () => {
         house: values.house,
         apartment: values.apartment,
         tsentral_pidrozdil: values.tsentral_pidrozdil,
-        contragent: values.osoba_type === 'Physical_person' ? {
-          osoba_type: values.osoba_type,
-          PIB: values.PIB,
-          PIB_predstavnyka: values.PIB_predstavnyka,
-          spozyvachtype: values.spozyvachtype
-        } : values.osoba_type === 'Legal_person' ? {
-          osoba_type: values.osoba_type, nazva_yuridichna_osoba: values.nazva_yuridichna_osoba, EDRPO: values.EDRPO
-        } : {
-          osoba_type: values.osoba_type, field1: values.field1, field2: values.field2, field3: values.field3
-        }
+        contragent:
+          (values.osoba_type === 'Physical_person') ? {
+            osoba_type: values.osoba_type,
+            PIB: values.PIB,
+            PIB_predstavnyka: values.PIB_predstavnyka,
+            spozyvach_Type: values.spozyvach_Type
+          } : (values.osoba_type === 'Legal_person') ? {
+            osoba_type: values.osoba_type,
+            nazva_yuridichna_osoba: values.nazva_yuridichna_osoba,
+            EDRPO: values.EDRPO
+          } : {
+            osoba_type: values.osoba_type,
+            field: values.field,
+            spozyvach_Type: values.spozyvach_Type
+
+          }
       }
-      axios.post('https://jsonplaceholder.typicode.com/posts', data)
-        .then((responce) => {
-          navigate('/acts')
-          console.log(data, responce)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    }, validationSchema: Yup.object({
+      await saveDocument(data)
+      setIsSubmitting(false)
+    },
+    validationSchema: Yup.object({
         actNumber: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
         tsentral_pidrozdil: Yup.boolean().required('Оберіть варіант'),
         removalAndRegistrationDate: Yup.string().required('Введіть дату'),
@@ -76,10 +88,9 @@ export const NewActPage = () => {
         region: Yup.string().required('Введіть область'),
         structureType: Yup.string().required('Виберіть структурний підрозділ'),
         city: Yup.string().required('Введіть місто'),
-        contragent: Yup.object().shape({
-          osoba_type: Yup.string().required('Виберіть тип контрагента')
-        })
-      }
+      osoba_type: Yup.string().required('Виберіть вид контрагента'),
+      house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку'),
+      apartment : Yup.number(' Номер квартири не може містити букви').positive('Номер квартири не може бути відємним числом').integer('Номер квартири бути цілим числом').required('Введіть номер квартири'), }
     )
   })
 
@@ -222,107 +233,108 @@ export const NewActPage = () => {
         <Select
           name='osoba_type'
           value={formik.values.osoba_type}
-          options={[{ value: 'Physical_person', label: 'Фізична особа' }, {
-            value: 'Legal_person', label: 'Юридична особа'
-          }, { value: 'No_identified_person', label: 'Не встановлена особа' }]}
+          options={[
+            { value: '', label: 'Оберіть варіант' },
+            { value: 'Physical_person', label: 'Фізична особа' },
+            { value: 'Legal_person', label: 'Юридична особа' },
+            { value: 'No_identified_person', label: 'Не встановлена особа' }]}
           onChange={formik.handleChange}
           error={formik.errors.osoba_type}
           errorText={formik.errors.osoba_type}
         />
-        {formik.values.osoba_type === 'Physical_person' && (<div className='mt-6'>
-          <Select
-            name='spozyvachtype'
-            value={formik.values.spozyvachtype}
-            options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
-            onChange={formik.handleChange}
-            error={formik.errors.spozyvachtype}
-            errorText={formik.errors.spozyvachtype}
-          />
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='PIB'
-            label='ПІБ'
-            value={formik.values.PIB}
-            onChange={formik.handleChange}
-            error={formik.errors.PIB}
-            errorText={formik.errors.PIB}
-          />
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='PIB_predstavnyka'
-            label='ПІБ представника'
-            value={formik.values.PIB_predstavnyka}
-            onChange={formik.handleChange}
-            error={formik.errors.PIB_predstavnyka}
-            errorText={formik.errors.PIB_predstavnyka}
-          />
-        </div>)}
-        {formik.values.osoba_type === 'Legal_person' && (<div className='mt-6'>
-          <Select
-            name='spozyvachtype'
-            value={formik.values.spozyvachtype}
-            options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
-            onChange={formik.handleChange}
-            error={formik.errors.spozyvachtype}
-            errorText={formik.errors.spoyvachtype}
-          />
-          <Input
-            className='w-full border rounded py-4'
-            type='number'
-            id='EDRPO'
-            label='ЕДРПО'
-            value={formik.values.EDRPO}
-            onChange={formik.handleChange}
-            error={formik.errors.EDRPO}
-            errorText={formik.errors.EDRPO}
-          />
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='nazva_yuridichna_osoba'
-            label='Назва юридичної особи'
-            value={formik.values.nazva_yuridichna_osoba}
-            onChange={formik.handleChange}
-            error={formik.errors.nazva_yuridichna_osoba}
-            errorText={formik.errors.nazva_yuridichna_osoba}
-          />
-        </div>)}
-        {formik.values.osoba_type === 'No_identified_person' && (<>
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='field1'
-            label='field1'
-            value={formik.values.field1}
-            onChange={formik.handleChange}
-          />
-          <Input
-            className='w-full border rounded py-4 '
-            type='text'
-            id='field2'
-            label='field2'
-            value={formik.values.field2}
-            onChange={formik.handleChange}
-          />
-          <Input
-            className='w-full border rounded py-4'
-            type='text'
-            id='field3'
-            label='field3'
-            value={formik.values.field3}
-            onChange={formik.handleChange}
-          />
-        </>)}
+        {formik.values.osoba_type === 'Physical_person' && (
+          <div>
+            <Select
+              name='spozyvach_Type'
+              value={formik.values.spozyvach_Type}
+              options={[
+                { value: 'Spozyvach', label: 'Споживач' },
+                { value: 'Ne_spozyvach', label: 'Не споживач' }
+              ]}
+              onChange={formik.handleChange}
+              error={formik.errors.spozyvach_Type}
+              errorText={formik.errors.spozyvach_Type}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='PIB'
+              label='ПІБ'
+              value={formik.values.PIB}
+              onChange={formik.handleChange}
+              error={formik.errors.PIB}
+              errorText={formik.errors.PIB}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='PIB_predstavnyka'
+              label='ПІБ представника'
+              value={formik.values.PIB_predstavnyka}
+              onChange={formik.handleChange}
+              error={formik.errors.PIB_predstavnyka}
+              errorText={formik.errors.PIB_predstavnyka}
+            />
+          </div>)}
+        {formik.values.osoba_type === 'Legal_person' && (
+          <div className='mt-6'>
+            <Select
+              name='spozyvach_Type'
+              value={formik.values.spozyvach_Type}
+              options={[{ value: 'Spozyvach', label: 'Споживач' }, { value: 'Ne_spozyvach', label: 'Не споживач' }]}
+              onChange={formik.handleChange}
+              error={formik.errors.spozyvach_Type}
+              errorText={formik.errors.spozyvach_Type}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='number'
+              id='EDRPO'
+              label='ЕДРПО'
+              value={formik.values.EDRPO}
+              onChange={formik.handleChange}
+              error={formik.errors.EDRPO}
+              errorText={formik.errors.EDRPO}
+            />
+            <Input
+              className='w-full border rounded py-4'
+              type='text'
+              id='nazva_yuridichna_osoba'
+              label='Назва юридичної особи'
+              value={formik.values.nazva_yuridichna_osoba}
+              onChange={formik.handleChange}
+              error={formik.errors.nazva_yuridichna_osoba}
+              errorText={formik.errors.nazva_yuridichna_osoba}
+            />
+          </div>)}
+        {formik.values.osoba_type === 'No_identified_person' && (
+          <>
+            <Select
+              name='spozyvach_Type'
+              value={formik.values.spozyvach_Type}
+              options={[
+                { value: 'Spozyvach', label: 'Споживач' },
+                { value: 'Ne_spozyvach', label: 'Не споживач' }
+              ]}
+              onChange={formik.handleChange}
+              error={formik.errors.spozyvach_Type}
+              errorText={formik.errors.spozyvach_Type}
+            />
+            <Input
+              className='w-full border rounded py-4 '
+              type='text'
+              id='field'
+              value={formik.values.field2}
+              onChange={formik.handleChange}
+            />
+          </>)}
         <Button
           className={'w-full py-2 mt-4'}
           type={'submit'}
-          variant='primary'
-          onClick={formik.handleSubmit}
-          isDisabled={formik.isSubmitting}
+          variant='success'
+          isDisabled={formik.isSubmitting || formik.values.osoba_type === ''}
         >
-          {formik.isSubmitting ? 'Збереження данних...' : 'Зберегти акт'}
+          {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'} /> : 'Зберегти дані акту'}
         </Button>
       </div>
     </form>
