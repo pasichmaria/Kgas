@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { Button } from '../components'
 
-export const NotFoundPage = ({ user }) => {
+export const NotFoundPage = () => {
   const navigate = useNavigate()
   return (
     <section
@@ -26,7 +26,6 @@ export const NotFoundPage = ({ user }) => {
           variant={'primary'}
           size={'md'}
           onClick={() => {
-            user ? navigate('/internalDocuments') :
               navigate('/home')
           }}
         >

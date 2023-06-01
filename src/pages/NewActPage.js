@@ -1,25 +1,18 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { Button, Input, Loading, Select } from '../components'
 import { actionStatus, department, meterSizes, structure, violationTypes } from '../data'
-import { axios } from '../API'
+import { useAddAct } from '../hooks'
 
 export const NewActPage = () => {
-  const saveDocument = (data) => {
-    axios.post('https://jsonplaceholder.typicode.com/posts', data)
-      .then((responce) => {
-        navigate('/acts')
-        console.log(data, responce)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  const { addAct } = useAddAct({
+    onAddActSuccess: (data) => {
+      localStorage.setItem('data', data)
+    }
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       actNumber: '',
@@ -60,21 +53,21 @@ export const NewActPage = () => {
         contragent:
           (values.osoba_type === 'Physical_person') ? {
             osoba_type: values.osoba_type,
+            spozyvach_Type: values.spozyvach_Type,
             PIB: values.PIB,
-            PIB_predstavnyka: values.PIB_predstavnyka,
-            spozyvach_Type: values.spozyvach_Type
+            PIB_predstavnyka: values.PIB_predstavnyka
           } : (values.osoba_type === 'Legal_person') ? {
             osoba_type: values.osoba_type,
+            spozyvach_Type: values.spozyvach_Type,
             nazva_yuridichna_osoba: values.nazva_yuridichna_osoba,
             EDRPO: values.EDRPO
           } : {
             osoba_type: values.osoba_type,
-            field: values.field,
-            spozyvach_Type: values.spozyvach_Type
-
+            spozyvach_Type: values.spozyvach_Type,
+            field: values.field
           }
       }
-      await saveDocument(data)
+      addAct(data)
       setIsSubmitting(false)
     },
     validationSchema: Yup.object({
@@ -88,9 +81,10 @@ export const NewActPage = () => {
         region: Yup.string().required('Введіть область'),
         structureType: Yup.string().required('Виберіть структурний підрозділ'),
         city: Yup.string().required('Введіть місто'),
-      osoba_type: Yup.string().required('Виберіть вид контрагента'),
-      house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку'),
-      apartment : Yup.number(' Номер квартири не може містити букви').positive('Номер квартири не може бути відємним числом').integer('Номер квартири бути цілим числом').required('Введіть номер квартири'), }
+        osoba_type: Yup.string().required('Виберіть вид контрагента'),
+        house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку'),
+        apartment: Yup.number(' Номер квартири не може містити букви').positive('Номер квартири не може бути відємним числом').integer('Номер квартири бути цілим числом').required('Введіть номер квартири')
+      }
     )
   })
 
