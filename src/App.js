@@ -19,9 +19,10 @@ import { useUser } from './hooks'
 import { PrivateRoute } from './routes'
 function App() {
   const { getUser, user, setUser } = useUser()
+
   return (
         <>
-          <Layout user={user} getUser={getUser} setUser={setUser}>
+          <Layout  user={user} getUser={getUser} setUser={setUser}>
             <Routes>
               <Route  path='/' exact element={<LoginPage user={user} getUser={getUser} />} />
               <Route  path='/login' exact element={<LoginPage user={user} getUser={getUser} />} />
@@ -32,7 +33,7 @@ function App() {
               <Route path='/reporting' element={<PrivateRoute user={user}><ReportingPage user={user} /></PrivateRoute>} />
               <Route path='/awards' element={<PrivateRoute user={user}><AwardsPage user={user} /></PrivateRoute>} />
               <Route path='/internalDocuments' element={<PrivateRoute user={user}><InternalDocumentsPage user={user} /></PrivateRoute>} />
-              <Route path='/act/:actNumber' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
+              <Route path='/act/:actNumber' element={<PrivateRoute user={user}><ActPage user={user}/></PrivateRoute>} />
               <Route path='*' element={<NotFoundPage />} />
               <Route path='/403' element={<ForbiddenPage />} />
               <Route path='/support' element={<SupportPage user={user} />} />

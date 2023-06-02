@@ -15,38 +15,55 @@ export const ActPage = ({ user }) => {
   const tabs = [
     {
       label: 'Акт порушення',
-      content: <Document act={act} />
+      content: <Document act={act} />,
+      roles: []
     },
     {
       label: 'Лабораторія з повірки ПЛГ',
-      content: <h1>Лаб</h1>
+      content: <h1>Лаб</h1>,
+      roles: ['lab']
     },
     {
       label: 'Комісія з розгляду актів про порушення',
-      content: <h1>Комісія</h1>
+      content: <h1>Комісія</h1>,
+      roles: ['komisiya']
     },
     {
       label: 'Нарахування та оплати на рахунок АТ "Експертизи"',
-      content: <h1>Оплати</h1>
+      content: <h1>Оплати</h1>,
+      roles: ['ekspert', 'veb']
     },
     {
       label: 'Погодження рохрахунків по метрології та ВЕБ',
-      content: <h1>Погодження</h1>
+      content: <h1>Погодження</h1>,
+      roles: ['pogodzenya']
     },
     {
       label: 'Юридичне супроводження порушень',
-      content: <h1>Юридичне супроводження</h1>
+      content: <h1>Юридичне супроводження</h1>,
+      roles: ['yur']
     }
-  ]
+  ];
 
-  const [activeTab, setActiveTab] = useState(tabs[0].label)
+  const filteredTabs = tabs.filter((tab) => {
+    if (tab.roles && tab.roles.length > 0) {
+      return tab.roles.some((role) => user?.roles?.includes(role));
+    }
+    return true;
+  });
+
+
+  const [activeTab, setActiveTab] = useState(
+    filteredTabs.length > 0 ? filteredTabs[0].label : tabs[0].label
+  )
+
   return (
     <main className='flex-1 bg-indigo-100'>
       <div className='flex flex-col'>
         <div className='overflow-x-auto'>
           <div className='w-full inline-block align-middle'>
             <div className='overflow-hidden border rounded-lg'>
-              <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+              <Tabs tabs={filteredTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
           </div>
         </div>
@@ -54,9 +71,11 @@ export const ActPage = ({ user }) => {
     </main>
   )
 }
+
 ActPage.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string,
-    password: PropTypes.string
+    password: PropTypes.string,
+    roles: PropTypes.array
   })
 }
