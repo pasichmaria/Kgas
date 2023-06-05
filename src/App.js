@@ -38,8 +38,8 @@ function App() {
               <Route path='/403' element={<ForbiddenPage />} />
               <Route path='/support' element={<SupportPage user={user} />} />
             </Routes>
+            <Footer user={ user}/>
           </Layout>
-          <Footer />
         </>
   )
 }

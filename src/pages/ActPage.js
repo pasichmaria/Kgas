@@ -21,44 +21,44 @@ export const ActPage = ({ user }) => {
     {
       label: 'Лабораторія з повірки ПЛГ',
       content: <h1>Лаб</h1>,
-      roles: ['lab']
+      roles: ['lab', 'admin']
     },
     {
       label: 'Комісія з розгляду актів про порушення',
       content: <h1>Комісія</h1>,
-      roles: ['komisiya']
+      roles: ['komisiya', 'admin']
     },
     {
       label: 'Нарахування та оплати на рахунок АТ "Експертизи"',
       content: <h1>Оплати</h1>,
-      roles: ['ekspert', 'veb']
+      roles: ['ekspert', 'admin']
     },
     {
       label: 'Погодження рохрахунків по метрології та ВЕБ',
       content: <h1>Погодження</h1>,
-      roles: ['pogodzenya']
+      roles: ['pogodzenya', 'admin']
     },
     {
       label: 'Юридичне супроводження порушень',
       content: <h1>Юридичне супроводження</h1>,
-      roles: ['yur']
+      roles: ['yur', 'admin']
     }
-  ];
+  ]
+
 
   const filteredTabs = tabs.filter((tab) => {
     if (tab.roles && tab.roles.length > 0) {
-      return tab.roles.some((role) => user?.roles?.includes(role));
+      return tab.roles.some((role) => user?.roles?.includes(role))
     }
-    return true;
-  });
-
+    return true
+  })
 
   const [activeTab, setActiveTab] = useState(
     filteredTabs.length > 0 ? filteredTabs[0].label : tabs[0].label
   )
 
   return (
-    <main className='flex-1 bg-indigo-100'>
+    <main className='flex-1 bg-indigo-50'>
       <div className='flex flex-col'>
         <div className='overflow-x-auto'>
           <div className='w-full inline-block align-middle'>

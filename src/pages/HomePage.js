@@ -6,7 +6,7 @@ import { Button } from '../components'
 export const HomePage = () => {
   const navigate = useNavigate()
   return (
-    <main className='flex-1 bg-indigo-100'>
+    <main className='flex-1 bg-indigo-50'>
       <div className='overflow-x-auto'>
         <div className='p-6 w-full inline-block align-middle'>
           <section

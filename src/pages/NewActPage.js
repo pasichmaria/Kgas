@@ -62,12 +62,11 @@ export const NewActPage = () => {
             nazva_yuridichna_osoba: values.nazva_yuridichna_osoba,
             EDRPO: values.EDRPO
           } : {
-            osoba_type: values.osoba_type,
-            spozyvach_Type: values.spozyvach_Type,
-            field: values.field
+            osoba_type: values.osoba_type
           }
       }
       addAct(data)
+      console.log(data)
       setIsSubmitting(false)
     },
     validationSchema: Yup.object({
@@ -301,27 +300,6 @@ export const NewActPage = () => {
               errorText={formik.errors.nazva_yuridichna_osoba}
             />
           </div>)}
-        {formik.values.osoba_type === 'No_identified_person' && (
-          <>
-            <Select
-              name='spozyvach_Type'
-              value={formik.values.spozyvach_Type}
-              options={[
-                { value: 'Spozyvach', label: 'Споживач' },
-                { value: 'Ne_spozyvach', label: 'Не споживач' }
-              ]}
-              onChange={formik.handleChange}
-              error={formik.errors.spozyvach_Type}
-              errorText={formik.errors.spozyvach_Type}
-            />
-            <Input
-              className='w-full border rounded py-4 '
-              type='text'
-              id='field'
-              value={formik.values.field2}
-              onChange={formik.handleChange}
-            />
-          </>)}
         <Button
           className={'w-full py-2 mt-4'}
           type={'submit'}
