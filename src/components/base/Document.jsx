@@ -3,7 +3,7 @@ import React from 'react'
 export const Document = ({ act }) => {
   return (
     <div className='w-11/12  mx-auto'>
-      <h2 className='text-4xl text-center font-light m-4'>Акт № {act.actNumber}</h2>
+      <h2 className='text-4xl text-center font-light mt-12 m-4'>Акт № {act.actNumber}</h2>
       <div className='grid grid-cols-3 grid-rows-4 gap-24'>
         <div className='p-4'>
           <p className='text-lg font-medium mt-6'>Дата та час реєстрації порушення:</p>

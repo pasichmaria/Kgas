@@ -44,7 +44,7 @@ export const SupportPage = ({ user }) => {
     }
   )
   return (
-    <main className='flex-1 bg-indigo-100'>
+    <main className='flex-1 bg-indigo-50'>
       <div className='flex flex-col'>
         <div
           className='mx-auto grid max-w-2xl items-center gap-y-16 gap-x-8 py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8'>
