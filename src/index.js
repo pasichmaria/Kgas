@@ -13,7 +13,7 @@ export const queryOptions = {
   staleTime: 1000 * 60 * 5,
   cacheTime: 1000 * 60 * 5,
   onError: (error) => {
-    console.log('Query error', error)
+    console.log(error)
   },
   onSuccess: (data) => {
     console.log('Query succeeded', data)
@@ -21,10 +21,9 @@ export const queryOptions = {
 }
 export const mutationOptions = {
   onError: (error) => {
-    console.log('Mutation error', error)
+    console.log(error)
   },
   onSuccess: (data) => {
-    console.log('Mutation success', data)
   }
 }
 export const queryClient = new QueryClient({
