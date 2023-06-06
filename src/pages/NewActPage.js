@@ -26,14 +26,14 @@ export const NewActPage = () => {
       violationType: '',
       meterSize: '',
       actionStatus: '',
-      structureType : '',
+      structureType: '',
       tsentral_pidrozdil: false,
       osoba_type: '',
       PIB: '',
       PIB_predstavnyka: '',
       spozyvach_Type: '',
       nazva_yuridichna_osoba: '',
-      EDRPO: '',
+      EDRPO: ''
     },
     onSubmit: async (values) => {
       setIsSubmitting(true)
@@ -82,7 +82,7 @@ export const NewActPage = () => {
         region: Yup.string().required('Введіть область'),
         city: Yup.string().required('Введіть місто'),
         osoba_type: Yup.string().required('Виберіть вид контрагента'),
-        house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку'),
+        house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку')
       }
     )
   })
@@ -185,45 +185,45 @@ export const NewActPage = () => {
             </>
           )}
           {streets && (
-          <>
-            {isStreetsLoading ? (
-              <p>Завантаження відділень...</p>
-            ) : errorStreets ? (
-              <p>Error: {errorStreets.message}</p>
-            ) : (
-              <SearchSelect
-                name='street'
-                value={formik.values.street}
-                onChange={formik.handleChange}
-                options={streets}
-                error={formik.errors.street}
-                errorText={formik.errors.street}
-              />
-            )}
-          </>
-        )}
+            <>
+              {isStreetsLoading ? (
+                <p>Завантаження відділень...</p>
+              ) : errorStreets ? (
+                <p>Error: {errorStreets.message}</p>
+              ) : (
+                <SearchSelect
+                  name='street'
+                  value={formik.values.street}
+                  onChange={formik.handleChange}
+                  options={streets}
+                  error={formik.errors.street}
+                  errorText={formik.errors.street}
+                />
+              )}
+            </>
+          )}
 
-        <div className='flex flex-col space-y-4'>
-          <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
-          <Input
-            type='text'
-            id='house'
-            name='house'
-            placeholder='Будинок'
-            value={formik.values.house}
-            onChange={formik.handleChange}
-            error={formik.errors.house}
-            errorText={formik.errors.house}
-          />
-          <Input
-            type='text'
-            id='apartment'
-            name='apartment'
-            placeholder='Квартира'
-            value={formik.values.apartment}
-            onChange={formik.handleChange}
-            error={formik.errors.apartment}
-            errorText={formik.errors.apartment} />
+          <div className='flex flex-col space-y-4'>
+            <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
+            <Input
+              type='text'
+              id='house'
+              name='house'
+              placeholder='Будинок'
+              value={formik.values.house}
+              onChange={formik.handleChange}
+              error={formik.errors.house}
+              errorText={formik.errors.house}
+            />
+            <Input
+              type='text'
+              id='apartment'
+              name='apartment'
+              placeholder='Квартира'
+              value={formik.values.apartment}
+              onChange={formik.handleChange}
+              error={formik.errors.apartment}
+              errorText={formik.errors.apartment} />
           </div>
         </div>
 
@@ -255,7 +255,7 @@ export const NewActPage = () => {
           />
 
           <div className='flex flex-col space-y-4'>
-              <h2 className={'text-2xl font-light text-center'}>Оберіть вид контрагента</h2>
+            <h2 className={'text-2xl font-light text-center'}>Оберіть вид контрагента</h2>
             <Select
               name='osoba_type'
               value={formik.values.osoba_type}
