@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Document, Input, Label } from './base/'
 
-export const SearchDropdown = ({ acts, formik }) => {
+export const SearchActsDropdown = ({ acts, formik }) => {
   const [selectedDocument, setSelectedDocument] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -16,7 +16,7 @@ export const SearchDropdown = ({ acts, formik }) => {
 
   return (
     <div>
-      <Label className='block font-medium text-gray-500'>Виберіть документ</Label>
+      <Label className='block font-medium text-gray-500'>Виберіть </Label>
       <Input
         id='selectedDoc'
         name='selectedDoc'
