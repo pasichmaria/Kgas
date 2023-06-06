@@ -1,3 +1,6 @@
 export * from './useAuth'
 export * from './useUser'
 export * from './useAct'
+export * from './useCities'
+export * from './useDepartments'
+export * from './useStreets'

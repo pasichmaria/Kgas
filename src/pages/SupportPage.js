@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { Button, Loading, SearchDropdown, TextArea } from '../components'
+import { Button, Loading, SearchActsDropdown, TextArea } from '../components'
 import { acts } from '../data'
 import { axios } from '../API'
 export const SupportPage = ({ user }) => {
@@ -72,7 +72,7 @@ export const SupportPage = ({ user }) => {
               placeholder='Пропозиції по покращенню'
             />
             {user && (
-              <SearchDropdown
+              <SearchActsDropdown
                 formik={formik}
                 acts={acts} />: null)}
             <Button
