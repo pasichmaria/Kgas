@@ -7,8 +7,9 @@ import * as Yup from 'yup'
 import { Button, Loading, SearchActsDropdown, TextArea } from '../components'
 import { acts } from '../data'
 import { axios } from '../API'
+
 export const SupportPage = ({ user }) => {
-  const sendFeedback = ( data) => {
+  const sendFeedback = (data) => {
     axios.post('https://jsonplaceholder.typicode.com/posts', data)
       .then((responce) => {
         navigate('/home')
@@ -18,7 +19,7 @@ export const SupportPage = ({ user }) => {
         console.log(error)
       })
   }
-  const [isSubmitting , setIsSubmitting ] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const formik = useFormik({
       initialValues: {
@@ -28,14 +29,14 @@ export const SupportPage = ({ user }) => {
       },
       onSubmit: async (values) => {
         setIsSubmitting(true)
-        await new Promise ((resolve) => setTimeout ( resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000))
 
         const data = {
           message: values.message,
           feedback: values.feedback,
           selectedDoc: values.selectedDoc
         }
-          await sendFeedback(data)
+        await sendFeedback(data)
         setIsSubmitting(false)
       },
       validationSchema: Yup.object({
@@ -80,7 +81,8 @@ export const SupportPage = ({ user }) => {
               type={'submit'}
               variant='success'
             >
-              {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'}/> : 'Надіслати повідомлення'}
+              {formik.isSubmitting || isSubmitting ?
+                <Loading size={'sm'} variant={'success'} /> : 'Надіслати повідомлення'}
             </Button>
           </form>
         </div>

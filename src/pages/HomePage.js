@@ -18,26 +18,26 @@ export const HomePage = () => {
               <p className='text-lg md:text-xl lg:text-2xl text-gray-500 my-12'>
                 Ви можете переглянути журнал актів порушень, та внутрішні документи
               </p>
-                <Button
-                  className={'py-3'}
-                  variant={'success'}
-                  size={'lg'}
-                  onClick={() => {
-                    navigate('/internalDocuments')
-                  }}
-                >Внутрішні документи
-                </Button>
-                <Button
-                  className={' py-3'}
-                  variant={'success'}
-                  size={'lg'}
-                  onClick={() => {
-                    navigate('/acts')
-                  }}
-                >
-                  Журнал актів порушень
-                </Button>
-              </div>
+              <Button
+                className={'py-3'}
+                variant={'success'}
+                size={'lg'}
+                onClick={() => {
+                  navigate('/internalDocuments')
+                }}
+              >Внутрішні документи
+              </Button>
+              <Button
+                className={' py-3'}
+                variant={'success'}
+                size={'lg'}
+                onClick={() => {
+                  navigate('/acts')
+                }}
+              >
+                Журнал актів порушень
+              </Button>
+            </div>
           </section>
         </div>
       </div>

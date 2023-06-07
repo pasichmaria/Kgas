@@ -26,7 +26,7 @@ export const NotFoundPage = () => {
           variant={'primary'}
           size={'md'}
           onClick={() => {
-              navigate('/home')
+            navigate('/home')
           }}
         >
           На головну

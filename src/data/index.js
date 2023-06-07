@@ -1,6 +1,5 @@
 export * from './acts'
 export * from './actionStatus'
-export * from './department'
 export * from './violation'
 export * from './meterSizes'
 export * from './structure'

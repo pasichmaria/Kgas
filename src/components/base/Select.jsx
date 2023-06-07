@@ -23,7 +23,7 @@ export const Select = (props) => {
           </option>
         ))}
       </select>
-      {error && <p className="text-xs text-red-600 px-6 mt-1.5">{errorText || 'Поле не знаповнене'}</p>}
+      {error && <p className='text-xs text-red-600 px-6 mt-1.5'>{errorText || 'Поле не знаповнене'}</p>}
     </div>
   )
 }

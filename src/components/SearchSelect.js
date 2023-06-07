@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Input, Label } from './base';
+import React, { useState } from 'react'
+import { Input } from './base'
 
-export const SearchSelect = ( props ) => {
+export const SearchSelect = (props) => {
   const { name, value, options, onChange, error = false, errorText = '' } = props
-  const [searchTerm, setSearchTerm] = useState(value);
-  const [selectedOption, setSelectedOption] = useState(options.find((option) => option.value === value));
+  const [searchTerm, setSearchTerm] = useState(value)
+  const [selectedOption, setSelectedOption] = useState(options.find((option) => option.value === value))
 
   const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    setSelectedOption(options.find((option) => option.label.toLowerCase() === value.toLowerCase()));
+    const value = event.target.value
+    setSearchTerm(value)
+    setSelectedOption(options.find((option) => option.label.toLowerCase() === value.toLowerCase()))
     onChange(event)
-  };
+  }
 
   return (
     <div>
@@ -36,5 +36,5 @@ export const SearchSelect = ( props ) => {
         </p>
       )}
     </div>
-  );
-};
+  )
+}

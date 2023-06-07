@@ -11,9 +11,11 @@ In the project directory, you can run:
 Runs the app in the development mode.
 
 ## Open in your Network
+
 (http://192.168.2.94:3000) ,
 
-## Local : 
+## Local :
+
 (http://localhost:3000)  
 to view it in your brow
 

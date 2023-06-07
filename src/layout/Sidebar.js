@@ -10,7 +10,7 @@ const Menus = [{ id: 1, title: 'Головна', path: '/home', src: <HiHome /> 
   { id: 5, title: 'Звітність', path: '/reporting', src: <FiActivity /> },
   { id: 6, title: 'Внутрішні документи', path: '/internalDocuments', src: <HiDocument /> },
   { id: 7, title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
-export const  Sidebar = ({ children }) => {
+export const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   return (
