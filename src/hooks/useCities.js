@@ -3,17 +3,17 @@ import { getCity } from '../API'
 import { useEffect } from 'react'
 
 export const useCities = (department) => {
-  const { data: cities, refetch, isLoading: isCitiesLoading, error : errorCities } = useQuery(
+  const { data: cities, refetch, isLoading: isCitiesLoading, error: errorCities } = useQuery(
     ['cities', department],
     () => getCity(department),
     {
       enabled: !!department
     }
   )
-  useEffect( () => {
+  useEffect(() => {
     if (department) {
       refetch().then()
     }
   }, [department])
-  return { cities, isCitiesLoading , errorCities}
+  return { cities, isCitiesLoading, errorCities }
 }

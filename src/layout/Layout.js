@@ -7,6 +7,6 @@ export const Layout = ({ children, user, setUser }) => {
   return <>
     <Sidebar user={user} children={children} />
     <BackButton user={user} />
-    { user && (<LogoutButton setUser={setUser} />: null )}
+    {user && (<LogoutButton setUser={setUser} />: null)}
   </>
 }

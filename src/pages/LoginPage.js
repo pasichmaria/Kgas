@@ -15,19 +15,19 @@ export const LoginPage = ({ getUser }) => {
     }
   })
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const formik = useFormik({
     initialValues: {
       email: '', password: ''
     },
     onSubmit: async (values) => {
-      setIsSubmitting(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-        const data = {
-          email: values.email, password: values.password
-        }
-        await login(data);
-      setIsSubmitting(false);
+      setIsSubmitting(true)
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const data = {
+        email: values.email, password: values.password
+      }
+      await login(data)
+      setIsSubmitting(false)
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Невірний формат пошти').required('Required'),
@@ -68,7 +68,7 @@ export const LoginPage = ({ getUser }) => {
             type={'submit'}
             variant='success'
           >
-            {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'}/> : 'Вхід до аккаунту'}
+            {formik.isSubmitting || isSubmitting ? <Loading size={'sm'} variant={'success'} /> : 'Вхід до аккаунту'}
           </Button>
         </div>
       </form>

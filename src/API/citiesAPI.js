@@ -1,4 +1,3 @@
-
 export const getCity = async (department) => {
   const cities = [
     { id: 1, value: '', label: 'Виберіть місто' },
@@ -9,20 +8,20 @@ export const getCity = async (department) => {
     { id: 6, value: 'chernigiv', label: 'м.Чернігів' },
     { id: 7, value: 'ulyanovka', label: 'м.Уляновка' },
     { id: 8, value: 'pavlovka', label: 'м.Павловка' }
-  ];
+  ]
   if (department === 'kyiv') {
     return cities.filter(
-      (v) => v.value === 'kyiv' || v.value === 'boyarka'  || v.value === ''
-    );
+      (v) => v.value === 'kyiv' || v.value === 'boyarka' || v.value === ''
+    )
   }
   if (department === 'irpin') {
     return cities.filter(
-      (v) => v.value === 'irpin' || v.value === 'bucha'  || v.value === ''
-    );
+      (v) => v.value === 'irpin' || v.value === 'bucha' || v.value === ''
+    )
   }
   if (department === 'chernivgaz') {
     return cities.filter(
-      (v) => v.value === 'pavlovka' || v.value === 'ulyanovka'  || v.value === ''
-    );
+      (v) => v.value === 'pavlovka' || v.value === 'ulyanovka' || v.value === ''
+    )
   }
 }

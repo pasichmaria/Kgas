@@ -12,7 +12,7 @@ export const Input = (props) => {
 
   const errorStyle = 'border-red-600 focus:ring-red-600'
 
-  const inputClassName = clsx(baseStyle, error && errorStyle, className); // Изменили className на inputClassName
+  const inputClassName = clsx(baseStyle, error && errorStyle, className) // Изменили className на inputClassName
 
   return (
     <div className={clsx('relative', className)}>
