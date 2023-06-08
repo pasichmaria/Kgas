@@ -3,19 +3,15 @@ import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { Document, Tabs } from '../components'
-import { acts } from '../data'
-import { NotFoundPage } from './NotFoundPage'
+import { useGetAct } from '../hooks'
 
 export const ActPage = ({ user }) => {
   const { actNumber } = useParams()
-  const act = acts.find((act) => act.actNumber === actNumber)
-  if (!act) {
-    return <NotFoundPage />
-  }
+  const { data, isLoading, error } = useGetAct({ actNumber })
   const tabs = [
     {
       label: 'Акт порушення',
-      content: <Document act={act} />,
+      content: <Document act={data} />,
       roles: []
     },
     {
@@ -44,19 +40,19 @@ export const ActPage = ({ user }) => {
       roles: ['yur', 'admin']
     }
   ]
-
-
+  const [activeTab, setActiveTab] = useState(tabs[0].label)
   const filteredTabs = tabs.filter((tab) => {
     if (tab.roles && tab.roles.length > 0) {
       return tab.roles.some((role) => user?.roles?.includes(role))
     }
     return true
   })
-
-  const [activeTab, setActiveTab] = useState(
-    filteredTabs.length > 0 ? filteredTabs[0].label : tabs[0].label
-  )
-
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (error) {
+    return <div>Error loading data</div>
+  }
   return (
     <main className='flex-1 bg-indigo-50'>
       <div className='flex flex-col'>
@@ -77,5 +73,5 @@ ActPage.propTypes = {
     email: PropTypes.string,
     password: PropTypes.string,
     roles: PropTypes.array
-  })
+  }).isRequired
 }

@@ -4,19 +4,23 @@ import PropTypes from 'prop-types'
 
 import { Button, Search } from '../components'
 import { acts } from '../data'
+import { useGetActs } from '../hooks'
 
 export const ActsPage = ({ user }) => {
   const navigate = useNavigate()
+  const { data , isLoading , error} = useGetActs()
+
   const [currentPage, setCurrentPage] = useState(1)
   const [actsPerPage, setActsPerPage] = useState(24)
   const [filteredActs, setFilteredActs] = useState([])
 
   const indexOfLastAct = currentPage * actsPerPage
   const indexOfFirstAct = indexOfLastAct - actsPerPage
-  const currentActs = acts.slice(indexOfFirstAct, indexOfLastAct)
+  const currentActs = data ? data.slice(indexOfFirstAct, indexOfLastAct) : [];
+
 
   const pageNumbers = []
-  for (let i = 1; i <= Math.ceil(acts.length / actsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil((data ? data.length : 0) / actsPerPage); i++) {
     pageNumbers.push(i)
   }
 
@@ -84,7 +88,8 @@ export const ActsPage = ({ user }) => {
         <button
           className='mx-1 px-2 py-1 border rounded-md'
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === Math.ceil(acts.length / actsPerPage)}
+          disabled={data && currentPage === Math.ceil(data.length / actsPerPage)}
+
         >
           {'>'}
         </button>
