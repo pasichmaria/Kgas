@@ -9,7 +9,7 @@ export const SearchActsDropdown = ({ acts, formik }) => {
     const value = event.target.value
     setSearchTerm(value)
     setSelectedDocument(
-      acts.find((act) => act.actNumber.toLowerCase() === value.toLowerCase())
+      acts.find((act) => act.act_number.toLowerCase() === value.toLowerCase())
     )
     formik.setFieldValue('selectedDoc', value) // Update the formik field value
   }
@@ -29,7 +29,7 @@ export const SearchActsDropdown = ({ acts, formik }) => {
 
       <datalist id='Акти'>
         {acts.map((act) => (
-          <option key={act.actNumber} value={act.actNumber} />
+          <option key={act.act_number} value={act.act_number} />
         ))}
       </datalist>
       <div className='mt-4'>

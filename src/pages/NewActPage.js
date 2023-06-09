@@ -15,7 +15,7 @@ export const NewActPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const formik = useFormik({
     initialValues: {
-      actNumber: '',
+      act_number: '',
       removalAndRegistrationDate: '',
       region: '',
       department: '',
@@ -39,7 +39,7 @@ export const NewActPage = () => {
       setIsSubmitting(true)
       await new Promise((resolve) => setTimeout(resolve, 600))
       const data = {
-        actNumber: values.actNumber,
+        act_number: values.act_number,
         removalAndRegistrationDate: values.removalAndRegistrationDate,
         region: values.region,
         department: values.department,
@@ -72,7 +72,7 @@ export const NewActPage = () => {
       setIsSubmitting(false)
     },
     validationSchema: Yup.object({
-        actNumber: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
+        act_number: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
         tsentral_pidrozdil: Yup.boolean().required('Оберіть варіант'),
         removalAndRegistrationDate: Yup.string().required('Введіть дату'),
         department: Yup.string().required('Виберіть відділ'),
@@ -100,13 +100,13 @@ export const NewActPage = () => {
           <h2 className={'text-2xl mt-8 font-light text-center'}>Акт порушення</h2>
           <Input
             placeholder='Номер акту'
-            name='actNumber'
-            id='actNumber'
+            name='act_number'
+            id='act_number'
             type='number'
-            value={formik.values.actNumber}
+            value={formik.values.act_number}
             onChange={formik.handleChange}
-            error={formik.errors.actNumber}
-            errorText={formik.errors.actNumber}
+            error={formik.errors.act_number}
+            errorText={formik.errors.act_number}
           />
           <Input
             name='removalAndRegistrationDate'
