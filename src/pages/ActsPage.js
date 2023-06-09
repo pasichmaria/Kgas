@@ -1,43 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { Button, Search } from '../components'
-import { acts } from '../data'
 import { useGetActs } from '../hooks'
 
 export const ActsPage = ({ user }) => {
+
   const navigate = useNavigate()
-  const { data , isLoading , error} = useGetActs()
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [actsPerPage, setActsPerPage] = useState(24)
-  const [filteredActs, setFilteredActs] = useState([])
-
-  const indexOfLastAct = currentPage * actsPerPage
-  const indexOfFirstAct = indexOfLastAct - actsPerPage
-  const currentActs = data ? data.slice(indexOfFirstAct, indexOfLastAct) : [];
-
-
-  const pageNumbers = []
-  for (let i = 1; i <= Math.ceil((data ? data.length : 0) / actsPerPage); i++) {
-    pageNumbers.push(i)
+  const { perPage, setPerPage, searchValue, setSearchValue, currentPage, setCurrentPage, query } = useGetActs()
+  if (query.isLoading) {
+    return <div>Loading...</div>
   }
-
+  if (query.error) {
+    return <div>Error loading data</div>
+  }
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
   }
+  const pageNumbers = Array.from({ length: Math.ceil(query.data.total / perPage) }, (_, i) => i + 1)
   const handleActsPerPageChange = (event) => {
-    setActsPerPage(event.target.value)
+    setPerPage(event.target.value)
     setCurrentPage(1)
   }
   const handleSearch = (searchTerm) => {
-    const filtered = acts.filter((act) =>
-      act.actNumber.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    setFilteredActs(filtered)
+    setSearchValue(searchTerm)
+    setCurrentPage(1)
   }
-
   return (
     <div className='m-16 max-w-full p-6 inline-block align-middle'>
       <div className='flex-row flex mb-4 '>
@@ -51,7 +40,7 @@ export const ActsPage = ({ user }) => {
           <select
             id='actsPerPage'
             name='actsPerPage'
-            value={actsPerPage}
+            value={perPage}
             onChange={handleActsPerPageChange}
             className='mx-2 border rounded-md  px-4 focus:border-blue-500 focus:ring-blue-500'
           >
@@ -88,63 +77,70 @@ export const ActsPage = ({ user }) => {
         <button
           className='mx-1 px-2 py-1 border rounded-md'
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={data && currentPage === Math.ceil(data.length / actsPerPage)}
-
+          disabled={currentPage === pageNumbers.length}
         >
           {'>'}
         </button>
       </div>
       <div className='border rounded-lg bg-gray-100'>
         <table className='min-w-full overflow-x-scroll divide-y divide-gray-200'>
-          <thead className='py-2 bg-gray-50'>
-          <tr className='border-b border-gray-200'>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+          <thead className=' bg-gray-50'>
+          <tr className=' border-b border-gray-500'>
+            <th className='px-6 py-3 text-xs font-medium text-gray-700 uppercase'>
               Номер акту
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Дата, час усунення та реєстрації порушення
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
-              Відділення/дільниця
-            </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Вид порушення
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Статус дій по порушенню
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Типорозмір лічильника
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
-              Область
+
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
+              Область , місто
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
-              Місто
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
+              Відділення/дільниця
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
-              Адреса, буд.
+            <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
+              Структурний підрозділ
             </th>
-            <th className='px-6 py-3 text-xs font-medium  tracking-wider text-left  text-gray-700 uppercase'>
-              Квартира
+            <th className='px-6  text-xs font-medium    text-gray-700 uppercase'>
+              Вид контрагента
+            </th>
+
+            <th className='px-6  text-xs  font-medium     text-gray-700 uppercase'>
+              Споживач / не споживач
+            </th>
+            <th className='px-6  text-xs  font-medium     text-gray-700 uppercase'>
+              Номер квартири
             </th>
           </tr>
           </thead>
-          <tbody className='divide-y divide-gray-400 overflow-y-scroll w-full '>
-          {(filteredActs.length > 0 ? filteredActs : currentActs).map((act) => (
-            <tr key={act.actNumber}>
-              <td className='text-sm font-medium p-6'>
-                <a href={`/act/${act.actNumber}`}>{act.actNumber}</a>
-              </td>
-              <td className='text-sm font-medium'>{act.removalAndRegistrationDate}</td>
-              <td className='text-sm font-medium'>{act.violationType}</td>
-              <td className='text-sm font-medium'>{act.actionStatus}</td>
-              <td className='text-sm font-medium'>{act.department}</td>
-              <td className='text-sm font-medium text-center'>{act.meterSize}</td>
-              <td className='text-sm font-medium'>{act.region}</td>
-              <td className='text-sm font-medium'>{act.city}</td>
-              <td className='text-sm font-light'>{act.house}</td>
-              <td className='text-sm font-light text-center'>{act.apartment}</td>
+          <tbody className=' divide-y divide-gray-400 overflow-y-scroll w-full'>
+          {query.data && query.data.data.map((act) => (
+            <tr key={act.act_number}>
+
+              <td className='text-sm font-medium p-6'><a href={`/act/${act.act_number}`}>{act.act_number}</a></td>
+
+              <td className='text-sm font-medium text-center'>{act.reg_date}</td>
+              <td
+                className='text-sm font-medium text-center'>{act.violation_type.violation_description + ' ' + act.violation_type.violation_name}</td>
+              <td className='text-sm text-center font-medium'>{act.action_state.state}</td>
+              <td className='text-sm text-center font-medium'>{act.counter_size.counter_size}</td>
+
+              <td className='text-sm text-center font-medium'>{act.region.region_name + ' , ' + act.city.city_name}</td>
+              <td className='text-sm text-center font-medium'>{act.department.department_name}</td>
+              <td className='text-sm text-center font-medium'>{act.unit.unit_name}</td>
+              <td className='text-sm text-center  font-medium'>{act.contractor_type.contractor_type_name}</td>
+
+              <td className='text-sm text-center font-medium'>{act.is_consumer}</td>
             </tr>
           ))}
           </tbody>

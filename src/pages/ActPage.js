@@ -6,8 +6,9 @@ import { Document, Tabs } from '../components'
 import { useGetAct } from '../hooks'
 
 export const ActPage = ({ user }) => {
-  const { actNumber } = useParams()
-  const { data, isLoading, error } = useGetAct({ actNumber })
+  const { act_number } = useParams()
+
+  const { data , isLoading, error } = useGetAct({act_number})
   const tabs = [
     {
       label: 'Акт порушення',
@@ -72,6 +73,5 @@ ActPage.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string,
     password: PropTypes.string,
-    roles: PropTypes.array
   }).isRequired
 }

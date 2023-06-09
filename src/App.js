@@ -29,7 +29,7 @@ function App() {
           <Route path='/login' exact element={<LoginPage user={user} getUser={getUser} />} />
           <Route path='/home' element={<PrivateRoute user={user}><HomePage user={user} /></PrivateRoute>} />
           <Route path='/acts' element={<PrivateRoute user={user}><ActsPage user={user} /></PrivateRoute>} />
-          <Route path='/act/:actNumber' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
+          <Route path='/act/:act_number' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
           <Route path='/deniedActs' element={<PrivateRoute user={user}><DeniedActsPage user={user} /></PrivateRoute>} />
           <Route path='/newAct' element={<PrivateRoute token={user}><NewActPage user={user} /></PrivateRoute>} />}
           <Route path='/reporting' element={<PrivateRoute user={user}><ReportingPage user={user} /></PrivateRoute>} />

@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { getActByNumber, getAllActs} from '../API/actAPI'
+import { getActByNumber, getAllActs } from '../API/actAPI'
+import { useState } from 'react'
 
 export const useAddAct = ({ onAddActSuccess }) => {
   const navigate = useNavigate()
@@ -19,15 +20,19 @@ export const useAddAct = ({ onAddActSuccess }) => {
     addAct: addActQuery.mutate
   }
 }
-export const useGetAct = ({ actNumber }) => {
-  const getActByNumberQuery = useQuery(['act', actNumber], () =>
-    getActByNumber({ actNumber }
-    ), { enabled: !!actNumber }
+export const useGetAct = ({ act_number }) => {
+  const getActByNumberQuery = useQuery(['act', act_number], () =>
+    getActByNumber({ act_number }
+    ), { enabled: !!act_number }
   )
   return getActByNumberQuery
 }
 export const useGetActs = () => {
-  const getAllActsQuery = useQuery(['acts'], () =>
-    getAllActs())
+  const [searchValue, setSearchValue] = useState()
+  const [perPage, setPerPage] = useState(15)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  return getAllActsQuery}
+  const getAllActsQuery = useQuery(['acts', perPage, currentPage, searchValue], () =>
+    getAllActs({ per_page: perPage, current_page: currentPage, search_value: searchValue }))
+  return { query: getAllActsQuery, perPage, setPerPage, searchValue, setSearchValue, currentPage, setCurrentPage }
+}
