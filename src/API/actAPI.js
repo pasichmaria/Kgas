@@ -759,5 +759,22 @@ export const getActByNumber = async ({ act_number }) => {
 export const getAllActs = async ({ search_value, per_page, current_page }) => {
   return responce
 }
-
-
+//
+// *********************************************************************************
+// Для использования с беком у себя , закоментить
+// все что выше и  раскоментитить код ниже
+// Больше измененний не нужно вносить
+//
+//
+//
+// export const getActByNumber = async ({ act_number }) => {
+//     const act = await axios.get(http://127.0.0.1:8000/api/acts/${act_number})
+//     return act
+// }
+//
+// export const getActs = async ({ per_page, current_page }) => {
+//     const acts = await axios.get(
+//         http://127.0.0.1:8000/api/acts/?per_page=${per_page}&current_page=${current_page}
+//     )
+//     return acts
+// }
