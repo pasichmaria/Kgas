@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import { Document, Tabs } from '../components'
 import { useGetAct } from '../hooks'
 
 export const ActPage = ({ user }) => {
-  const { act_number } = useParams()
+  const { id } = useParams()
 
-  const { data , isLoading, error } = useGetAct({act_number})
+  const { data, isLoading, error } = useGetAct({ id })
   const tabs = [
     {
       label: 'Акт порушення',
@@ -67,11 +66,4 @@ export const ActPage = ({ user }) => {
       </div>
     </main>
   )
-}
-
-ActPage.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string,
-    password: PropTypes.string,
-  }).isRequired
 }

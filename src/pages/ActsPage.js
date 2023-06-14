@@ -1,14 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Button, Search } from '../components'
 import { useGetActs } from '../hooks'
 
 export const ActsPage = ({ user }) => {
-
   const navigate = useNavigate()
   const { perPage, setPerPage, searchValue, setSearchValue, currentPage, setCurrentPage, query } = useGetActs()
+
+  console.log('query', query.data, 'perPage', perPage, 'curPage', currentPage, searchValue)
+
   if (query.isLoading) {
     return <div>Loading...</div>
   }
@@ -27,6 +28,7 @@ export const ActsPage = ({ user }) => {
     setSearchValue(searchTerm)
     setCurrentPage(1)
   }
+
   return (
     <div className='m-16 max-w-full p-6 inline-block align-middle'>
       <div className='flex-row flex mb-4 '>
@@ -101,7 +103,6 @@ export const ActsPage = ({ user }) => {
             <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Типорозмір лічильника
             </th>
-
             <th className='px-6  text-xs font-medium text-gray-700 uppercase'>
               Область , місто
             </th>
@@ -114,7 +115,6 @@ export const ActsPage = ({ user }) => {
             <th className='px-6  text-xs font-medium    text-gray-700 uppercase'>
               Вид контрагента
             </th>
-
             <th className='px-6  text-xs  font-medium     text-gray-700 uppercase'>
               Споживач / не споживач
             </th>
@@ -124,22 +124,19 @@ export const ActsPage = ({ user }) => {
           </tr>
           </thead>
           <tbody className=' divide-y divide-gray-400 overflow-y-scroll w-full'>
+
           {query.data && query.data.data.map((act) => (
-            <tr key={act.act_number}>
-
-              <td className='text-sm font-medium p-6'><a href={`/act/${act.act_number}`}>{act.act_number}</a></td>
-
+            <tr key={act.id}>
+              <td className='text-sm font-medium p-6'><Link to={`/act/${act.id}`}>{act.act_number}</Link></td>
               <td className='text-sm font-medium text-center'>{act.reg_date}</td>
               <td
                 className='text-sm font-medium text-center'>{act.violation_type.violation_description + ' ' + act.violation_type.violation_name}</td>
               <td className='text-sm text-center font-medium'>{act.action_state.state}</td>
               <td className='text-sm text-center font-medium'>{act.counter_size.counter_size}</td>
-
               <td className='text-sm text-center font-medium'>{act.region.region_name + ' , ' + act.city.city_name}</td>
               <td className='text-sm text-center font-medium'>{act.department.department_name}</td>
               <td className='text-sm text-center font-medium'>{act.unit.unit_name}</td>
               <td className='text-sm text-center  font-medium'>{act.contractor_type.contractor_type_name}</td>
-
               <td className='text-sm text-center font-medium'>{act.is_consumer}</td>
             </tr>
           ))}
@@ -148,11 +145,4 @@ export const ActsPage = ({ user }) => {
       </div>
     </div>
   )
-}
-
-ActsPage.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string,
-    password: PropTypes.string
-  })
 }

@@ -25,17 +25,20 @@ axios.interceptors.response.use(
   }
 )
 
+axios.defaults.withCredentials = true
 axios.interceptors.request.use(
   function(config) {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
-    return config
+    config.xsrfHeaderName = 'X-XSRF-TOKEN';
+    config.withCredentials = true;
+    config.timeout = 15000
+    return config;
   },
   function(error) {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
-
+);
 export default axios
