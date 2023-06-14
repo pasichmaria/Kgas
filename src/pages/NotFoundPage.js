@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import { Button } from '../components'
 
@@ -34,11 +33,4 @@ export const NotFoundPage = () => {
       </div>
     </section>
   )
-}
-
-NotFoundPage.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string,
-    password: PropTypes.string
-  })
 }

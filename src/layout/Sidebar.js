@@ -1,15 +1,15 @@
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
 import { HiDocument, HiDocumentDuplicate, HiHome, HiOutlineArrowNarrowLeft, HiPhone } from 'react-icons/hi'
-import { FiActivity, FiAward, FiCalendar } from 'react-icons/fi'
+import { FiActivity, FiCalendar } from 'react-icons/fi'
 
 const Menus = [{ id: 1, title: 'Головна', path: '/home', src: <HiHome /> },
   { id: 2, title: 'Акти порушень', path: '/acts', src: <HiDocumentDuplicate /> },
-  { id: 3, title: 'Преміювання', path: '/awards', src: <FiAward /> },
-  { id: 4, title: 'Протерміновані акти', path: '/deniedActs', src: <FiCalendar /> },
-  { id: 5, title: 'Звітність', path: '/reporting', src: <FiActivity /> },
-  { id: 6, title: 'Внутрішні документи', path: '/internalDocuments', src: <HiDocument /> },
-  { id: 7, title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
+  // { id: , title: 'Преміювання', path: '/awards', src: <FiAward /> },
+  { id: 3, title: 'Протерміновані акти', path: '/deniedActs', src: <FiCalendar /> },
+  { id: 4, title: 'Звітність', path: '/reporting', src: <FiActivity /> },
+  { id: 5, title: 'Внутрішні документи', path: '/internalDocuments', src: <HiDocument /> },
+  { id: 6, title: 'Технічна підтримка', path: '/support', src: <HiPhone /> }]
 export const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
