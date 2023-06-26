@@ -34,6 +34,7 @@ function App() {
           <Route path='/newAct' element={<PrivateRoute token={user}><NewActPage user={user} /></PrivateRoute>} />}
           <Route path='/reporting' element={<PrivateRoute user={user}><ReportingPage user={user} /></PrivateRoute>} />
           <Route path='/awards' element={<PrivateRoute user={user}><AwardsPage user={user} /></PrivateRoute>} />
+
           <Route path='/internalDocuments' element={<PrivateRoute user={user}><InternalDocumentsPage user={user} /></PrivateRoute>} />
           <Route path='*' element={<NotFoundPage />} />
           <Route path='/403' element={<ForbiddenPage />} />

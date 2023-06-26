@@ -4,68 +4,65 @@ import * as Yup from 'yup'
 
 import { Button, Input, Loading, SearchSelect, Select } from '../components'
 import { actionStatus, meterSizes, region, structure, violationTypes } from '../data'
-import { useAddAct, useCities, useDepartments, useStreets } from '../hooks'
-
+import { useAddAct, useCities, useDepartments, useStreets , useAllInfo} from '../hooks'
 export const NewActPage = () => {
   const { addAct } = useAddAct({
     onAddActSuccess: (data) => {
-      localStorage.setItem('data', data)
+
+      console.log('newActData - ', data)
     }
   })
+  const { data , isLoading ,error } = useAllInfo()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const formik = useFormik({
     initialValues: {
       act_number: '',
-      removalAndRegistrationDate: '',
-      region: '',
-      department: '',
-      city: '',
-      street: '',
-      house: '',
-      apartment: '',
-      violationType: '',
-      meterSize: '',
-      actionStatus: '',
-      structureType: '',
-      tsentral_pidrozdil: false,
-      osoba_type: '',
-      PIB: '',
-      PIB_predstavnyka: '',
-      spozyvach_Type: '',
-      nazva_yuridichna_osoba: '',
-      EDRPO: ''
+      reg_date: '',
+      violation_type_id: '',
+      action_state_id: '',
+      counter_size_id: '',
+      department_id: '',
+      unit_id: '',
+      is_central: false,
+      region_id: '',
+      city_id: '',
+      street_id: '',
+      house_number: '',
+      app_number: '',
+      contactor_type_id: '',
+      is_consumer: '',
+      fiz_name: '',
+      goverment_name: '',
+      personal_account: '',
+      company_name: '',
+      edrpou: '',
+      user_id: ''
     },
     onSubmit: async (values) => {
       setIsSubmitting(true)
       await new Promise((resolve) => setTimeout(resolve, 600))
       const data = {
         act_number: values.act_number,
-        removalAndRegistrationDate: values.removalAndRegistrationDate,
-        region: values.region,
-        department: values.department,
-        city: values.city,
-        street: values.street,
-        house: values.house,
-        apartment: values.apartment,
-        violationType: values.violationType,
-        meterSize: values.meterSize,
-        actionStatus: values.actionStatus,
-        structureType: values.structureType,
-        tsentral_pidrozdil: values.tsentral_pidrozdil,
-        contragent:
-          (values.osoba_type === 'Physical_person') ? {
-            osoba_type: values.osoba_type,
-            spozyvach_Type: values.spozyvach_Type,
-            PIB: values.PIB,
-            PIB_predstavnyka: values.PIB_predstavnyka
-          } : (values.osoba_type === 'Legal_person') ? {
-            osoba_type: values.osoba_type,
-            spozyvach_Type: values.spozyvach_Type,
-            nazva_yuridichna_osoba: values.nazva_yuridichna_osoba,
-            EDRPO: values.EDRPO
-          } : {
-            osoba_type: values.osoba_type
-          }
+        reg_date: values.reg_date,
+        violation_type_id: values.violation_type_id,
+        action_state_id: values.action_state_id,
+        counter_size_id: values.counter_size_id,
+        department_id: values.department_id,
+        unit_id: values.unit_id,
+        is_central: values.is_central,
+        region_id: values.region_id,
+        city_id: values.city_id,
+        street_id: values.street_id,
+        house_number: values.house_number,
+        app_number: values.app_number,
+        contactor_type_id: values.contactor_type_id,
+        is_consumer: values.is_consumer,
+        fiz_name: values.fiz_name,
+        goverment_name: values.goverment_name,
+        personal_account: values.personal_account,
+        edrpou: values.edrpou,
+        user_id: values.user_id
       }
       addAct(data)
       console.log(data)
@@ -73,25 +70,39 @@ export const NewActPage = () => {
     },
     validationSchema: Yup.object({
         act_number: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
-        tsentral_pidrozdil: Yup.boolean().required('Оберіть варіант'),
-        removalAndRegistrationDate: Yup.string().required('Введіть дату'),
-        department: Yup.string().required('Виберіть відділ'),
-        meterSize: Yup.string().required('Виберіть типорозмір лічильника'),
-        violationType: Yup.string().required('Виберіть тип порушення'),
-        actionStatus: Yup.string().required('Виберіть статус дій'),
-        region: Yup.string().required('Введіть область'),
-        city: Yup.string().required('Введіть місто'),
-        osoba_type: Yup.string().required('Виберіть вид контрагента'),
-        house: Yup.number(' Номер будинку не може містити букви').positive('Номер будинку не може бути відємним числом').integer('Номер будинку бути цілим числом').required('Введіть номер будинку')
+        reg_date: Yup.date().required('Введіть дату реєстрації акту'),
+        violation_type_id: Yup.string().required('Виберіть тип порушення'),
+        action_state_id: Yup.string().required('Виберіть стан акту'),
+        counter_size_id: Yup.string().required('Виберіть розмір лічильника'),
+        department_id: Yup.string().required('Виберіть дільницю'),
+        unit_id: Yup.string().required('Виберіть підрозділ'),
+        is_central: Yup.boolean(),
+        region_id: Yup.string().required('Виберіть область'),
+        city_id: Yup.string().required('Виберіть місто'),
+        street_id: Yup.string().required('Виберіть вулицю'),
+        house_number: Yup.string().required('Введіть номер будинку'),
+        contactor_type_id: Yup.string().required('Виберіть тип контрагента'),
+        is_consumer: Yup.string().required('Виберіть тип споживача'),
+        fiz_name: Yup.string().required('Введіть ПІБ фізичної особи'),
+        goverment_name: Yup.string().required('Введіть назву юридичної особи'),
+        personal_account: Yup.string().required('Введіть особовий рахунок'),
+        edrpou: Yup.string().required('Введіть ЄДРПОУ'),
+        user_id: Yup.string().required('Виберіть користувача')
       }
     )
   })
 
-  const { tsentral_pidrozdil } = formik.values.tsentral_pidrozdil
-  const { departments, isDepartmentsLoading, errorDepartment } = useDepartments(formik.values.region)
-  const { cities, isCitiesLoading, errorCities } = useCities(formik.values.department)
-  const { streets, isStreetsLoading, errorStreets } = useStreets(formik.values.city)
+  const { is_central } = formik.values.is_central
 
+  const { cities, isCitiesLoading, errorCities } = useCities({ regionId: formik.values.region_id })
+  const { streets, isStreetsLoading, errorStreets } = useStreets({ requestedStreet: searchQuery, cityId: city_id })
+
+  if (isLoading) {
+    return <Loading />
+  }
+  if (error) {
+    return <div>error</div>
+  }
   return (
     <div className='w-10/12  mx-auto'>
       <h2 className={'text-5xl font-light text-center m-10'}>Реєстрація актів порушення</h2>
@@ -109,31 +120,31 @@ export const NewActPage = () => {
             errorText={formik.errors.act_number}
           />
           <Input
-            name='removalAndRegistrationDate'
-            id='removalAndRegistrationDate'
+            name='reg_date'
+            id='reg_date'
             type='datetime-local'
-            value={formik.values.removalAndRegistrationDate}
+            value={formik.values.reg_date}
             onChange={formik.handleChange}
-            error={formik.errors.removalAndRegistrationDate}
-            errorText={formik.errors.removalAndRegistrationDate}
+            error={formik.errors.reg_date}
+            errorText={formik.errors.reg_date}
           />
-          {formik.touched.removalAndRegistrationDate && formik.errors.removalAndRegistrationDate}
+          {formik.touched.reg_date && formik.errors.reg_date}
           <Select
-            name='structureType'
-            value={formik.values.structureType}
+            name='unit_id'
+            value={formik.values.unit_id}
             onChange={formik.handleChange}
-            options={structure}
+            options={ data.unit.map((unit) => ({ value: unit.id, label: unit.name })) }
           />
           <div className='mt-4 flex items-center'>
             <input
               type='checkbox'
-              id='tsentral_pidrozdil'
-              name='tsentral_pidrozdil'
-              checked={tsentral_pidrozdil}
+              id='is_central'
+              name='is_central'
+              checked={is_central}
               onChange={formik.handleChange}
               className='h-4  w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
             />
-            <label htmlFor='tsentral_pidrozdil' className='ml-2 block text-sm text-gray-900'>
+            <label htmlFor='is_central' className='ml-2 block text-sm text-gray-900'>
               Центральний підрозділ
             </label>
           </div>
@@ -141,89 +152,64 @@ export const NewActPage = () => {
 
         <div className='flex flex-col space-y-4'>
           <h2 className={'text-2xl mt-8 font-light text-center'}>Дільниця реєстрації порушення</h2>
-          <Select
-            name='region'
-            value={formik.values.region}
+
+          <Select {/* Область */}
+            name='region_id'
+            value={formik.values.region_id}
             onChange={formik.handleChange}
-            options={region}
-            error={formik.errors.region}
-            errorText={formik.errors.region}
+            options={data.regions.map((region) => ({
+              value: region.id,
+              label: region.region_name,
+            }))}
+            error={formik.errors.region_id}
+            errorText={formik.errors.region_id}
           />
-          {departments && (
-            <>
-              {isDepartmentsLoading ? (
-                <p>Завантаження відділень...</p>
-              ) : errorDepartment ? (
-                <p>Error: {errorDepartment.message}</p>
-              ) : (
-                <Select
-                  name='department'
-                  value={formik.values.department}
-                  onChange={formik.handleChange}
-                  options={departments}
-                  error={formik.errors.department}
-                  errorText={formik.errors.department}
-                />
-              )}
-            </>
-          )}
-          {cities && (
-            <>
-              {isCitiesLoading ? (
-                <p>Завантаження міст...</p>
-              ) : errorCities ? (
-                <p>Error: {errorCities.message}</p>
-              ) : (
-                <Select
-                  name='city'
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  options={cities}
-                  error={formik.errors.city}
-                />
-              )}
-            </>
-          )}
-          {streets && (
-            <>
-              {isStreetsLoading ? (
-                <p>Завантаження відділень...</p>
-              ) : errorStreets ? (
-                <p>Error: {errorStreets.message}</p>
-              ) : (
-                <SearchSelect
-                  name='street'
-                  value={formik.values.street}
-                  onChange={formik.handleChange}
-                  options={streets}
-                  error={formik.errors.street}
-                  errorText={formik.errors.street}
-                />
-              )}
-            </>
-          )}
+          <Select {/* Дільниця */}
+            name='department'
+            value={formik.values.department}
+            onChange={formik.handleChange}
+            options={data.department.map((department) => ({ value: department.id, label: department.name }))}
+            error={formik.errors.department_id}
+            errorText={formik.errors.department_id}
+          />
+          <Select
+            name='city'
+            value={formik.values.city_id}
+            onChange={formik.handleChange}
+            options={cities.data.map((city) => ({ value: city.id, label: city.name }))}
+            error={formik.errors.city_id}
+          />
+          <SearchSelect
+            name='street'
+            value={formik.values.street}
+            onChange={formik.handleChange}
+            options={streets.data.map((street) => ({ value: street.id, label: street.name }))}
+            error={formik.errors.street_id}
+            errorText={formik.errors.street_id}
+          />
+        </div>
 
           <div className='flex flex-col space-y-4'>
             <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
             <Input
               type='text'
-              id='house'
-              name='house'
+              id='house_number'
+              name='house_number'
               placeholder='Будинок'
-              value={formik.values.house}
+              value={formik.values.house_number}
               onChange={formik.handleChange}
-              error={formik.errors.house}
-              errorText={formik.errors.house}
+              error={formik.errors.house_number}
+              errorText={formik.errors.house_number}
             />
             <Input
               type='text'
-              id='apartment'
-              name='apartment'
+              id='app_number'
+              name='app_number'
               placeholder='Квартира'
-              value={formik.values.apartment}
+              value={formik.values.app_number}
               onChange={formik.handleChange}
-              error={formik.errors.apartment}
-              errorText={formik.errors.apartment} />
+              error={formik.errors.app_number}
+              errorText={formik.errors.app_number} />
           </div>
         </div>
 
@@ -322,12 +308,12 @@ export const NewActPage = () => {
                 />
                 <Input
                   type='text'
-                  id='nazva_yuridichna_osoba'
+                  id=''
                   label='Назва юридичної особи'
-                  value={formik.values.nazva_yuridichna_osoba}
+                  value={formik.values.}
                   onChange={formik.handleChange}
-                  error={formik.errors.nazva_yuridichna_osoba}
-                  errorText={formik.errors.nazva_yuridichna_osoba}
+                  error={formik.errors.}
+                  errorText={formik.errors.}
                 />
               </div>)}
           </div>
