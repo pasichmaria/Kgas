@@ -1,7 +1,7 @@
 export const Loading = ({ size = '', className, variant }) => {
   const variants = {
     error: {
-      borderColor: 'border-red-500'
+      borderColor: 'border-error-500'
     }, success: {
       borderColor: 'border-black'
     }, primary: {

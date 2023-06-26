@@ -5,7 +5,6 @@ import * as Yup from 'yup'
 
 import { Button, Input, Label, Loading } from '../components'
 import { useAuth } from '../hooks'
-import { Link } from 'react-router-dom'
 
 export const LoginPage = ({ getUser , user }) => {
     const { login } = useAuth({

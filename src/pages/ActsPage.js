@@ -8,8 +8,6 @@ export const ActsPage = ({ user }) => {
   const navigate = useNavigate()
   const { perPage, setPerPage, searchValue, setSearchValue, currentPage, setCurrentPage, query } = useGetActs()
 
-  console.log('query', query.data, 'perPage', perPage, 'curPage', currentPage, searchValue)
-
   if (query.isLoading) {
     return <div>Loading...</div>
   }
@@ -27,6 +25,13 @@ export const ActsPage = ({ user }) => {
   const handleSearch = (searchTerm) => {
     setSearchValue(searchTerm)
     setCurrentPage(1)
+  }
+  const handlePreviousPage = () => {
+    handlePageChange(currentPage - 1)
+  }
+
+  const handleNextPage = () => {
+    handlePageChange(currentPage + 1)
   }
 
   return (
@@ -51,14 +56,20 @@ export const ActsPage = ({ user }) => {
             <option value='36'>36</option>
           </select>
         </div>
-        <Button size={'sm'} variant={'success'} onClick={() => navigate('/newAct')}>
-          Новий акт
+        <Button
+          type={'submit'}
+          variant='success'
+          onClick={() => {
+            navigate ("/newAct")
+          }}
+        >
+          Створити акт
         </Button>
       </div>
       <div className='flex-row justify-center flex mb-8'>
         <button
           className='mx-1 px-2 py-1 border rounded-md'
-          onClick={() => handlePageChange(currentPage - 1)}
+          onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
           {'<'}
@@ -67,9 +78,7 @@ export const ActsPage = ({ user }) => {
           {pageNumbers.map((pageNumber) => (
             <button
               key={pageNumber}
-              className={`mx-1 ${
-                pageNumber === currentPage ? 'bg-blue-500 text-white' : ''
-              } px-2 py-1 border rounded-md`}
+              className={`mx-1 ${pageNumber === currentPage ? 'bg-blue-500 text-white' : ''} px-2 py-1 border rounded-md`}
               onClick={() => handlePageChange(pageNumber)}
             >
               {pageNumber}
@@ -78,7 +87,7 @@ export const ActsPage = ({ user }) => {
         </div>
         <button
           className='mx-1 px-2 py-1 border rounded-md'
-          onClick={() => handlePageChange(currentPage + 1)}
+          onClick={handleNextPage}
           disabled={currentPage === pageNumbers.length}
         >
           {'>'}
@@ -118,13 +127,9 @@ export const ActsPage = ({ user }) => {
             <th className='px-6  text-xs  font-medium     text-gray-700 uppercase'>
               Споживач / не споживач
             </th>
-            <th className='px-6  text-xs  font-medium     text-gray-700 uppercase'>
-              Номер квартири
-            </th>
           </tr>
           </thead>
           <tbody className=' divide-y divide-gray-400 overflow-y-scroll w-full'>
-
           {query.data && query.data.data.map((act) => (
             <tr key={act.id}>
               <td className='text-sm font-medium p-6'><Link to={`/act/${act.id}`}>{act.act_number}</Link></td>
@@ -137,7 +142,8 @@ export const ActsPage = ({ user }) => {
               <td className='text-sm text-center font-medium'>{act.department.department_name}</td>
               <td className='text-sm text-center font-medium'>{act.unit.unit_name}</td>
               <td className='text-sm text-center  font-medium'>{act.contractor_type.contractor_type_name}</td>
-              <td className='text-sm text-center font-medium'>{act.is_consumer}</td>
+              {act.is_consumer == 1 ? <td className='text-sm text-center font-medium'>Споживач</td> :
+                <td className='text-sm text-center font-medium'>Не споживач</td>}
             </tr>
           ))}
           </tbody>

@@ -2,18 +2,19 @@ import { useQuery } from '@tanstack/react-query'
 import { getStreet } from '../API'
 import { useEffect } from 'react'
 
-export const useStreets = ({requestedStreet , cityId}) => {
+export const useStreets = ({ search_street, city_id }) => {
   const { data: streets, refetch, isLoading: isStreetsLoading, error: errorStreets } = useQuery(
-    ['streets', cityId],
-    () => getStreet(cityId , requestedStreet),
+    ['streets', city_id, search_street],
+    () => getStreet({ search_street, city_id }),
     {
-      enabled: !!cityId && !!requestedStreet,
+      enabled: !!city_id && !!search_street
     }
   )
   useEffect(() => {
-    if (cityId && requestedStreet) {
+    if (city_id && search_street) {
       refetch().then()
     }
-  }, [cityId, requestedStreet])
+  }, [city_id, search_street])
+
   return { streets, isStreetsLoading, errorStreets }
 }
