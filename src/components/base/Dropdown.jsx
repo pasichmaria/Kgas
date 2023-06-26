@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Document } from './Document'
+import { ViolarionAct } from './ViolarionAct'
 
 export const Dropdown = ({ documents, visible }) => (
   <div
@@ -9,7 +9,7 @@ export const Dropdown = ({ documents, visible }) => (
     }`}
   >
     {documents.map((doc) => (
-      <Document key={doc.id} name={doc.name} link={doc.link} />
+      <ViolarionAct key={doc.id} name={doc.name} link={doc.link} />
     ))}
   </div>
 )

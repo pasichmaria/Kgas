@@ -1,12 +1,45 @@
+import { Link } from 'react-router-dom'
+import React from 'react'
+import {Box, Container, Grid, Typography} from '@mui/material';
+import { FaInstagram, FaGithub, FaTelegram} from 'react-icons/fa';
+
 export function Footer({ user }) {
   return (
-    <div className='fixed bottom-0 w-full p-5 flex items-center justify-center  bg-gray-600 border-2 border-black'>
-      <span className='text-sm text-gray-50 text-center dark:text-gray-400'>
-        ©{new Date().getFullYear()} React &amp; TailwindCSS. All Rights Reserved.
-        {user && user.roles && (
-          <span> user roles: {user.roles.map((role) => role).join(', ')}</span>
-        )}
-      </span>
-    </div>
+    <Box
+      sx={{
+        heigth : '35vh',
+        width: '100%',
+        backgroundColor: '#f5f5f5',
+        py: 4,
+      }}
+    >
+      <Container>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Box sx={{display: 'flex', justifyContent: 'space-around', m: 4}}>
+              <Link to={'https://t.me/Blueberrypms'}>
+                <FaTelegram/>
+              </Link>
+              <Link to={'https://github.com/pasichmaria'}>
+                <FaGithub/>
+              </Link>
+              <Link to={'https://www.instagram.com/blueberrypms'}>
+                <FaInstagram/>
+              </Link>
+            </Box>
+          </Grid>
+        </Grid>
+        <Typography sx={{ mt : 10 }} variant="body2" color="text.secondary" align="center" >
+          {'Copyright © '}
+          <Link color="inherit" to="https://mui.com/">
+            Created by MUI - design by     </Link>{' '}
+          <Link color="inherit" to="https://github.com/pasichmaria">
+            Pasichnyk Maria
+          </Link>{' '}
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
+      </Container>
+    </Box>
   )
 }
