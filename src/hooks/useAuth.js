@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { login } from '../API'
-
 export const useAuth = ({ onLoginSuccess }) => {
   const navigate = useNavigate()
   const loginQuery = useMutation({

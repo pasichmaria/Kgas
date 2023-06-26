@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { Button, Loading, SearchActsDropdown, TextArea } from '../components'
@@ -12,15 +12,14 @@ export const SupportPage = ({ user }) => {
   const sendFeedback = (data) => {
     axios.post('https://jsonplaceholder.typicode.com/posts', data)
       .then((responce) => {
-        navigate('/home')
-        console.log(data)
+      <Link to={'/home'} />
+
       })
       .catch((error) => {
         console.log(error)
       })
   }
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const navigate = useNavigate()
   const formik = useFormik({
       initialValues: {
         message: '',
@@ -75,7 +74,7 @@ export const SupportPage = ({ user }) => {
             {user && (
               <SearchActsDropdown
                 formik={formik}
-                acts={acts} />: null)}
+                acts={acts} /> : null)}
             <Button
               className={'w-full py-2 mt-4'}
               type={'submit'}

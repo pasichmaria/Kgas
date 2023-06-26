@@ -1,6 +1,4 @@
 import { Route, Routes } from 'react-router-dom'
-
-import { Footer, Layout } from './layout'
 import {
   ActPage,
   ActsPage,
@@ -17,6 +15,7 @@ import {
 } from './pages'
 import { useUser } from './hooks'
 import { PrivateRoute } from './routes'
+import { Footer, Layout } from './layout'
 
 function App() {
   const { getUser, user, setUser  } = useUser()
@@ -31,7 +30,7 @@ function App() {
           <Route path='/act/:id' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
 
           <Route path='/deniedActs' element={<PrivateRoute user={user}><DeniedActsPage user={user} /></PrivateRoute>} />
-          <Route path='/newAct' element={<PrivateRoute token={user}><NewActPage user={user} /></PrivateRoute>} />}
+          <Route path='/newAct' element={<PrivateRoute user={user}><NewActPage user={user} /></PrivateRoute>} />}
           <Route path='/reporting' element={<PrivateRoute user={user}><ReportingPage user={user} /></PrivateRoute>} />
           <Route path='/awards' element={<PrivateRoute user={user}><AwardsPage user={user} /></PrivateRoute>} />
 
@@ -40,7 +39,6 @@ function App() {
           <Route path='/403' element={<ForbiddenPage />} />
           <Route path='/support' element={<SupportPage user={user} />} />
         </Routes>
-        <Footer user={user} />
       </Layout>
   </>
   )

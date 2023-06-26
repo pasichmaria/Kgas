@@ -1,8 +1,6 @@
 import { HiLogout } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
-
 import React from 'react'
-
 export const LogoutButton = ({ setUser }) => {
   const navigate = useNavigate()
   const handleLogout = () => {
