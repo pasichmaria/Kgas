@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query'
 import { getCity } from '../API'
 import { useEffect } from 'react'
 
-export const useCities = (department) => {
+export const useCities = ({ department_id , search_city}) => {
   const { data: cities, refetch, isLoading: isCitiesLoading, error: errorCities } = useQuery(
-    ['cities', department],
-    () => getCity(department),
+    ['cities', department_id , search_city],
+    () => getCity(department_id , search_city),
     {
-      enabled: !!department
+      enabled: !!department_id
     }
   )
   useEffect(() => {

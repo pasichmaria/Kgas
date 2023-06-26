@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const Document = ({ act }) => {
-  console.log('act ', act)
   return (
     <div className='w-11/12 mx-auto'>
       <h2 className='text-4xl text-center font-light mt-12 m-4'>Акт № {act.act_number}</h2>
