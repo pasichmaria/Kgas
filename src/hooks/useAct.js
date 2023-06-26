@@ -31,20 +31,16 @@ export const useGetActs = () => {
   const [searchValue, setSearchValue] = useState()
   const [perPage, setPerPage] = useState(15)
   const [currentPage, setCurrentPage] = useState(1)
-  const [first_page_url, setFirstPageUrl] = useState(`http://${window.location.host}/api/acts?page=1`)
-  const [last_page_url, setLastPageUrl] = useState(`http://${window.location.host}/api/acts?page=1`)
 
-  const query = useQuery(['acts', perPage, currentPage, searchValue, first_page_url, last_page_url], () =>
+  const query = useQuery(['acts', perPage, currentPage, searchValue], () =>
     getAllActs({
       per_page: perPage,
       current_page: currentPage,
       search_value: searchValue,
-      last_page_url: last_page_url,
-      first_page_url: first_page_url
     }))
   useEffect(() => {
     query.refetch().then()
-  }, [searchValue, currentPage, perPage, first_page_url, last_page_url])
+  }, [searchValue, currentPage, perPage ])
   return {
     query,
     perPage,
@@ -53,7 +49,5 @@ export const useGetActs = () => {
     setSearchValue,
     currentPage,
     setCurrentPage,
-    setFirstPageUrl,
-    setLastPageUrl
   }
 }

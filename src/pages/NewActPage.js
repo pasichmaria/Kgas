@@ -2,13 +2,30 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { Button, Input, Loading, Search, SearchSelect, Select } from '../components'
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox, debounce,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from '@mui/material'
+import { DatePicker, TimePicker } from '@mui/x-date-pickers'
+import { MdApartment, MdHome, MdLocalPostOffice, MdNumbers, MdPerson } from 'react-icons/md'
+
 import { useAddAct, useAllInfo, useCities, useStreets } from '../hooks'
 import { useDepartments } from '../hooks/useDepartments'
 
 export const NewActPage = ({ user }) => {
   const { addAct } = useAddAct({
     onAddActSuccess: (data) => {
+      console.log('ADD ACT SUCCESS', data)
     }
   })
   const { data: allInfo, isLoading: allInfoLoading, error: allInfoError } = useAllInfo()
@@ -17,6 +34,8 @@ export const NewActPage = ({ user }) => {
     initialValues: {
       act_number: '',
       reg_date: '',
+      reg_date_date: '',
+      reg_date_time: '',
       violation_type_id: '',
       action_state_id: '',
       counter_size_id: '',
@@ -37,7 +56,7 @@ export const NewActPage = ({ user }) => {
       edrpou: '',
       user_id: '',
       personType: '',
-      contractorType: ''
+      contractorType: '',
     },
     onSubmit: async (values) => {
       setIsSubmitting(true)
@@ -45,30 +64,29 @@ export const NewActPage = ({ user }) => {
       await new Promise((resolve) => setTimeout(resolve, 600))
       const data = {
         act_number: values.act_number,
-        reg_date: values.reg_date,
+        reg_date: values.reg_date_date + ' ' + values.reg_date_time,
         violation_type_id: values.violation_type_id,
         action_state_id: values.action_state_id,
-        counter_size_id: values.counter_size_id,
-        department_id: values.department_id,
         unit_id: values.unit_id,
         is_central: values.is_central,
-        region_id: values.region_id,
+        department_id: values.department_id,
+        region_id: values.region_name,
         city_id: values.city_id,
         street_id: values.street_id,
         house_number: values.house_number,
         app_number: values.app_number,
-        contactor_type_id: values.contactor_type_id,
+        counter_size_id: values.counter_size,
+        contactor_type_id: values.contractor_type_name,
         is_consumer: values.is_consumer,
         fiz_name: values.fiz_name,
         goverment_name: values.goverment_name,
+        person_type_id: values.type_name,
         personal_account: values.personal_account,
         edrpou: values.edrpou,
         user_id: values.user_id,
-        personType: values.personType,
-        contractorType: values.contractorType
       }
       addAct(data)
-      console.log("ADD ACT" , data)
+      console.log('ADD ACT', data)
       setIsSubmitting(false)
     }, validationSchema: Yup.object({
       act_number: Yup.number('Номер акту не може містити букви').positive('Номер акту не може бути відємним числом').integer('Номер повинен бути цілим числом').required('Введіть номер акту'),
@@ -81,11 +99,11 @@ export const NewActPage = ({ user }) => {
   const { departments, isDepartmentsLoading, errorDepartments } = useDepartments({
     regionId: formik.values.region_id
   })
-  const { cities, isCitiesLoading, errorCities } = useCities({
-    department_id: formik.values.department_id, search_city: formik.values.city_id
+  const { cities, isCitiesLoading, errorCities, setSearch_city } = useCities({
+    search_city: formik.values.search_city, department_id: formik.values.department_id
   })
-  const { streets, isStreetsLoading, errorStreets } = useStreets({
-    search_street: formik.values.street_id, cityId: formik.values.city_id
+  const { streets, isStreetsLoading, errorStreets  } = useStreets({
+    search_street: formik.values.search_street, cityId: formik.values.city_id
   })
   if (allInfoLoading) {
     return <h1>Loading</h1>
@@ -93,212 +111,405 @@ export const NewActPage = ({ user }) => {
   if (allInfoError) {
     return (<div>Error load</div>)
   }
-  return (<div className='w-10/12  mx-auto'>
-    <h2 className={'text-5xl font-light text-center m-10'}>Реєстрація актів порушення</h2>
-    <form className='grid grid-cols-3 grid-rows-2 gap-12' onSubmit={formik.handleSubmit}>
-      <div className='flex flex-col space-y-4'>
-        <h2 className={'text-2xl mt-8 font-light text-center'}>Акт порушення</h2>
-        <Input
-          placeholder='Номер акту'
-          name='act_number'
-          id='act_number'
-          type='number'
-          value={formik.values.act_number}
-          onChange={formik.handleChange}
-          error={formik.errors.act_number}
-          errorText={formik.errors.act_number}
-        />
-        <Input
-          name='reg_date'
-          id='reg_date'
-          type='datetime-local'
-          value={formik.values.reg_date}
-          onChange={formik.handleChange}
-          error={formik.errors.reg_date}
-          errorText={formik.errors.reg_date}
-        />
-        <Select
-          name='unit_id'
-          value={formik.values.unit_id}
-          onChange={formik.handleChange}
-          options={allInfo.unit.map((unit) => ({
-            value: unit.id, label: unit.unit_name
-          }))}
-          error={formik.errors.unit_id}
-          errorText={formik.errors.unit_id}
-        />
-        <div className='mt-4 flex items-center'>
-          <input
-            type='checkbox'
-            id='is_central'
-            name='is_central'
-            checked={is_central}
-            onChange={formik.handleChange}
-            className='h-4  w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
-          />
-          <label htmlFor='is_central' className='ml-2 block text-sm text-gray-900'>
-            Центральний підрозділ
-          </label>
-        </div>
-      </div>
-
-      <div className='flex flex-col space-y-4'>
-        <h2 className={'text-2xl mt-8 font-light text-center'}>Дільниця реєстрації порушення</h2>
-
-        <Select
-          label='Оберіть область'
-          name='region_id'
-          value={formik.values.region_id}
-          onChange={formik.handleChange}
-          options={allInfo.regions.map(region => ({
-            value: region.id, label: region.region_name
-          }))}
-          error={formik.errors.region_id}
-          errorText={formik.errors.region_id}
-        />
-        {formik.values.region_id && !isDepartmentsLoading && departments && (
-          <Select
-            label='Оберіть дільницю'
-            name='department_id'
-            value={formik.values.department_id}
-            onChange={formik.handleChange}
-            options={departments.map((department) =>
-              ({
-                value: department.id,
-                label: department.department_name
-              }))}
-            error={formik.errors.department_id}
-            errorText={formik.errors.department_id}
-          />)}
-
-        {formik.values.department_id && !isCitiesLoading && cities && (
-          <SearchSelect
-            label='Оберіть місто'
-            name='city_id'
-            value={formik.values.city_id}
-            onChange={formik.handleChange}
-            options={cities.map((city) => ({
-              value: city.id,
-              label: city.city_name
-            }))}
-            error={formik.errors.city_id}
-            errorText={formik.errors.city_id}
-          />
-        )}
-        {console.log( 'city_id' , formik.values.city_id   ) }
-
-        {formik.values.city_id && !isStreetsLoading && streets && (
-          <SearchSelect
-            label='Оберіть вулицю'
-            name='street_id'
-            value={formik.values.street_id}
-            onChange={formik.handleChange}
-            options={streets.map((street) =>
-              ({
-                value: street.id,
-                label: street.street_name
-              }))}
-            error={formik.errors.street_id}
-            errorText={formik.errors.street_id}
-
-          />
-        )}
-      </div>
 
 
+  return (
+    <Box sx={{
+      height: '1',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      m: 8
+    }}>
+      <form handleSubmit={formik.handleSubmit}>
+        <Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant='h4' component='div' gutterBottom>
+                Реєстрація акту
+              </Typography>
+              <Grid container spacing={4}>
+                <Grid item xs={6}>
+                  <Typography variant='subtitle1' align='center'>Акт порушення</Typography>
+                  <InputLabel id='act_number'>Номер акту порушення </InputLabel>
+                  <TextField id='act_number' label='Номер акту' variant='outlined' fullWidth
+                             value={formik.values.act_number}
+                             onChange={formik.handleChange}
+                             error={formik.touched.act_number && Boolean(formik.errors.act_number)}
+                             helperText={formik.touched.act_number && formik.errors.act_number}
+                  />
+                  <Grid container columnSpacing={2} sx={{ justifyContent: 'space-between' }}>
+                    <Grid item xs={5}>
+                      <DatePicker value={formik.values.reg_date_date} label='Оберіть дату' />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <TimePicker value={formik.values.reg_date_time} label='Час реєстрації ' />
+                    </Grid>
+                  </Grid>
+                  <Grid sx={{ mt: 4 }}>
+                    <InputLabel variant='standard' id='unit_id'>
+                      Підрозділ
+                    </InputLabel>
+                    <Select
+                      labelId='unit_id'
+                      id='unit_id'
+                      name='unit_id'
+                      value={formik.values.unit_id}
+                      onChange={formik.handleChange}
+                      fullWidth
+                    >
+                      <MenuItem value=''>
+                        <em>Оберіть підрозділ</em>
+                      </MenuItem>
+                      {allInfo.unit.map((unit) => (
+                        <MenuItem key={unit.id} value={unit.id}>
+                          {unit.id} - {unit.unit_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormControlLabel
+                      value={formik.values.is_central}
+                      control={<Checkbox defaultChecked />}
+                      label='Центральний підрозділ' />
+                  </Grid>
+                </Grid>
 
-      <div className='flex flex-col space-y-4'>
-        <h2 className={'text-2xl font-light text-center'}>Адреса порушення</h2>
-        <Input
-          type='text'
-          id='house_number'
-          name='house_number'
-          placeholder='Будинок'
-          value={formik.values.house_number}
-          onChange={formik.handleChange}
-          error={formik.errors.house_number}
-          errorText={formik.errors.house_number}
-        />
-        <Input
-          type='text'
-          id='app_number'
-          name='app_number'
-          placeholder='Квартира'
-          value={formik.values.app_number}
-          onChange={formik.handleChange}
-          error={formik.errors.app_number}
-          errorText={formik.errors.app_number} />
+                <Grid sx={{ spacing: 2 }} item xs={6}>
+                  <Typography variant='subtitle1' align='center'>Дільниця реєстрації</Typography>
+                  <Grid container spacing={2} marginTop={3}>
+                    <Grid item xs={12}>
+                      <InputLabel id='region_id'>Область</InputLabel>
+                      <Select
+                        labelId='region_id'
+                        id='region_id'
+                        name='region_id'
+                        value={formik.values.region_id}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть область</em>
+                        </MenuItem>
+                        {allInfo.regions.map((region) => (
+                          <MenuItem key={region.id} value={region.id}>
+                            {region.region_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Grid>
 
-        <h2 className={'mt-4 text-2xl font-light text-center'}>Вид порушення</h2>
-        <Select
-          name='violation_type_id'
-          value={formik.values.violation_type_id}
-          onChange={formik.handleChange}
-          options={allInfo.violationType.map((violationType) => ({
-            value: violationType.id, label: violationType.violation_name
-          }))}
-          error={formik.errors.violation_type_id}
-          errorText={formik.errors.violation_type_id}
-        />
-        <Select
-          name='counter_size_id'
-          label='Розмір лічильника'
-          value={formik.values.counter_size_id}
-          onChange={formik.handleChange}
-          options={allInfo.counterSize.map((counterSize) => ({
-            value: counterSize.id, label: counterSize.counter_size
-          }))}
-          error={formik.errors.unit_id}
-          errorText={formik.errors.unit_id}
-        />
-        <Select
-          name='action_state_id'
-          value={formik.values.action_state_id}
-          onChange={formik.handleChange}
-          options={allInfo.actionStates.map((actionStates) => ({
-            value: actionStates.id, label: actionStates.state
-          }))}
-          error={formik.errors.action_state_id}
-          errorText={formik.errors.action_state_id}
-        />
-      </div>
+                    {formik.values.region_id && !isDepartmentsLoading && departments && (
+                      <Grid item xs={12}>
+                        <InputLabel id='department_id'>Відділення</InputLabel>
+                        <Select
+                          labelId='department_id'
+                          id='department_id'
+                          name='department_id'
+                          value={formik.values.department_id}
+                          onChange={formik.handleChange}
+                          fullWidth
+                        >
+                          <MenuItem value=''>
+                            <em>Оберіть відділення</em>
+                          </MenuItem>
+                          {departments.map((department) => (
+                            <MenuItem key={department.id} value={department.id}>
+                              {department.department_name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                    )}
 
-      <div className='flex flex-col space-y-4'>
-        <h2 className={'text-2xl font-light text-center'}>Оберіть вид контрагента</h2>
-        <Select
-          name='personType'
-          label='Оберіть тип споживача'
-          value={formik.values.personType}
-          onChange={formik.handleChange}
-          options={allInfo.personType.map((personType) => ({
-            value: personType.id, label: personType.type_name
-          }))}
-          error={formik.errors.personType}
-          errorText={formik.errors.personType}
-        />
-        <Select
-          name='contractorType'
-          label='Оберіть тип контрагента'
-          value={formik.values.contractorType}
-          onChange={formik.handleChange}
-          options={allInfo.contractorType.map((contractorType) => ({
-            value: contractorType.id, label: contractorType.contractor_type_name
-          }))}
-          error={formik.errors.contractorType}
-          errorText={formik.errors.contractorType}
-        />
-        <Button
-          className='w-40 py-2'
-          type='submit'
-          variant='success'
-          isDisabled={formik.isSubmitting}
-        >
-          {formik.isSubmitting || isSubmitting ? <Loading size='sm' variant='success' /> : 'Зберегти дані акту'}
-        </Button>
-      </div>
-    </form>
-  </div>)
+                    {formik.values.department_id && !isCitiesLoading && cities && (
+                      <Grid item xs={12}>
+                        <Autocomplete
+                          id='city_id'
+                          name='city_id'
+                          options={cities}
+                          getOptionLabel={(city) => city.city_name}
+                          value={formik.values.city_id}
+                          fullWidth
+                          onChange={(e, value) => {
+                            if (value) {
+                              formik.setFieldValue('city_id', value.id || '')
+                            }
+                            else {
+                              formik.setFieldValue('city_id', '')
+                            }
+
+                            console.log('on change value', value, 'val.id', value.id, 'formik.values.id', formik.values.city_id)
+                          }}
+
+                          onInputChange={(e, newInputValue) => {
+                            if (newInputValue) {
+                            setSearch_city(newInputValue)
+                              console.log('setsearchcity ', newInputValue)
+                            }
+                          }}
+
+                          renderInput={(params) =>
+                            <TextField {...params} label='Город' />
+                          }
+                        />
+                      </Grid>
+                    )}
+
+
+                    {formik.values.city_id && !isStreetsLoading && streets && (
+                      <Grid item xs={12}>
+                        <Autocomplete
+                          id='street_id'
+                          name='street_id'
+                          options={streets}
+                          getOptionLabel={(street) => street.street_name}
+                          onChange={(e, value) => formik.setFieldValue('street_id', value?.id || '')}
+                          fullWidth
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              margin='normal'
+                              label='Street'
+                              fullWidth
+                              value={formik.values.street_id}
+                              variant='outlined'
+                              error={formik.touched.street_id && Boolean(formik.errors.street_id)}
+                              helperText={formik.touched.street_id && formik.errors.street_id}
+                            />
+                          )}
+                        />
+                      </Grid>
+                    )}
+                  </Grid>
+
+
+                  <Grid item marginTop={6}>
+                    <Typography variant='subtitle1'>Адреса порушення </Typography>
+
+                    <Grid columnSpacing={2} container sx={{ justifyContent: 'space-between' }}>
+                      <Grid item xs={5}>
+                        <TextField id='house_number' label='Номер будинку' variant='outlined' fullWidth
+                                   value={formik.values.house_number}
+                                   onChange={formik.handleChange}
+                                   error={formik.touched.house_number && Boolean(formik.errors.house_number)}
+                                   helperText={formik.touched.house_number && formik.errors.house_number}
+                                   InputProps={{
+                                     startAdornment: (
+                                       <InputAdornment position='start'>
+                                         <MdHome />
+                                       </InputAdornment>
+                                     )
+                                   }}
+                        />
+                      </Grid>
+
+                      <Grid item xs={5}>
+                        <TextField id='app_number' label='Номер квартири' variant='outlined' fullWidth
+                                   value={formik.values.app_number}
+                                   onChange={formik.handleChange}
+                                   error={formik.touched.app_number && Boolean(formik.errors.app_number)}
+                                   helperText={formik.touched.app_number && formik.errors.app_number}
+                                   InputProps={{
+                                     startAdornment: (
+                                       <InputAdornment position='start'>
+                                         <MdApartment />
+                                       </InputAdornment>
+                                     )
+                                   }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+
+                <Grid sx={{ spacing: 2 }} item xs={6}>
+                  <Typography variant='subtitle1' align='center'>Тип порушення </Typography>
+                  <Grid container spacing={2} marginTop={5}>
+
+                    <Grid item xs={12}>
+                      <InputLabel id='violation_type_id'>Вид порушення</InputLabel>
+                      <Select
+                        labelId='violation_type_id'
+                        id='violation_type_id'
+                        value={formik.values.violation_name}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть підрозділ</em>
+                        </MenuItem>
+                        {allInfo.violationType.map((violationType) => (
+                          <MenuItem key={violationType.id} value={violationType.id}>
+                            {violationType.violation_description + ' ' + violationType.violation_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <InputLabel id='counter_size'>Типорозмір лічильника</InputLabel>
+                      <Select
+                        labelId='counter_size'
+                        id='counter_size'
+                        value={formik.values.counter_size}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть розмір</em>
+                        </MenuItem>
+                        {
+                          allInfo.counterSize.map((counterSize) => (
+                            <MenuItem key={counterSize.id} value={counterSize.id}>
+                              {counterSize.counter_size}
+                            </MenuItem>
+                          ))
+                        }
+                      </Select>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <InputLabel id='actionStates'>Статус дій по порушенню</InputLabel>
+                      <Select
+                        labelId='action_state_id'
+                        id='action_state_id'
+                        value={formik.values.state}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть статус дій</em>
+                        </MenuItem>
+                        {
+                          allInfo.actionStates.map((actionState) => (
+                            <MenuItem key={actionState.id} value={actionState.id}>
+                              {actionState.state}
+                            </MenuItem>
+                          ))
+                        }
+                      </Select>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid sx={{ spacing: 2 }} item xs={6}>
+                  <Typography variant='subtitle1' align='center'> Вид контрагента </Typography>
+                  <Grid container spacing={2} marginTop={5}>
+
+                    <Grid item xs={12}>
+                      <InputLabel id='contactor_type_id'>Тип контрагента</InputLabel>
+                      <Select
+                        labelId='contactor_type_id'
+                        id='contactor_type_id'
+                        value={formik.values.contractor_type_name}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть контрагента</em>
+                        </MenuItem>
+                        {
+                          allInfo.contractorType.map((contractorType) => (
+                            <MenuItem key={contractorType.id} value={contractorType.id}>
+                              {contractorType.contractor_type_name}
+                            </MenuItem>
+                          ))
+                        }
+                      </Select>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <InputLabel id='person_type_id'>Тип споживач / не споживач</InputLabel>
+                      <Select
+                        labelId='person_type_id'
+                        id='person_type_id'
+                        value={formik.values.type_name}
+                        onChange={formik.handleChange}
+                        fullWidth
+                      >
+                        <MenuItem value=''>
+                          <em>Оберіть споживача</em>
+                        </MenuItem>
+                        {
+                          allInfo.personType.map((personType) => (
+                            <MenuItem key={personType.id} value={personType.id}>
+                              {personType.type_name}
+                            </MenuItem>
+                          ))
+                        }
+                      </Select>
+                    </Grid>
+
+
+                    {formik.values.contactor_type_id === 1 && (
+                      <>
+                        <Grid item xs={12}>
+                          <TextField fullWidth
+                                     label='ПІБ' id='fiz_name' value={formik.values.fiz_name} InputProps={{
+                            startAdornment: (
+                              <InputAdornment position='start'>
+                                <MdPerson />
+                              </InputAdornment>
+                            )
+                          }} />
+
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField fullWidth
+                                     label='Рахунок' id='personal_account' value={formik.values.personal_account}
+                                     InputProps={{
+                                       startAdornment: (
+                                         <InputAdornment position='start'>
+                                           <MdHome />
+                                         </InputAdornment>
+                                       )
+                                     }} />
+                        </Grid>
+                      </>
+                    )}
+
+
+                    {formik.values.contactor_type_id === 2 && (
+                      <>
+                        <Grid item xs={12}>
+                          <TextField fullWidth
+                                     label='Назва юр.особи' id='company_name' value={formik.values.company_name}
+                                     InputProps={{
+                                       startAdornment: (
+                                         <InputAdornment position='start'>
+                                           <MdLocalPostOffice />
+                                         </InputAdornment>
+                                       )
+                                     }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField fullWidth
+                                     label='ЕДРПО' id='edrpou' value={formik.values.edrpou} InputProps={{
+                            startAdornment: (
+                              <InputAdornment position='start'>
+                                <MdNumbers />
+                              </InputAdornment>
+                            )
+                          }} />
+                        </Grid>
+                      </>
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography sx={{ mt: 10 }} variant='body2' color='text.secondary' align='center'>
+            <Button variant='contained' color='primary' type='submit'>Зберегти</Button>
+          </Typography>
+        </Grid>
+      </form>
+    </Box>
+  )
 }
 
-
-// http://172.21.90.252/api/allInfo

@@ -1,69 +1,64 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Document, Tabs } from '../components'
+import {Box, Tab, Tabs} from '@mui/material';
+import {TabContext, TabPanel} from "@material-ui/lab";
+
+import { ViolarionAct } from '../components'
 import { useGetAct } from '../hooks'
-
 export const ActPage = ({ user }) => {
-  const { id } = useParams()
 
+  const [value, setValue] = React.useState('1')
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+  const { id } = useParams()
   const { data, isLoading, error } = useGetAct({ id })
-  const tabs = [
-    {
-      label: 'Акт порушення',
-      content: <Document act={data} />,
-      roles: []
-    },
-    {
-      label: 'Лабораторія з повірки ПЛГ',
-      content: <h1>Лаб</h1>,
-      roles: ['lab', 'admin']
-    },
-    {
-      label: 'Комісія з розгляду актів про порушення',
-      content: <h1>Комісія</h1>,
-      roles: ['komisiya', 'admin']
-    },
-    {
-      label: 'Нарахування та оплати на рахунок АТ "Експертизи"',
-      content: <h1>Оплати</h1>,
-      roles: ['ekspert', 'admin']
-    },
-    {
-      label: 'Погодження рохрахунків по метрології та ВЕБ',
-      content: <h1>Погодження</h1>,
-      roles: ['pogodzenya', 'admin']
-    },
-    {
-      label: 'Юридичне супроводження порушень',
-      content: <h1>Юридичне супроводження</h1>,
-      roles: ['yur', 'admin']
-    }
-  ]
-  const [activeTab, setActiveTab] = useState(tabs[0].label)
-  const filteredTabs = tabs.filter((tab) => {
-    if (tab.roles && tab.roles.length > 0) {
-      return tab.roles.some((role) => user?.roles?.includes(role))
-    }
-    return true
-  })
+
+
   if (isLoading) {
     return <div>Loading...</div>
   }
+
   if (error) {
     return <div>Error loading data</div>
   }
+
   return (
-    <main className='flex-1 bg-indigo-50'>
-      <div className='flex flex-col'>
-        <div className='overflow-x-auto'>
-          <div className='w-full inline-block align-middle'>
-            <div className='overflow-hidden border rounded-lg'>
-              <Tabs tabs={filteredTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
+    <TabContext value={value}>
+      <Box sx={{ borderBottom: 2, borderColor: 'divider', mt: 15, borderTop: 1 }}>
+        <Tabs
+          textColor='secondary'
+          value={value}
+          onChange={handleChange}
+          variant='scrollable'
+          scrollButtons='auto'
+          aria-label='scrollable auto tabs example'
+        >
+
+          <Tab label='Акт порушення' value='1' />
+          <Tab label='Лабораторія повірки ПЛГ' value='2' />
+          <Tab label='Комісія з розгляду актів про порушення' value='3' />
+          <Tab label='Нарахування та оплати на рахунок АТ  Експертизи' value='4' />
+          <Tab label='Погодження рохрахунків по метрології та ВЕБ' value='5' />
+          <Tab label='Юридичне супроводження порушень' value='6' />
+          <Tab label='tab 7 ' value = '7' />
+        </Tabs>
+      </Box>
+      <TabPanel value='1'><ViolarionAct act={data} /> </TabPanel>
+      <TabPanel value='2'>Лабораторія повірки ПЛГ</TabPanel>
+      <TabPanel value='3'>Комісія з розгляду актів про порушення</TabPanel>
+      <TabPanel value='4'>Нарахування та оплати на рахунок АТ Експертизи</TabPanel>
+      <TabPanel value='5'>Погодження рохрахунків по метрології та ВЕБ</TabPanel>
+      <TabPanel value='6'>Юридичне супроводження порушень</TabPanel>
+    <TabPanel value='7'>7</TabPanel>
+    </TabContext>
+  );
 }
+
+
+
+
+
+
+
