@@ -15,7 +15,7 @@ import {
 } from './pages'
 import { useUser } from './hooks'
 import { PrivateRoute } from './routes'
-import { Footer, Layout } from './layout'
+import { Layout } from './layout'
 
 function App() {
   const { getUser, user, setUser  } = useUser()

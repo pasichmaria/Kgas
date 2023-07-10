@@ -5,7 +5,6 @@ import { CustomPaginationActionsTable } from '../components'
 import { useGetActs } from '../hooks'
 import { Button, Container, Grid } from '@mui/material'
 
-
 export const ActsPage = () => {
   const navigate = useNavigate()
   const { perPage, setPerPage, searchValue, setSearchValue, currentPage, query } = useGetActs()
@@ -18,7 +17,7 @@ export const ActsPage = () => {
   }
   return (
     <Container sx={{
-      mt : 15,
+      mt : 10,
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
@@ -28,10 +27,6 @@ export const ActsPage = () => {
       backgroundColor: '#ffffff',
       mb: 15
     }}>
-      <Grid container={12}>
-          <Button variant='contained' onClick={() => navigate('/newAct')}
-                  sx={{ backgroundColor: '#1e88e5', color: '#ffffff', width: '100%', height: '100%' }}>Створити акт</Button>
-      </Grid>
       <CustomPaginationActionsTable  searchValue={searchValue} setSearchValue={setSearchValue} total={query.data?.total} perPage={perPage} currentPage={currentPage} setPerPage={setPerPage} query={query} />
     </Container>
   )

@@ -1,6 +1,3 @@
-export * from './Button'
 export * from './ViolarionAct'
-export * from './Label'
-export * from './Search'
-export * from './Select'
 export * from './PaginationTable'
+export * from './Button'

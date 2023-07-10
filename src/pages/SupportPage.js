@@ -12,7 +12,6 @@ export const SupportPage = ({ user }) => {
     axios.post('https://jsonplaceholder.typicode.com/posts', data)
       .then((responce) => {
         <Link to={'/home'} />
-
       })
       .catch((error) => {
         console.log(error)

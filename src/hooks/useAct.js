@@ -25,6 +25,7 @@ export const useGetAct = ({ id }) => {
     getActByNumber({ id }
     ), { enabled: !!id, staleTime: 5000 }
   )
+  console.log(getActByNumberQuery)
   return getActByNumberQuery
 }
 export const useGetActs = () => {

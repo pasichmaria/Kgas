@@ -1,45 +1,76 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import { Button } from '../components'
-
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import { Button, Grid, Typography } from '@mui/material'
 export const HomePage = () => {
+
   const navigate = useNavigate()
   return (
-    <main className='flex-1 bg-indigo-50'>
-      <div className='overflow-x-auto'>
-        <div className='p-6 w-full inline-block align-middle'>
-          <section
-            className=' justify-center w-full h-screen flex flex-col lg:flex-row items-center justify-center space-y-16 lg:space-y-0 space-x-8 2xl:space-x-0'>
-            <div className='w-full lg:w-1/2 flex flex-col items-center justify-center lg:px-2 xl:px-0 text-center'>
-              <p className='text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider uppercase text-gray-500'>
-                Вітаємо на головній сторінці
-              </p>
-              <p className='text-lg md:text-xl lg:text-2xl text-gray-500 my-12'>
-                Ви можете переглянути журнал актів порушень, та внутрішні документи
-              </p>
-              <Button
-                className={'py-3'}
-                variant={'success'}
-                size={'lg'}
-                onClick={() => {
+
+    <Container sx={{
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      p: 0,
+      marginTop : 12
+
+    }}>
+      <Box
+        sx={{
+          border: 2,
+          borderColor: 'secondary.main',
+          borderRadius: 4,
+          p: 4,
+          marginTop: 12,
+          marginBottom: 12,
+          boxShadow: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant='h4' gutterBottom>
+              Вітаємо на головній сторінці.
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              Ви можете переглянути журнал актів порушень, та внутрішні документи.
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'
+                 height='100%'>
+              <Grid item xs={8}>
+                <Button variant='contained' color='secondary' size={'large'} fullWidth onClick={() => {
                   navigate('/internalDocuments')
-                }}
-              >Внутрішні документи
-              </Button>
-              <Button
-                className={' py-3'}
-                variant={'success'}
-                size={'lg'}
-                onClick={() => {
+                }}>
+                  Переглянути внутрішні документи
+                </Button>
+              </Grid>
+              <Grid item xs={8}>
+                <Button variant='contained' color='secondary' size={'large'} fullWidth onClick={() => {
                   navigate('/acts')
-                }}
-              >
-                Журнал актів порушень
-              </Button>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>)
+                }}>
+                  Переглянути журнал актів порушень
+                </Button>
+              </Grid>
+            </Box>
+          </Grid>
+          <Typography sx={{ mt: 8 }} variant='h6' gutterBottom>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci alias
+            asperiores atque autem consequatur cumque cupiditate delectus doloremque doloribus ducimus
+            earum eius eligendi eos error esse est eum eveniet excepturi exercitationem expedit</Typography>
+          <Grid item xs={12}>
+            <Typography variant='body2' gutterBottom>
+             Додаткова інформація про систему та її функціонал
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
+  )
 }
