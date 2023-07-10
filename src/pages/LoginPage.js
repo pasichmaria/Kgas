@@ -11,7 +11,6 @@ export const LoginPage = ({ getUser , user }) => {
       onLoginSuccess: (data) => {
         localStorage.setItem('token', data)
         getUser(data)
-
       }
     })
 

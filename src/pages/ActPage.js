@@ -7,14 +7,13 @@ import {TabContext, TabPanel} from "@material-ui/lab";
 import { ViolarionAct } from '../components'
 import { useGetAct } from '../hooks'
 export const ActPage = ({ user }) => {
-
   const [value, setValue] = React.useState('1')
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
   const { id } = useParams()
   const { data, isLoading, error } = useGetAct({ id })
-
+  console.log(data)
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -26,7 +25,7 @@ export const ActPage = ({ user }) => {
 
   return (
     <TabContext value={value}>
-      <Box sx={{ borderBottom: 2, borderColor: 'divider', mt: 15, borderTop: 1 }}>
+      <Box sx={{ borderBottom: 2, borderColor: 'divider', mt: 10, borderTop: 1 }}>
         <Tabs
           textColor='secondary'
           value={value}

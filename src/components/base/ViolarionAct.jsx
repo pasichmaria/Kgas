@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Grid, Typography } from '@mui/material'
 
 export const ViolarionAct = ({ act }) => {
+  console.log(act)
+
   return (
     <Container sx={{
       height: '100vh',
@@ -11,7 +13,7 @@ export const ViolarionAct = ({ act }) => {
       alignItems: 'center',
       p: 0,
       backgroundColor: '#ffffff',
-      mb : 15
+      mb: 15
     }}>
 
       <Typography variant='h3' align='center'>
@@ -36,7 +38,7 @@ export const ViolarionAct = ({ act }) => {
           </Typography>
           {act.violation_type.violation_description ? (
             <Typography variant='body1' component='p' sx={{ fontSize: 'lg', fontWeight: 'light' }}>
-              {act.violation_type.violation_description}
+              {act.violation_type.violation_description} {' '} {act.violation_type.violation_name}
             </Typography>
           ) : (
             <Typography variant='h1' component='h1' sx={{ color: 'red.500', mt: 5 }}>
