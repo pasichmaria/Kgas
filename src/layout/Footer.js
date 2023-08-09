@@ -9,6 +9,7 @@ export function Footer({ user }) {
       sx={{
         heigth : '35vh',
         width: '100%',
+        mt: 10,
         backgroundColor: '#f5f5f5',
         py: 4,
       }}

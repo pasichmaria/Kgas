@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { useAuth } from '../hooks'
+import { useAuth } from '../../hooks'
 import { Avatar, Box, Container, TextField, Typography, Button } from '@mui/material'
 
 export const LoginPage = ({ getUser , user }) => {

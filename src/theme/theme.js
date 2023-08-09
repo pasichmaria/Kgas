@@ -10,8 +10,9 @@ export  const theme = createTheme({
         },
         error: {
             main: '#dc0c11',
+            border: '#e33437',
+            borderColor: '#560b0c',
         },
-
         background: {
             default: '#ffffff',
         },
@@ -37,23 +38,6 @@ export  const theme = createTheme({
                     borderColor: 'secondary.main',
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {}
-                    }
-                },
-            },
-        },
-
-        MuiButton: {
-            defaultProps: {
-                variant: 'outlined',
-                color: 'primary',
-                sx: {
-                    marginTop: 4,
-                    borderRadius: 1,
-                    borderColor: 'primary.main',
-                    '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-
                     }
                 },
             },

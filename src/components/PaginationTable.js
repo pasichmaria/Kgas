@@ -99,26 +99,22 @@ export const CustomPaginationActionsTable = ({ total, perPage, query }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(perPage)
   const [searchValue, setSearchValue] = React.useState('')
 
-  const rows = query.data && query.data.data.map((act) => createData(act.id, act.act_number, act.reg_date, act.violation_type.violation_description + ' ' + act.violation_type.violation_name, act.action_state.state, act.counter_size.counter_size, act.region.region_name + ' , ' + act.city.city_name, act.department.department_name, act.unit.unit_name, act.contractor_type.contractor_type_name, act.is_consumer === 1 ? 'Споживач' : 'Не споживач'))
+  const rows = query.data.data && query.data.data.map((act) => createData(act.id, act.act_number, act.reg_date, act.violation_type.violation_description + ' ' + act.violation_type.violation_name, act.action_state.state, act.counter_size.counter_size, act.region.region_name + ' , ' + act.city.city_name, act.department.department_name, act.unit.unit_name, act.contractor_type.contractor_type_name, act.is_consumer === 1 ? 'Споживач' : 'Не споживач'))
 
   const filteredRows = rows.filter((act) => act.actNumber.toLowerCase().includes(searchValue.toLowerCase()) || act.regDate.toLowerCase().includes(searchValue.toLowerCase()) || act.violationType.toLowerCase().includes(searchValue.toLowerCase()) || act.actionState.toLowerCase().includes(searchValue.toLowerCase()) || act.counterSize.toLowerCase().includes(searchValue.toLowerCase()) || act.regionCity.toLowerCase().includes(searchValue.toLowerCase()) || act.department.toLowerCase().includes(searchValue.toLowerCase()) || act.unit.toLowerCase().includes(searchValue.toLowerCase()) || act.contractorType.toLowerCase().includes(searchValue.toLowerCase()) || act.consumerStatus.toLowerCase().includes(searchValue.toLowerCase()))
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value)
     setPage(0)
   }
-
   return (<TableContainer sx={{ mt: 10 }} component={Paper}>
     <>
       <Button variant='contained' onClick={() => navigate('/newAct')}

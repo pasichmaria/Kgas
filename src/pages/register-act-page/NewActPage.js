@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useFormik } from 'formik'
 import {
   Autocomplete,
@@ -17,8 +17,9 @@ import {
 import { DateTimePicker } from '@mui/x-date-pickers'
 import { MdAccountBox, MdApartment, MdBuildCircle, MdHome, MdLocalPostOffice, MdPerson } from 'react-icons/md'
 
-import { useAddAct, useAllInfo, useCities, useStreets } from '../hooks'
-import { useDepartments } from '../hooks/useDepartments'
+import { useAddAct, useAllInfo, useCities, useStreets } from '../../hooks'
+import { useDepartments } from '../../hooks/useDepartments'
+import { ErrorLoad, Loading } from '../../components'
 
 export const NewActPage = ({ user }) => {
   const { addAct } = useAddAct({
@@ -27,7 +28,6 @@ export const NewActPage = ({ user }) => {
     }
   })
   const { data: allInfo, isLoading: allInfoLoading, error: allInfoError } = useAllInfo()
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -43,7 +43,6 @@ export const NewActPage = ({ user }) => {
       fiz_name: '',
       goverment_name: '',
       house_number: '',
-      id: '',
       is_central: false,
       is_consumer: '',
       personal_account: '',
@@ -51,7 +50,6 @@ export const NewActPage = ({ user }) => {
       region_id: '',
       street_id: '',
       unit_id: '',
-      user_id: '',
       violation_type_id: ''
     }, onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
@@ -69,7 +67,6 @@ export const NewActPage = ({ user }) => {
             fiz_name: values.fiz_name,
             goverment_name: values.goverment_name,
             house_number: values.house_number,
-            id: values.id,
             is_central: values.is_central,
             is_consumer: values.is_consumer,
             personal_account: values.personal_account,
@@ -77,9 +74,7 @@ export const NewActPage = ({ user }) => {
             region_id: values.region_id,
             street_id: values.street_id,
             unit_id: values.unit_id,
-            user_id: values.user_id,
             violation_type_id: values.violation_type_id,
-
           };
 
         console.log(JSON.stringify(value, null, 2));
@@ -87,9 +82,6 @@ export const NewActPage = ({ user }) => {
       }, 400);
     },
 });
-
-
-
   const { departments, isDepartmentsLoading } = useDepartments({
     regionId: formik.values.region_id
   })
@@ -100,10 +92,10 @@ export const NewActPage = ({ user }) => {
     search_street: formik.values.search_street, city_id: formik.values.city_id
   })
   if (allInfoLoading) {
-    return <h1>Loading</h1>
+    return <Loading />
   }
   if (allInfoError) {
-    return (<div>Error load</div>)
+    return <ErrorLoad />
   }
 
 
@@ -116,10 +108,7 @@ export const NewActPage = ({ user }) => {
           <Typography variant='h4' component='div' gutterBottom>
             Реєстрація акту
           </Typography>
-
           <Grid container spacing={4}>
-
-
             <Grid item xs={6}>
               <Typography variant='subtitle1' align='center'>Акт порушення</Typography>
               <InputLabel id='act_number'>Номер акту порушення </InputLabel>
@@ -128,7 +117,6 @@ export const NewActPage = ({ user }) => {
                          onChange={formik.handleChange}
                          error={formik.touched.act_number && Boolean(formik.errors.act_number)}
                          helperText={formik.touched.act_number && formik.errors.act_number} />
-
               <Grid item xs={12}>
                 <DateTimePicker value={formik.values.reg_date} label='Введіть дату  та час реєстрації акту'
                                 onChange={(date) => formik.setFieldValue('reg_date', date)}
@@ -139,10 +127,8 @@ export const NewActPage = ({ user }) => {
                                     {...params}
                                     fullWidth
                                     value={formik.values.reg_date ? (formik.values.reg_date) : ''}
-                                  />)}
-                />
+                                  />)} />
               </Grid>
-
               <Grid sx={{ mt: 4 }}>
                 <InputLabel variant='standard' id='unit_id'>
                   Підрозділ
@@ -167,14 +153,10 @@ export const NewActPage = ({ user }) => {
                   control={<Checkbox />}
                   label='Центральний підрозділ' />
               </Grid>
-
             </Grid>
-
             <Grid sx={{ spacing: 2 }} item xs={6}>
               <Typography variant='subtitle1' align='center'>Дільниця реєстрації</Typography>
-
               <Grid container spacing={2} marginTop={3}>
-
                 <Grid item xs={12}>
                   <InputLabel id='region_id'>Область</InputLabel>
                   <Select
@@ -581,7 +563,6 @@ export const NewActPage = ({ user }) => {
                     </Grid>
                   </>)}
               </Grid>
-
             </Grid>
           </Grid>
         </Grid>

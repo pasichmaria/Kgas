@@ -1,12 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Button } from '../components'
-import Container from '@mui/material/Container'
-import Box from '@mui/material/Box'
-import { Grid } from '@mui/material'
-import Typography from '@mui/material/Typography'
-
+import { Grid, Button, Container, Box,Typography } from '@mui/material'
 export const NotFoundPage = () => {
   const navigate = useNavigate()
   return (
@@ -43,15 +38,15 @@ export const NotFoundPage = () => {
               <Typography variant="h6">
                 Перевірте правильність адреси
               </Typography>
-            <img src={'src/assets/404 Error with a cute animal-rafiki.svg'}/>
             </Typography>
-
-            <Grid container xs={12}  justifyContent='space-between' >
-                <Button  fullWidth variant="contained" onClick={() => navigate('/home')}>
-                  На головну
-                </Button>
-            </Grid>
-
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate(-1)}
+                fullWidth
+              >
+                Назад
+              </Button>
             </Grid>
           </Grid>
       </Box>

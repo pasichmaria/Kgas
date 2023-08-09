@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import {
   ActPage,
   ActsPage,
@@ -10,15 +10,18 @@ import {
   LoginPage,
   NewActPage,
   NotFoundPage,
-  ReportingPage,
+  ReportingPage,ActPageAdd,
   SupportPage
 } from './pages'
-import { useUser } from './hooks'
+import { useGetAct, useUser } from './hooks'
 import { PrivateRoute } from './routes'
 import { Layout } from './layout'
+import React from 'react'
+import { Loading } from './components'
 
 function App() {
   const { getUser, user, setUser  } = useUser()
+
   return (
     <>
       <Layout user={user} getUser={getUser} setUser={setUser}>
@@ -28,6 +31,9 @@ function App() {
           <Route path='/home' element={<PrivateRoute user={user}><HomePage user={user} /></PrivateRoute>} />
           <Route path='/acts' element={<PrivateRoute user={user}><ActsPage user={user} /></PrivateRoute>} />
           <Route path='/act/:id' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
+          <Route path='/act/:id/edit' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
+          <Route path='/act/:id/add' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
+
 
           <Route path='/deniedActs' element={<PrivateRoute user={user}><DeniedActsPage user={user} /></PrivateRoute>} />
           <Route path='/newAct' element={<PrivateRoute user={user}><NewActPage user={user} /></PrivateRoute>} />}
