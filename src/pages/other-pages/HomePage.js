@@ -1,22 +1,17 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, Typography, Container, Box } from '@mui/material'
 export const HomePage = () => {
 
   const navigate = useNavigate()
   return (
-
     <Container sx={{
-      height: '100vh',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       p: 0,
       marginTop : 12
-
     }}>
       <Box
         sx={{

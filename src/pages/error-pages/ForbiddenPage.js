@@ -1,19 +1,12 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {Grid} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 
+import {Grid, Container, Typography, Box, Button} from '@mui/material';
 export const ForbiddenPage = () => {
   const navigate = useNavigate();
-
-
   return (
     <Container
       sx={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

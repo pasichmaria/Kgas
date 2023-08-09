@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -12,4 +8,23 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+.custom-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+}
+input[type="file"] {
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.custom-input:focus {
+    outline: none;
+    border-color: #aaa;
+    box-shadow: 0 0 1px 1px #aaa;
 }
