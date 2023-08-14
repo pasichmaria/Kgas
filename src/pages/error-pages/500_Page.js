@@ -1,8 +1,8 @@
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Grid, Button, Container, Box,Typography } from '@mui/material'
-export const NotFoundPage = () => {
+export const InternalServerErrorPage = () => {
   const navigate = useNavigate()
   return (
     <Container
@@ -18,7 +18,7 @@ export const NotFoundPage = () => {
       <Box
         sx={{
           border: 2,
-          borderColor: 'secondary.main',
+          borderColor: 'red',
           borderRadius: 4,
           p: 4,
           marginTop: 12,
@@ -31,24 +31,24 @@ export const NotFoundPage = () => {
         <Grid container spacing={2}>
           <Grid xs={12}>
             <Typography variant="h1">
-              404
+             500
             </Typography>
-            <Typography variant="h6">
-              Сторінку не знайдено
               <Typography variant="h6">
-                Перевірте правильність адреси
+                Сталася помилка
+              <Typography variant="h6">
+                Спробуйте пізніше або зверніться до адміністратора
               </Typography>
             </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate(-1)}
-                fullWidth
-              >
-                Назад
-              </Button>
-            </Grid>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate('/login')}
+              fullWidth
+            >
+              Повернутися на головну
+            </Button>
           </Grid>
+        </Grid>
       </Box>
     </Container>
   )

@@ -10,14 +10,14 @@ import {
   LoginPage,
   NewActPage,
   NotFoundPage,
-  ReportingPage,ActPageAdd,
-  SupportPage
+  ReportingPage, ActPageAdd,
+  SupportPage, InternalServerErrorPage
 } from './pages'
-import { useGetAct, useUser } from './hooks'
+import { useUser } from './hooks'
 import { PrivateRoute } from './routes'
 import { Layout } from './layout'
 import React from 'react'
-import { Loading } from './components'
+import { LaboratoryActPage, LaboratoryEditActPage } from './pages/laboratory'
 
 function App() {
   const { getUser, user, setUser  } = useUser()
@@ -34,6 +34,9 @@ function App() {
           <Route path='/act/:id/edit' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
           <Route path='/act/:id/add' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
 
+          <Route path='/act/:id/laboratory/edit' element={<PrivateRoute user={user}><LaboratoryEditActPage  user={user} /></PrivateRoute>} />
+          <Route path='/act/:id/laboratory' element={<PrivateRoute user={user}><LaboratoryActPage user={user} /> </PrivateRoute>} />
+
 
           <Route path='/deniedActs' element={<PrivateRoute user={user}><DeniedActsPage user={user} /></PrivateRoute>} />
           <Route path='/newAct' element={<PrivateRoute user={user}><NewActPage user={user} /></PrivateRoute>} />}
@@ -42,6 +45,8 @@ function App() {
 
           <Route path='/internalDocuments' element={<PrivateRoute user={user}><InternalDocumentsPage user={user} /></PrivateRoute>} />
           <Route path='*' element={<NotFoundPage />} />
+          <Route path='/404' element={<NotFoundPage />} />
+          <Route path='/500' element={<InternalServerErrorPage />} />
           <Route path='/403' element={<ForbiddenPage />} />
           <Route path='/support' element={<SupportPage user={user} />} />
         </Routes>

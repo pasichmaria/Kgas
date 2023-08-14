@@ -26,8 +26,6 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { Footer } from './Footer';
 import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 
 export const Navigation = ({ children, user, setUser }) => {
   const navigate = useNavigate();
@@ -168,7 +166,7 @@ export const Navigation = ({ children, user, setUser }) => {
         </List>
       </Drawer>
       <>
-        {children}
+          {children}
       </>
       <Footer />
       <Dialog open={isLogoutDialogOpen} onClose={closeLogoutDialog} aria-labelledby="alert-dialog-title"

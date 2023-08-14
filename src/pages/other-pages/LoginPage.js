@@ -4,13 +4,26 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { useAuth } from '../../hooks'
-import { Avatar, Box, Container, TextField, Typography, Button } from '@mui/material'
+import { Avatar, Alert, Box, Container, TextField, Typography, Button, Snackbar } from '@mui/material'
 
 export const LoginPage = ({ getUser , user }) => {
-    const { login } = useAuth({
+  const [openSnackbarOk, setOpenSnackbarOk] = useState(false);
+  const handleSnackbarCloseOk = () => {
+    setOpenSnackbarOk(false);
+  };
+const handleSnackbarCloseError = () => {
+    setOpenSnackbarError(false);
+  };
+  const [openSnackbarError, setOpenSnackbarError] = useState(false);
+
+  const { login } = useAuth({
       onLoginSuccess: (data) => {
         localStorage.setItem('token', data)
+        setOpenSnackbarOk(true);
         getUser(data)
+      },
+      onError: (error) => {
+        setOpenSnackbarError(true);
       }
     })
 
@@ -57,12 +70,29 @@ export const LoginPage = ({ getUser , user }) => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+          <Snackbar open={openSnackbarOk} autoHideDuration={6000} onClose={handleSnackbarCloseOk}>
+            <Alert onClose={handleSnackbarCloseOk} severity="success" sx={{
+              position: 'fixed',
+              top: '10%',
+              left: '40%'
+            }}>
+            Вітаємо! Ви успішно увійшли до системи.
+          </Alert>
+        </Snackbar>
+          <Snackbar open={openSnackbarError} autoHideDuration={6000} onClose={handleSnackbarCloseError}>
+            <Alert onClose={handleSnackbarCloseError} severity="error" sx={{
+              position: 'fixed',
+              top: '10%',
+              left: '45%' }}>
+              Невірний логін або пароль.
+            </Alert>
+          </Snackbar>
+
+          <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }} />
           <Typography component='h1' variant='h5'>
             Вхід до аккаунту
           </Typography>
           <Box component='form' onSubmit={formik.handleSubmit}>
-
             <TextField
               margin='normal'
               required
@@ -100,6 +130,7 @@ export const LoginPage = ({ getUser , user }) => {
             >
               Увійти
             </Button>
+
           </Box>
         </Box>
       </Container>

@@ -19,10 +19,9 @@ export const queryOptions = {
   staleTime: 1000 * 60 * 5,
   cacheTime: 1000 * 60 * 5,
   onError: (error) => {
-    console.log(error)
+    window.location.href('/403')
   },
   onSuccess: (data) => {
-    console.log('Query succeeded', data)
   }
 }
 export const mutationOptions = {

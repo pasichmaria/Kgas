@@ -28,6 +28,15 @@ export const useGetAct = ({ id }) => {
   console.log(getActByNumberQuery)
   return getActByNumberQuery
 }
+
+export  const useGetLabAct = ({ id }) => {
+  const getLabAct = useQuery(['act', id], () =>
+    getActByNumber({ id }
+    ), { enabled: !!id, staleTime: 5000 }
+  )
+  console.log(getLabAct)
+  return getLabAct
+}
 export const useGetActs = () => {
   const [searchValue, setSearchValue] = useState()
   const [perPage, setPerPage] = useState(15)

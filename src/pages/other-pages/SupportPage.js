@@ -1,65 +1,83 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import {  Box, Button, Container, TextField, Typography } from '@mui/material'
-import { axios } from '../../API'
+import {
+  Alert, Autocomplete, Box, Button, Container, Snackbar, TextField, Typography
+} from '@mui/material'
+
+import { useFeedback, useGetActs } from '../../hooks'
+import { ErrorLoad, Loading } from '../../components'
 
 export const SupportPage = ({ user }) => {
-
-  const sendFeedback = (data) => {
-    axios.post('https://jsonplaceholder.typicode.com/posts', data)
-      .then((responce) => {
-        <Link to={'/home'} />
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const [openSnackbarOk, setOpenSnackbarOk] = useState(false)
+  const handleSnackbarCloseOk = () => {
+    setOpenSnackbarOk(false)
   }
+  const handleSnackbarCloseError = () => {
+    setOpenSnackbarError(false)
+  }
+  const [openSnackbarError, setOpenSnackbarError] = useState(false)
+
+  const [actNumber, setActNumber] = useState(null)
+  const { feedback } = useFeedback({
+    onFeedbackSuccess: (data) => {
+      console.log(data)
+      setOpenSnackbarOk(true)
+    }, onError: (error) => {
+      setOpenSnackbarError(true)
+    }
+  })
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const formik = useFormik({
-      initialValues: {
-        message: '',
-        feedback: ' ',
-        selectedDoc: null
-      },
+    initialValues: {
+      message: '', feedback: ' ', act_number: null
+    },
 
     onSubmit: async (values) => {
-        setIsSubmitting(true)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        const data = {
-          message: values.message,
-          feedback: values.feedback,
-          selectedDoc: values.selectedDoc
-        }
-        await sendFeedback(data)
-        setIsSubmitting(false)
-      },
-      validationSchema: Yup.object({
-        message: Yup.string().required('Введіть ваше повідомлення')
-      })
-    }
-  )
-
-  return (
-    <Container sx={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      p: 0
+      setIsSubmitting(true)
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const data = {
+        message: values.message, feedback: values.feedback, act_number: values.act_number
+      }
+      await feedback({ data })
+      setIsSubmitting(false)
+    }, validationSchema: Yup.object({
+      message: Yup.string().required('Введіть ваше повідомлення')
+    })
+  })
+  const { query } = useGetActs()
+  if (query.isLoading) {
+    return <Loading />
+  }
+  if (query.error) {
+    return <ErrorLoad error={query.error} />
+  }
+  return (<Container sx={{
+      height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', p: 0
     }}>
       <Box
         sx={{
-          marginTop: 12,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
+          marginTop: 12, display: 'flex', flexDirection: 'column', alignItems: 'center'
         }}
       >
+        <Snackbar open={openSnackbarOk} autoHideDuration={6000} onClose={handleSnackbarCloseOk}>
+          <Alert onClose={handleSnackbarCloseOk} severity='success' sx={{
+            position: 'fixed', top: '10%', left: '40%'
+          }}>
+            Вітаємо! Ви успішно відправили повідомлення.
+          </Alert>
+        </Snackbar>
+        <Snackbar open={openSnackbarError} autoHideDuration={6000} onClose={handleSnackbarCloseError}>
+          <Alert onClose={handleSnackbarCloseError} severity='error' sx={{
+            position: 'fixed', top: '10%', left: '45%'
+          }}>
+            Помилка, спробуйте ще раз.
+          </Alert>
+        </Snackbar>
+
         <Typography component='h1' variant='h5'>
           Зворотній зв'язок
         </Typography>
@@ -89,18 +107,30 @@ export const SupportPage = ({ user }) => {
             value={formik.values.feedback}
             onChange={formik.handleChange}
           />
-
+          {user ? <Autocomplete
+            id='act_number'
+            fullWidth
+            options={query.data.data}
+            getOptionLabel={(option) => option.act_number}
+            onChange={(event, newValue) => {
+              setActNumber(newValue)
+              formik.setFieldValue('act_number', newValue.act_number)
+            }}
+            renderInput={(params) => <TextField {...params} label='Номер акту' />}
+          /> : null}
+          {actNumber ? <Typography component='h1' variant='h5' sx={{ mt: 4 }}>
+            Обраний акт №
+            {actNumber && actNumber.act_number}
+          </Typography> : null}
           <Button
             type='submit'
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
-            disabled={isSubmitting}
           >
             Відправити
           </Button>
         </Box>
       </Box>
-    </Container>
-  )
+    </Container>)
 }

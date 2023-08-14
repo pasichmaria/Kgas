@@ -1,25 +1,21 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Grid, Typography, Container, Box } from '@mui/material'
+
 export const HomePage = () => {
 
   const navigate = useNavigate()
   return (
     <Container sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      p: 0,
-      marginTop : 12
+      display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', p: 0, marginTop: 12
     }}>
       <Box
         sx={{
           border: 2,
           borderColor: 'secondary.main',
           borderRadius: 4,
-          p: 4,
-          marginTop: 12,
+          p: 8,
+          marginTop: 8,
           marginBottom: 12,
           boxShadow: 2,
           display: 'flex',
@@ -61,11 +57,10 @@ export const HomePage = () => {
             earum eius eligendi eos error esse est eum eveniet excepturi exercitationem expedit</Typography>
           <Grid item xs={12}>
             <Typography variant='body2' gutterBottom>
-             Додаткова інформація про систему та її функціонал
+              Додаткова інформація про систему та її функціонал
             </Typography>
           </Grid>
         </Grid>
       </Box>
-    </Container>
-  )
+    </Container>)
 }

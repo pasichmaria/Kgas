@@ -1,2 +1,3 @@
-export * from './ForbiddenPage'
-export * from './NotFoundPage'
+export * from './403_Page'
+export * from './404_Page'
+export * from './500_Page'
