@@ -5,14 +5,15 @@ import {Box, Tab, Tabs} from '@mui/material';
 import {TabContext, TabPanel} from "@material-ui/lab";
 
 import { ErrorLoad, Loading, ViolationAct } from '../../components'
-import { useGetAct } from '../../hooks'
-import { LaboratoryEditActPage } from './LaboratoryEditActPage'
+import { useGetAct, useGetLabAct } from '../../hooks'
+import { LaboratoryActPage } from '../laboratory'
 export const ActPage = ({ user }) => {
   const [value, setValue] = useState('1')
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
   const { id } = useParams()
+  const { data : labData , isLoading:  isLabLoading , isError:  isLabError } = useGetLabAct({id})
   const { data, isLoading, error } = useGetAct({ id })
   console.log(data)
   if (isLoading) {
@@ -41,8 +42,8 @@ export const ActPage = ({ user }) => {
           <Tab label='tab 7 ' value = '7' />
         </Tabs>
       </Box>
-      <TabPanel value='1'><ViolationAct act={data} /> </TabPanel>
-      <TabPanel value='2'><LaboratoryEditActPage   act={data}  /></TabPanel>
+      <TabPanel value='1'><ViolationAct act={data}/></TabPanel>
+      <TabPanel value='2'><LaboratoryActPage act={labData} isError={isLabError} isLoading={isLabLoading} /></TabPanel>
       <TabPanel value='3'>Комісія з розгляду актів про порушення</TabPanel>
       <TabPanel value='4'>Нарахування  АТ Експертизи</TabPanel>
       <TabPanel value='5'>Метрологія та ВЕБ</TabPanel>

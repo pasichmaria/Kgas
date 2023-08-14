@@ -103,7 +103,7 @@ export const CustomPaginationActionsTable = ({ total, perPage, query }) => {
 
   const filteredRows = rows.filter((act) => act.actNumber.toLowerCase().includes(searchValue.toLowerCase()) || act.regDate.toLowerCase().includes(searchValue.toLowerCase()) || act.violationType.toLowerCase().includes(searchValue.toLowerCase()) || act.actionState.toLowerCase().includes(searchValue.toLowerCase()) || act.counterSize.toLowerCase().includes(searchValue.toLowerCase()) || act.regionCity.toLowerCase().includes(searchValue.toLowerCase()) || act.department.toLowerCase().includes(searchValue.toLowerCase()) || act.unit.toLowerCase().includes(searchValue.toLowerCase()) || act.contractorType.toLowerCase().includes(searchValue.toLowerCase()) || act.consumerStatus.toLowerCase().includes(searchValue.toLowerCase()))
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows?.length) : 0
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
@@ -115,10 +115,11 @@ export const CustomPaginationActionsTable = ({ total, perPage, query }) => {
     setSearchValue(event.target.value)
     setPage(0)
   }
-  return (<TableContainer sx={{ mt: 10 }} component={Paper}>
+  return (
+    <TableContainer sx={{ mt: 10 }} component={Paper}>
     <>
       <Button variant='contained' onClick={() => navigate('/newAct')}
-              sx={{ backgroundColor: '#1e88e5', color: '#ffffff', width: '100%' }}>Створити акт</Button>
+              sx={{ width: '100%' }}>Створити акт</Button>
       <TextField
         sx={{ mb: 4, width: '100%', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)', borderRadius: '5px' }}
         label='Знайти акт'
@@ -194,6 +195,3 @@ export const CustomPaginationActionsTable = ({ total, perPage, query }) => {
   </TableContainer>)
 }
 
-CustomPaginationActionsTable.propTypes = {
-  total: PropTypes.number.isRequired, perPage: PropTypes.number.isRequired, query: PropTypes.object.isRequired
-}

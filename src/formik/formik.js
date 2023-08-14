@@ -48,3 +48,9 @@ photo_indef_user: Yup.mixed()
     (value) => value && value.type.startsWith('image/')
   )
 })
+
+export const  validateLaboratoryAct = Yup.object().shape({
+  date_arrived_to_SC: Yup.string().required('Введіть дату'),
+  meter_type_size: Yup.string().required('Введіть тип та розмір лічильника'),
+  meter_brand: Yup.string().required('Введіть марку лічильника')
+})

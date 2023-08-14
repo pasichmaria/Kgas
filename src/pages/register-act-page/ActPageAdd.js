@@ -1,7 +1,7 @@
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { DateTimePicker } from '@mui/x-date-pickers'
-import { Box, Breadcrumbs, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography, Button } from '@mui/material'
+import { Box, Breadcrumbs, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 
 import { ConfirmSaveDialog, FileUpload } from '../../components'
 import { validateAdditionalInfo } from '../../formik/formik'
@@ -61,7 +61,8 @@ const navigate = useNavigate()
   return (
     <>
   <Box
-      sx={{mt : 10,
+      sx={{
+        mt : 10,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

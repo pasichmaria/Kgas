@@ -7,23 +7,24 @@ export const axios = axioslib.create({
 const handleUnauthorized = () => {
   const navigate = useNavigate()
   localStorage.removeItem('token')
-  navigate('/login')
+  history.push('/login');
 }
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response
   },
-  function(error) {
-
-    const navigate = useNavigate()
-    if (error.response) {
-      if (error.response.status === 401 || error.response.status === 419) {
-        handleUnauthorized()
-      }
+  function (error) {
+    if ( error.response.status === 401 || error.response.status === 419) {
+      window.location.replace('/403')
+      handleUnauthorized()
+    } else if ( error.response.status === 404) {
+      window.location.replace('/404')
+    } else if ( error.response.status === 500) {
+      window.location.replace('/500')
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 axios.defaults.withCredentials = true
 axios.interceptors.request.use(

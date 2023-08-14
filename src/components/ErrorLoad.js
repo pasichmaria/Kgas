@@ -30,10 +30,14 @@ export const ErrorLoad = ({ error }) => {
     }}
     >
       <Grid container spacing={2}>
-        <Grid xs={12}>
+        <Grid xs={12} sx={{mb :4}}>
           <Typography variant='h6'>
             Помилка при завантаженні даних
           </Typography>
+          <Typography variant='body1'>
+            Перевірте підключення до інтернету та спробуйте ще раз
+          </Typography>
+
         </Grid>
         <Grid xs={12}>
           <Typography variant='body1'>
