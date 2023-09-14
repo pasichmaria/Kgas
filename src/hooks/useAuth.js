@@ -36,6 +36,6 @@ export const useFeedback = ({onFeedbackSuccess }) => {
     }
   })
   return {
-    feedback: feedbackQuery.mutate
+    feedback: feedbackQuery.mutate, isError: feedbackQuery.isError, isSuccess: feedbackQuery.isSuccess
   }
 }

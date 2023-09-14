@@ -4,7 +4,6 @@ import {
   Autocomplete,
   Box,
   Breadcrumbs,
-  Button,
   Checkbox,
   FormControlLabel,
   Grid,
@@ -13,10 +12,10 @@ import {
   MenuItem,
   Select,
   TextField,
-  Link,
   Typography,
-  Container
+  Alert, Button
 } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import { MdAccountBox, MdApartment, MdBuildCircle, MdHome, MdLocalPostOffice, MdPerson } from 'react-icons/md'
 
@@ -25,16 +24,31 @@ import { useDepartments } from '../../hooks/useDepartments'
 import { ConfirmSaveDialog, ErrorLoad, Loading } from '../../components'
 
 export const NewActPage = ({ user }) => {
-  const { addAct } = useAddAct({
+  const { data: allInfo, isLoading: allInfoLoading, error: allInfoError } = useAllInfo()
+
+  const [activeTab, setActiveTab] = useState(0)
+  const handleTabClick = (tabIndex) => {
+    setActiveTab(tabIndex)
+  }
+  const alertError = () => {
+    return (<Alert severity='error'>
+      Cталася помилка при реєстрації акту. Перевірте правильність введених даних та спробуйте ще раз
+    </Alert>)
+  }
+  const alertOk = () => {
+    return (<Alert severity='success'>
+      Акт успішно зареєстровано в системі
+    </Alert>)
+  }
+
+  const { addAct, isError, isSuccess } = useAddAct({
     onAddActSuccess: (data) => {
-      console.log('ADD ACT SUCCESS', data)
+      alertOk()
+    }, onAddActError: () => {
+      alertError()
     }
   })
-  const { data: allInfo, isLoading: allInfoLoading, error: allInfoError } = useAllInfo()
-  const [activeTab, setActiveTab] = useState('newAct')
-  const handleTabClick = (tabValue) => {
-    setActiveTab(tabValue)
-  }
+
   const formik = useFormik({
     initialValues: {
       act_number: '',
@@ -59,7 +73,7 @@ export const NewActPage = ({ user }) => {
       violation_type_id: ''
     }, onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
-        const value = {
+        const data = {
           ...values,
           act_number: values.act_number,
           action_state_id: values.action_state_id,
@@ -82,8 +96,7 @@ export const NewActPage = ({ user }) => {
           unit_id: values.unit_id,
           violation_type_id: values.violation_type_id
         }
-
-        console.log(JSON.stringify(value, null, 2))
+        addAct(data)
         setSubmitting(false)
       }, 400)
     }
@@ -105,37 +118,31 @@ export const NewActPage = ({ user }) => {
   }
   return (
     <Box
-    sx={{
-      mt: 10, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
-    }}
-    component='form' onSubmit={formik.handleSubmit}>
-
+    sx={{ mt: 10, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <form onSubmit={formik.handleSubmit}>
     <Grid container justify='flex-end'>
+      <Breadcrumbs aria-label='breadcrumb' maxItems={4}>
+        <Link  to='/'>
+          Головна
+        </Link>
+        <Link to='/acts'>
+          Акти
+        </Link>
+        <Typography color='text.primary'>Реєстрація акту</Typography>
 
-      <Breadcrumbs aria-label='breadcrumb' maxItems={2}>
-        <Link
-          sx={{ display: 'flex', alignItems: 'center', color: activeTab === 'acts' ? 'blue' : 'inherit' }}
-          underline='hover'
-          onClick={() => handleTabClick('acts')} to='/acts'
-        >
-          Акти порушень
-        </Link>
-        <Link
-          sx={{ display: 'flex', alignItems: 'center', color: activeTab === 'newAct' ? 'blue' : 'inherit' }}
-          underline='hover'
-          onClick={() => handleTabClick('newAct')}
-          to={'/newAct'}
-        >
-          Реєстрація нового акту
-        </Link>
-        <ConfirmSaveDialog submit={formik.handleSubmit} />
+
+        <Button color='primary' variant='contained' type='submit' fullWidth>
+          Зберегти
+        </Button>
       </Breadcrumbs>
     </Grid>
 
     <Typography variant='h4' component='div' gutterBottom>
       Реєстрація акту
     </Typography>
-
+      {isError && alertError()}
+      { isSuccess && alertOk()}
     <Grid container spacing={6} columns={18}>
 
 
@@ -155,8 +162,8 @@ export const NewActPage = ({ user }) => {
                           inputFormat='dd/M HH:mm'
                           fullWidth
                           renderInput={(params) => (<TextField
-                              {...params} fullWidth
-                              value={formik.values.reg_date ? (formik.values.reg_date) : ''} />)} />
+                            {...params} fullWidth
+                            value={formik.values.reg_date ? (formik.values.reg_date) : ''} />)} />
         </Grid>
         <Grid item xs>
           <InputLabel variant='standard' id='unit_id'>
@@ -306,25 +313,25 @@ export const NewActPage = ({ user }) => {
 
 
         {formik.values.city_id && (<Grid item xs>
-            <Autocomplete
-              clearOnEscape={true}
-              loading={!streets && isStreetsLoading}
-              id='street_id'
-              name='street_id'
-              options={streets}
-              getOptionLabel={(street) => street.street_name}
-              value={formik.values.street_id}
-              fullWidth
-              onChange={(e, value) => {
-                formik.setFieldValue('street_id', value?.id || '')
+          <Autocomplete
+            clearOnEscape={true}
+            loading={!streets && isStreetsLoading}
+            id='street_id'
+            name='street_id'
+            options={streets}
+            getOptionLabel={(street) => street.street_name}
+            value={formik.values.street_id}
+            fullWidth
+            onChange={(e, value) => {
+              formik.setFieldValue('street_id', value?.id || '')
 
-              }}
-              inputValue={search_street}
-              onInputChange={(e, newInputValue) => {
-                if (newInputValue && newInputValue !== 'undefined') setSearch_Street(newInputValue)
-              }}
-              renderInput={(params) => <TextField {...params} label='Вулиця' />} />
-          </Grid>)}
+            }}
+            inputValue={search_street}
+            onInputChange={(e, newInputValue) => {
+              if (newInputValue && newInputValue !== 'undefined') setSearch_Street(newInputValue)
+            }}
+            renderInput={(params) => <TextField {...params} label='Вулиця' />} />
+        </Grid>)}
 
 
         <Grid item>
@@ -337,8 +344,7 @@ export const NewActPage = ({ user }) => {
                          error={formik.touched.house_number && Boolean(formik.errors.house_number)}
                          helperText={formik.touched.house_number && formik.errors.house_number}
                          InputProps={{
-                           startAdornment: (
-                             <InputAdornment position='start'>
+                           startAdornment: (<InputAdornment position='start'>
                              <MdHome />
                            </InputAdornment>)
                          }} />
@@ -361,11 +367,11 @@ export const NewActPage = ({ user }) => {
       </Grid>
 
 
-      <Grid  item xs={6}>
+      <Grid item xs={6}>
         <Typography variant='subtitle1' align='center'>Тип контрагента </Typography>
 
-        <Grid item >
-          <Grid item xs >
+        <Grid item>
+          <Grid item xs>
             <InputLabel id='contractorTypeLabel'>Вид контрагента </InputLabel>
             <Select
               fullWidth
@@ -383,7 +389,7 @@ export const NewActPage = ({ user }) => {
           </Grid>
 
 
-          {formik.values.contractor_type_id && (<Grid item  >
+          {formik.values.contractor_type_id && (<Grid item>
             <InputLabel id='is_consumerLabel'>Тип споживача</InputLabel>
             <Select
               fullWidth
@@ -583,6 +589,7 @@ export const NewActPage = ({ user }) => {
         </Grid>
       </Grid>
     </Grid>
+    </form>
   </Box>)
 }
 

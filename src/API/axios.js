@@ -6,7 +6,7 @@ export const axios = axioslib.create({
 })
 const handleUnauthorized = () => {
   const navigate = useNavigate()
-  localStorage.removeItem('token')
+  sessionStorage.removeItem('token')
   history.push('/login');
 }
 axios.interceptors.response.use(
@@ -15,12 +15,20 @@ axios.interceptors.response.use(
   },
   function (error) {
     if ( error.response.status === 401 || error.response.status === 419) {
-      window.location.replace('/403')
       handleUnauthorized()
+      console.log('unauthorized')
+
     } else if ( error.response.status === 404) {
-      window.location.replace('/404')
+      return Promise.reject(error);
+      console.log('not found')
+
     } else if ( error.response.status === 500) {
-      window.location.replace('/500')
+      return Promise.reject(error);
+      console.log('server error')
+
+    } else if ( error.response.status === 422) {
+      return Promise.reject(error);
+      console.log('validation error')
     }
     return Promise.reject(error);
   }
@@ -29,7 +37,7 @@ axios.interceptors.response.use(
 axios.defaults.withCredentials = true
 axios.interceptors.request.use(
   function(config) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

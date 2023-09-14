@@ -1,25 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import axios from '../API/axios'
 import { useNavigate } from 'react-router-dom'
-import { getActByNumber, getAllActs } from '../API/actAPI'
+import { addAct, addActAdditional, addActPLG, getActByNumber, getAllActs, getLabAct } from '../API/actAPI'
 import { useEffect, useState } from 'react'
 
-export const useAddAct = ({ onAddActSuccess }) => {
-  const navigate = useNavigate()
-  const addActQuery = useMutation({
-    mutationFn: (data) => axios.post('https://jsonplaceholder.typicode.com/posts', data), onSuccess: (data) => {
-      onAddActSuccess(data)
-      navigate('/acts')
-    },
-    staleTime: Infinity,
-    onError: (error) => {
-      console.log(error)
-    }
-  })
-  return {
-    addAct: addActQuery.mutate
-  }
-}
 export const useGetAct = ({ id }) => {
   const getActByNumberQuery = useQuery(['act', id], () =>
     getActByNumber({ id }
@@ -27,15 +10,6 @@ export const useGetAct = ({ id }) => {
   )
   console.log(getActByNumberQuery)
   return getActByNumberQuery
-}
-
-export  const useGetLabAct = ({ id }) => {
-  const getLabAct = useQuery(['act', id], () =>
-    getActByNumber({ id }
-    ), { enabled: !!id, staleTime: 5000 }
-  )
-  console.log(getLabAct)
-  return getLabAct
 }
 export const useGetActs = () => {
   const [searchValue, setSearchValue] = useState()
@@ -59,5 +33,79 @@ export const useGetActs = () => {
     setSearchValue,
     currentPage,
     setCurrentPage,
+  }
+}
+
+
+export const useAddAct = ({ onAddActSuccess , onAddActError }) => {
+  const navigate = useNavigate()
+  const addActMutation = useMutation({
+    mutationFn : (data ) => addAct( data ),
+    onSuccess: async (data) => {
+      onAddActSuccess(data)
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      navigate('/acts')
+    },
+    staleTime: Infinity,
+    onError : async (error) => {
+      onAddActError(error)
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+    }
+  })
+  return  {
+    addAct : addActMutation.mutate ,
+    isError : addActMutation.isError,
+    isSuccess : addActMutation.isSuccess }
+}
+
+export const useAddAdditional = ({ onSuccess , onError }) =>
+{
+  const addAdditionalMutation = useMutation({
+    mutationFn : (data ) => addActAdditional( data ),
+    onSuccess : async (data) => {
+      onSuccess(data)
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+    },
+    onError : async (error) => {
+      onError(error)
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+    }
+  })
+  return {
+    addAdditional : addAdditionalMutation.mutate ,
+    isError : addAdditionalMutation.isError ,
+    isSuccess : addAdditionalMutation.isSuccess ,
+   }
+}
+
+export const useAddPLG = ({ onSuccess , onError}) =>
+{
+  const addPLGMutation = useMutation({
+    mutationFn : (data) => addActPLG(data),
+    onSuccess : async (data) => {
+      onSuccess(data)
+    },
+    onError : async (error) => {
+      onError(error)
+    }
+  })
+  return {
+    addPLG : addPLGMutation.mutate ,
+    isError : addPLGMutation.isError ,
+    isSuccess : addPLGMutation.isSuccess
+  }
+}
+
+export  const useGetPLGAct = ({ id }) => {
+  const getPLGActQuery = useQuery(['labAct', id], () =>
+    getLabAct({ id }
+    ), { enabled: !!id, staleTime: 5000 }
+  )
+  console.log(getPLGActQuery)
+  return {
+    query: getPLGActQuery ,
+    isLoading : getPLGActQuery.isLoading,
+    isError : getPLGActQuery.isError,
+    isSuccess : getPLGActQuery.isSuccess
   }
 }

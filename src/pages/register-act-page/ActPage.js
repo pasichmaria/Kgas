@@ -1,11 +1,11 @@
 import React , {useState} from 'react'
 import { useParams } from 'react-router-dom'
 
-import {Box, Tab, Tabs} from '@mui/material';
+import { Box,   Tab, Tabs } from '@mui/material'
 import {TabContext, TabPanel} from "@material-ui/lab";
 
 import { ErrorLoad, Loading, ViolationAct } from '../../components'
-import { useGetAct, useGetLabAct } from '../../hooks'
+import { useGetAct   } from '../../hooks'
 import { LaboratoryActPage } from '../laboratory'
 export const ActPage = ({ user }) => {
   const [value, setValue] = useState('1')
@@ -13,9 +13,8 @@ export const ActPage = ({ user }) => {
     setValue(newValue)
   }
   const { id } = useParams()
-  const { data : labData , isLoading:  isLabLoading , isError:  isLabError } = useGetLabAct({id})
+  // const { data : labData , isLoading:  isLabLoading , isError:  isLabError } = useGetPLGAct({id})
   const { data, isLoading, error } = useGetAct({ id })
-  console.log(data)
   if (isLoading) {
     return <Loading />;
   }
@@ -24,7 +23,7 @@ export const ActPage = ({ user }) => {
   }
   return (
     <TabContext value={value}>
-      <Box sx={{ borderBottom: 2, borderColor: 'divider', mt:8, borderTop: 1 }}>
+      <Box sx={{ borderBottom: 2, borderColor: 'divider', mt:12, borderTop: 1 }}>
         <Tabs
           textColor='secondary'
           value={value}
@@ -39,16 +38,14 @@ export const ActPage = ({ user }) => {
           <Tab label='Нарахування АТ  Експертизи' value='4' />
           <Tab label='Метрологія та ВЕБ' value='5' />
           <Tab label='Юридичне супроводження порушень' value='6' />
-          <Tab label='tab 7 ' value = '7' />
         </Tabs>
       </Box>
       <TabPanel value='1'><ViolationAct act={data}/></TabPanel>
-      <TabPanel value='2'><LaboratoryActPage act={labData} isError={isLabError} isLoading={isLabLoading} /></TabPanel>
+      <TabPanel value='2'><LaboratoryActPage act={data}/></TabPanel>
       <TabPanel value='3'>Комісія з розгляду актів про порушення</TabPanel>
       <TabPanel value='4'>Нарахування  АТ Експертизи</TabPanel>
       <TabPanel value='5'>Метрологія та ВЕБ</TabPanel>
       <TabPanel value='6'>Юридичне супроводження порушень</TabPanel>
-    <TabPanel value='7'>7</TabPanel>
     </TabContext>
   );
 }

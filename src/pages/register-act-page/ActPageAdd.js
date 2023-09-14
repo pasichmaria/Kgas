@@ -1,19 +1,39 @@
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { DateTimePicker } from '@mui/x-date-pickers'
-import { Box, Breadcrumbs, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
+import {
+  Alert, Box, Breadcrumbs, Button, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography
+} from '@mui/material'
 
 import { ConfirmSaveDialog, FileUpload } from '../../components'
-import { validateAdditionalInfo } from '../../formik/formik'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAddAdditional } from '../../hooks'
 
-export const ActPageAdd = ( {act}) => {
+export const ActPageAdd = ({ act }) => {
   const [activeTab, setActiveTab] = useState(0)
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex)
   }
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
+  const { addAdditional, isSuccess, isError } = useAddAdditional({
+    onSuccess: (data) => {
+      alertOk()
+    }, onError: () => {
+      alertError()
+    }
+  })
+
+  const alertError = () => {
+    return (<Alert severity='error'>
+      Помилка при додаванні акту
+    </Alert>)
+  }
+  const alertOk = () => {
+    return (<Alert severity='success'>
+      Акт успішно додано
+    </Alert>)
+  }
   const formik = useFormik({
     initialValues: {
       photo_passport_user: '',
@@ -33,36 +53,39 @@ const navigate = useNavigate()
       counter_type: '',
       isIntrusion: false,
       conter_number: ''
-
-    }, validateAdditionalInfo,
-
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+    },
+    onSubmit: async (values) => {
+      const data = {
+        photo_passport_user: values.photo_passport_user,
+        photo_indef_user: values.photo_indef_user,
+        photo_violation: values.photo_violation,
+        pasport_na_zvt: values.pasport_na_zvt,
+        act_znyattya_zvt: values.act_znyattya_zvt,
+        act_vidklychennya_objecta: values.act_vidklychennya_objecta,
+        tech_pasport_objecta: values.tech_pasport_objecta,
+        act_obst: values.act_obst,
+        passport_GSO: values.passport_GSO,
+        video_violation: values.video_violation,
+        storona_ZVT: values.storona_ZVT,
+        date_vidpravky_ZVT: values.date_vidpravky_ZVT,
+        date_ostannogo_povirky: values.date_ostannogo_povirky,
+        counter_type: values.counter_type,
+        isIntrusion: values.isIntrusion,
+        conter_number: values.conter_number
+      }
+      await addAdditional(data)
+      console.log(data)
     }
   })
-  const [open, setOpen] = React.useState(false)
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
-  const handleAgree = () => {
-    setOpen(false)
-  }
-  const handleDisagree = () => {
-    setOpen(false)
-  }
 
   const handleIntrusionChange = (event) => {
     formik.setFieldValue('isIntrusion', event.target.checked)
   }
 
-  return (
-    <>
-  <Box
+  return (<>
+    <Box
       sx={{
-        mt : 10,
+        mt: 10,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -70,32 +93,39 @@ const navigate = useNavigate()
         m: 8,
         rowGap: '60px'
       }}
-      component='form'
-      onSubmit={formik.handleSubmit}
     >
+      <form onSubmit={formik.handleSubmit}>
       <Typography variant='h4' component='h2' gutterBottom>
         Додаткова інформація про акт порушення
       </Typography>
-    <Grid container justify="flex-end">
-    <Breadcrumbs aria-label='breadcrumb' maxItems={2}>
-    <Link
-      sx={{ display: 'flex', alignItems: 'center', color: activeTab === 0 ? 'blue' : 'inherit' }}
-      underline='hover'
-      onClick={() => handleTabClick(0)} to='/acts'
-    >
-      Акти порушень
-    </Link>
-    <Link
-      sx={{ display: 'flex', alignItems: 'center', color: activeTab === 1 ? 'blue' : 'inherit' }}
-      underline='hover'
-      onClick={() => handleTabClick(1)}
-      to={-1}
-    >Акт порушення
-    </Link>
-      <ConfirmSaveDialog  submit={formik.handleSubmit} />
 
-  </Breadcrumbs>
-    </Grid>
+      {isError && alertError()}
+      { isSuccess && alertOk()}
+
+      <Grid container justify='flex-end'>
+        <Breadcrumbs aria-label='breadcrumb' maxItems={2}>
+          <Link
+            sx={{ display: 'flex', alignItems: 'center', color: activeTab === 0 ? 'blue' : 'inherit' }}
+            underline='hover'
+            onClick={() => handleTabClick(0)} to='/acts'
+          >
+            Акти порушень
+          </Link>
+          <Link
+            sx={{ display: 'flex', alignItems: 'center', color: activeTab === 1 ? 'blue' : 'inherit' }}
+            underline='hover'
+            onClick={() => handleTabClick(1)}
+            to={-1}
+          >Акт порушення
+
+          </Link>
+
+          <Button color='primary' variant='contained' type='submit' fullWidth>
+            Зберегти
+          </Button>
+        </Breadcrumbs>
+
+      </Grid>
       <Grid container spacing={6} columns={16}>
         <Grid item xs={6}>
           <Grid item spacing={6} columns={16}>
@@ -113,6 +143,7 @@ const navigate = useNavigate()
             <Grid item xs={4} sx={{ mt: 4 }}>
               <FileUpload
                 type='file'
+                maxItems={5}
                 accept={'image/*'}
                 buttonText={'Фото ІК споживача'}
                 value={formik.values.photo_indef_user}
@@ -301,6 +332,7 @@ const navigate = useNavigate()
       </Grid>
       <Box sx={{ mt: 4 }}>
       </Box>
+    </form>
     </Box>
   </>)
 }
