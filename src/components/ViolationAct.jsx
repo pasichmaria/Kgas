@@ -31,11 +31,11 @@ export const ViolationAct = ({ act }) => {
       {activeTab !== 1 && activeTab !== 0 && (<Link
         sx={{ display: 'flex', alignItems: 'center', color: activeTab === 2 ? 'blue' : 'inherit' }}
         underline='hover'
-        onClick={() => handleTabClick(2)} to={`/act/${act.id}/edit`}
+        onClick={() => handleTabClick(2)} to={`/act/edit`}
       >
         Редагувати акт
       </Link>)}
-      <Button onClick={() => navigate(`/act/${act.id}/edit`)} variant='contained' sx={{ float: 'right' }}
+      <Button onClick={() => navigate(`/act/edit`)} variant='contained' sx={{ float: 'right' }}
       >
         Внести дані по акту
       </Button>

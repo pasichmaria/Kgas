@@ -1,11 +1,10 @@
-import { Route, Routes, useParams } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import {
   ActPage,
   ActsPage,
   AwardsPage,
   DeniedActsPage,
   ForbiddenPage,
-  HomePage,
   InternalDocumentsPage,
   LoginPage,
   NewActPage,
@@ -17,7 +16,7 @@ import { useUser } from './hooks'
 import { PrivateRoute } from './routes'
 import { Layout } from './layout'
 import React from 'react'
-import { LaboratoryActPage, LaboratoryEditActPage } from './pages/laboratory'
+import { LaboratoryActPage, LaboratoryEditActPage } from './pages'
 
 function App() {
   const { getUser, user, setUser  } = useUser()
@@ -28,14 +27,12 @@ function App() {
         <Routes>
           <Route path='/' exact element={<LoginPage user={user} getUser={getUser} />} />
           <Route path='/login' exact element={<LoginPage user={user} getUser={getUser} />} />
-          <Route path='/home' element={<PrivateRoute user={user}><HomePage user={user} /></PrivateRoute>} />
           <Route path='/acts' element={<PrivateRoute user={user}><ActsPage user={user} /></PrivateRoute>} />
           <Route path='/act/:id' element={<PrivateRoute user={user}><ActPage user={user} /></PrivateRoute>} />
-          <Route path='/act/:id/edit' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
-          <Route path='/act/:id/add' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
+          <Route path='/act/edit' element={<PrivateRoute user={user}><ActPageAdd  user={user} /></PrivateRoute>} />
 
-          <Route path='/act/:id/laboratory/edit' element={<PrivateRoute user={user}><LaboratoryEditActPage  user={user} /></PrivateRoute>} />
-          <Route path='/act/:id/laboratory' element={<PrivateRoute user={user}><LaboratoryActPage user={user} /> </PrivateRoute>} />
+          <Route path='/act/laboratory/edit' element={<PrivateRoute user={user}><LaboratoryEditActPage  user={user} /></PrivateRoute>} />
+          <Route path='/act/laboratory' element={<PrivateRoute user={user}><LaboratoryActPage user={user} /> </PrivateRoute>} />
 
 
           <Route path='/deniedActs' element={<PrivateRoute user={user}><DeniedActsPage user={user} /></PrivateRoute>} />
@@ -51,7 +48,7 @@ function App() {
           <Route path='/support' element={<SupportPage user={user} />} />
         </Routes>
       </Layout>
-  </>
+    </>
   )
 }
 

@@ -3,7 +3,8 @@ import { Navigate } from 'react-router-dom'
 
 export const PrivateRoute = ({ token, children }) => {
   if (
-    localStorage.getItem('token')) {
+    sessionStorage.getItem('token'))
+  {
     return children
   }
   return <Navigate to='/login' />

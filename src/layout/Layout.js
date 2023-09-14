@@ -1,8 +1,11 @@
 import React from 'react'
-import { Navigation } from './Navigation'
+import { Dashboard } from '../components/acts'
+import { Footer } from './Footer'
 
 export const Layout = ({ children, user, setUser }) => {
-  return <>
-    <Navigation setUser={setUser} user={user} children={children} />
-  </>
+  return (
+    <>
+      <Dashboard user={user} children={children} setUser={setUser} />
+    </>
+  )
 }

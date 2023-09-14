@@ -1,17 +1,47 @@
-import { Box, Breadcrumbs, TextField, Link, Grid, Typography, Select, MenuItem, InputLabel } from '@mui/material'
+import {
+  Box,
+  Breadcrumbs,
+  TextField,
+  Link,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  Alert,
+  Button
+} from '@mui/material'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { validateLaboratoryAct } from '../../formik/formik'
-import { ConfirmSaveDialog, FileUpload } from '../../components'
+import { FileUpload } from '../../components'
 import { DateTimePicker } from '@mui/x-date-pickers'
+import { useAddPLG } from '../../hooks'
 
 export const LaboratoryEditActPage = ({ act }) => {
   const [activeTab, setActiveTab] = useState(0)
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex)
   }
-  const navigate = useNavigate()
+  const { addPLG, isError, isSuccess } = useAddPLG({
+    onSuccess: (data) => {
+      alertOk()
+    },
+    onError: () => {
+      alertError()
+    },
+  })
+  const alertError = () => {
+    return (
+      <Alert severity='error'>
+      Cталася помилка при реєстрації акту. Перевірте правильність введених даних та спробуйте ще раз
+    </Alert>)
+  }
+  const alertOk = () => {
+    return (<Alert severity='success'>
+      Акт успішно зареєстровано в системі
+    </Alert>)
+  }
+
   const formik = useFormik({
     initialValues: {
       date_arrived_to_SC: '',
@@ -29,14 +59,35 @@ export const LaboratoryEditActPage = ({ act }) => {
       power_of_attorney: '',
       video_and_photo_of_expertise: '',
       document_confirming_the_call_for_expertise: ''
-    }, validationSchema: validateLaboratoryAct, onSubmit: (values) => {
-      console.log(values),
-        <Link to={`/act/${act.id}/laboratory`} />
+    },
+    onSubmit: async (values ) => {
+        const data = {
+          date_arrived_to_SC: values.date_arrived_to_SC,
+          meter_type_size: values.meter_type_size,
+          meter_brand: values.meter_brand,
+          actual_expertise_date: values.actual_expertise_date,
+          expertise_report_issue_date: values.expertise_report_issue_date,
+          manufacturing_year: values.manufacturing_year,
+          meter_serial_number: values.meter_serial_number,
 
-    }
+          meter_readings_on_expertise_date: values.meter_readings_on_expertise_date,
+            expertise_result: values.expertise_result,
+          expertise_report_number: values.expertise_report_number,
+
+          consumer_presence_at_the_commission: values.consumer_presence_at_the_commission,
+          invalidity_certificate: values.invalidity_certificate,
+          power_of_attorney: values.power_of_attorney,
+          video_and_photo_of_expertise: values.video_and_photo_of_expertise,
+          document_confirming_the_call_for_expertise: values.document_confirming_the_call_for_expertise
+        }
+        await addPLG(data)
+    },
   })
-  return (<Box sx={{
-      mt: 18,
+
+
+  return (
+    <Box sx={{
+      mt: 30,
       m: 8,
       display: 'flex',
       flexDirection: 'column',
@@ -45,13 +96,15 @@ export const LaboratoryEditActPage = ({ act }) => {
       backgroundColor: '#ffffff',
       mb: 15
     }}
-               component='form'
-               onSubmit={formik.handleSubmit}
     >
-      <Typography variant='h4' component='h2' gutterBottom>
+      <Typography variant='h4' component='h2' gutterBottom sx={{mt : 10 }}>
         Лабораторія ПЛГ
       </Typography>
+
+      <form onSubmit={formik.handleSubmit}>
       <Grid container justify='flex-end'>
+        {isError && alertError()}
+        {isSuccess && alertOk()}
         <Breadcrumbs aria-label='breadcrumb' maxItems={3}>
           <Link
             sx={{ display: 'flex', alignItems: 'center', color: activeTab === 0 ? 'blue' : 'inherit' }}
@@ -67,11 +120,12 @@ export const LaboratoryEditActPage = ({ act }) => {
             to={-1}
           >Лабораторія ПЛГ
           </Link>
-          <ConfirmSaveDialog submit={formik.handleSubmit} />
+          <Button color='primary' variant='contained' type='submit' fullWidth>
+            Зберегти акт
+          </Button>
         </Breadcrumbs>
       </Grid>
       <Grid container spacing={6} columns={18}>
-
 
         <Grid item xs={6}>
           <Grid item xs>
@@ -104,8 +158,6 @@ export const LaboratoryEditActPage = ({ act }) => {
               label='Марка лічильника'
               value={formik.values.meter_brand}
               onChange={formik.handleChange}
-              error={formik.touched.meter_brand && Boolean(formik.errors.meter_brand)}
-              helperText={formik.touched.meter_brand && formik.errors.meter_brand}
             >
               <MenuItem value=''>
                 <em>Оберіть марку</em>
@@ -239,7 +291,6 @@ export const LaboratoryEditActPage = ({ act }) => {
 
           <Grid sx={{ mt: 5 }}>
             <FileUpload
-
               type='file'
               accept={'image/*'}
               buttonText={'Довідка про непридатність'}
@@ -250,35 +301,31 @@ export const LaboratoryEditActPage = ({ act }) => {
             />
           </Grid>
 
-            <Grid xs={8} item sx={{ mt: 4 }}>
-              <FileUpload
-                type='file'
-                accept={'file/*'}
-                buttonText={'Довіреність'}
-                value={formik.values.power_of_attorney}
-                onChange={(event) => {
-                  formik.setFieldValue('power_of_attorney'), event.target.files[0]
-                }}
-              />
-            </Grid>
           <Grid xs={8} item sx={{ mt: 4 }}>
-              <FileUpload
-                type='file'
-                accept={'file/*'}
-                buttonText={'Підтвердження виклика на експертизу'}
-                value={formik.values.video_and_photo_of_expertise}
-                onChange={(event) => {
-                  formik.setFieldValue('video_and_photo_of_expertise'), event.target.files[0]
-                }}
-              />
-            </Grid>
+            <FileUpload
+              type='file'
+              accept={'file/*'}
+              buttonText={'Довіреність'}
+              value={formik.values.power_of_attorney}
+              onChange={(event) => {
+                formik.setFieldValue('power_of_attorney'), event.target.files[0]
+              }}
+            />
+          </Grid>
+          <Grid xs={8} item sx={{ mt: 4 }}>
+            <FileUpload
+              type='file'
+              accept={'file/*'}
+              buttonText={'Підтвердження виклика на експертизу'}
+              value={formik.values.video_and_photo_of_expertise}
+              onChange={(event) => {
+                formik.setFieldValue('video_and_photo_of_expertise'), event.target.files[0]
+              }}
+            />
+          </Grid>
         </Grid>
-
-            <Grid item sx={{ mt: 4 }}>
-          </Grid></Grid>
-
+      </Grid>
+    </form>
     </Box>
-
-
   )
 }

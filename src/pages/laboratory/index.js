@@ -1,2 +1,2 @@
 export * from './LaboratoryActPage'
-export * from './LaboratoryEditActPage'
+export * from './LaboratoryAddActPage'

@@ -8,12 +8,12 @@ export const useUser = () => {
 
   const userQuery = useQuery(['user'], () => getUser(), {
     onError: (error) => {
-      localStorage.removeItem('token')
+      sessionStorage.removeItem('token')
     },
     onSuccess: (data) => {
       setUser(data)
     },
-    enabled: !!localStorage.getItem('token'),
+    enabled: !!sessionStorage.getItem('token'),
     staleTime: Infinity
   })
   return { getUser: userQuery.refetch, setUser, user, loading: userQuery.isLoading }
